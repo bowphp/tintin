@@ -1,0 +1,18 @@
+{
+    "name": "papac/tintin",
+    "description": "The simple php template",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Franck Dakia",
+            "email": "dakiafranck@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Tintin\\": "src"
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {}
+}
