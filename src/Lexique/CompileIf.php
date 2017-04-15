@@ -5,16 +5,54 @@ trait CompileIf
 {
     /**
      * @param $expression
+     */
+    protected function compileIfStack($expression)
+    {
+        foreach (['UnLess', 'If', 'ElseIf', 'Else', 'EndIf'] as $token) {
+            $out = $this->{'compile'.$token}($expression);
+            if (strlen($out) !== 0) {
+                $expression = $out;
+            }
+        }
+        return $expression;
+    }
+
+    /**
+     * @param $expression
+     * @param $lexic
+     * @param $o_lexic
+     * @return mixed|string
+     */
+    private function compileIfStatement($expression, $lexic, $o_lexic)
+    {
+        $regex = sprintf($this->conditionPatern, $lexic);
+        $output = preg_replace_callback($regex, function($match) use ($o_lexic, $lexic) {
+            array_shift($match);
+            if ($lexic == '@unless') {
+                return "<?php $o_lexic (! ({$match[1]})): ?>";
+            } else {
+                return "<?php $o_lexic ({$match[1]}): ?>";
+            }
+        }, $expression);
+        return $output == $expression ? '' : $output;
+    }
+
+    /**
+     * @param $expression
      * @return string
      */
     protected function compileIf($expression)
     {
-        $regex = sprintf($this->conditionPatern, '@if');
-        $output = preg_replace_callback($regex, function($match) {
-            array_shift($match);
-            return "\n<?php if {$match[1]}: ?>\n";
-        }, $expression);
-        return $output == $expression ? '' : $output;
+        return $this->compileIfStatement($expression, '@if', 'if');
+    }
+
+    /**
+     * @param $expression
+     * @return string
+     */
+    protected function compileUnLess($expression)
+    {
+        return $this->compileIfStatement($expression, '@unless', 'if');
     }
 
     /**
@@ -35,12 +73,7 @@ trait CompileIf
      */
     protected function compileElseIf($expression)
     {
-        $regex = sprintf($this->conditionPatern, '@elseif');
-        $output = preg_replace_callback($regex, function($match) {
-            array_shift($match);
-            return "\n<?php elseif {$match[1]}: ?>\n";
-        }, $expression);
-        return $output == $expression ? '' : $output;
+        return $this->compileIfStatement($expression, '@elseif', 'elseif');
     }
 
     /**
@@ -49,9 +82,9 @@ trait CompileIf
      */
     protected function compileEndIf($expression)
     {
-        $output = preg_replace_callback('/\n*@endif\n*/', function($match) {
+        $output = preg_replace_callback('/\n*(@endif|@unless)\n*/', function($match) {
             array_shift($match);
-            return "\n<?php endif; ?>\n";
+            return "<?php endif; ?>";
         }, $expression);
         return $output == $expression ? '' : $output;
     }

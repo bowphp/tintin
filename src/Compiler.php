@@ -24,20 +24,11 @@ class Compiler
      */
     protected $tokens = [
         'RawPhp',
-        'RawEcho',
-        'Echo',
-        'If',
-        'ElseIf',
-        'Else',
-        'Include',
-        'Foreach',
-        'EndForeach',
-        'EndIf',
-        'ContinueIf',
-        'Continue',
-        'BreakIf',
-        'Break',
-        'Block'
+        'EchoStack',
+        'IfStack',
+        'LoopStack',
+        'Block',
+        'Include'
     ];
 
     /**

@@ -5,6 +5,21 @@ trait CompileEchos
 {
     /**
      * @param $expression
+     * @return mixed
+     */
+    protected function compileEchoStack($expression)
+    {
+        foreach (['RawEcho', 'Echo'] as $token) {
+            $out = $this->{'compile'.$token}($expression);
+            if (strlen($out) !== 0) {
+                $expression = $out;
+            }
+        }
+        return $expression;
+    }
+
+    /**
+     * @param $expression
      * @return string
      */
     protected function compileEcho($expression)
