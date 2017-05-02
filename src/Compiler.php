@@ -27,8 +27,7 @@ class Compiler
         'EchoStack',
         'IfStack',
         'LoopStack',
-        'Block',
-        'Include'
+        'ExtendsStack'
     ];
 
     /**
@@ -62,8 +61,9 @@ class Compiler
                     $value = $out;
                 }
             }
-            $this->result .= $value;
+            $this->result .= $value."\n";
         }
+
         return $this->result;
     }
 }

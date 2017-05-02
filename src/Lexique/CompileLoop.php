@@ -59,7 +59,7 @@ trait CompileLoop
     private function compileEndLoop($expression, $lexic, $o_lexic)
     {
         $output = preg_replace_callback("/\n*$lexic\n*/", function() use ($o_lexic) {
-            return "<?php $o_lexic; ?>";
+            return "<?php $o_lexic; ?>\n";
         }, $expression);
         return $output == $expression ? '' : $output;
     }
@@ -89,7 +89,7 @@ trait CompileLoop
      */
     protected function compileForeach($expression)
     {
-        return $this->compileLoop($expression, '@loop', 'foreach');
+        return $this->compileLoop($expression, '%loop', 'foreach');
     }
 
     /**
@@ -98,7 +98,7 @@ trait CompileLoop
      */
     protected function compileWhile($expression)
     {
-        return $this->compileLoop($expression, '@while', 'while');
+        return $this->compileLoop($expression, '%while', 'while');
     }
 
     /**
@@ -107,7 +107,7 @@ trait CompileLoop
      */
     protected function compileFor($expression)
     {
-        return $this->compileLoop($expression, '@for', 'for');
+        return $this->compileLoop($expression, '%for', 'for');
     }
 
     /**
@@ -116,7 +116,7 @@ trait CompileLoop
      */
     protected function compileEndForeach($expression)
     {
-        return $this->compileEndLoop($expression, '@endloop', 'endforeach');
+        return $this->compileEndLoop($expression, '%endloop', 'endforeach');
     }
 
     /**
@@ -125,7 +125,7 @@ trait CompileLoop
      */
     protected function compileEndWhile($expression)
     {
-        return $this->compileEndLoop($expression, '@endwhile', 'endwhile');
+        return $this->compileEndLoop($expression, '%endwhile', 'endwhile');
     }
 
     /**
@@ -134,7 +134,7 @@ trait CompileLoop
      */
     protected function compileEndFor($expression)
     {
-        return $this->compileEndLoop($expression, '@endfor', 'endfor');
+        return $this->compileEndLoop($expression, '%endfor', 'endfor');
     }
 
     /**
@@ -143,7 +143,7 @@ trait CompileLoop
      */
     protected function compileContinue($expression)
     {
-        return $this->compileBreaker($expression, '@jump', 'continue');
+        return $this->compileBreaker($expression, '%jump', 'continue');
     }
 
     /**
@@ -152,6 +152,6 @@ trait CompileLoop
      */
     protected function compileBreak($expression)
     {
-        return $this->compileBreaker($expression, '@stop', 'break');
+        return $this->compileBreaker($expression, '%stop', 'break');
     }
 }

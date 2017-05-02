@@ -9,10 +9,9 @@ trait CompileRawPhp
      */
     protected function compileRawPhp($expression)
     {
-        $output = preg_replace_callback('/(?:@raw(.+)@endraw)/sm', function($match) {
+        $output = preg_replace_callback('/\%raw\s*(\n*(?:.+?)\n*)%endraw/sm', function($match) {
             array_shift($match);
-            var_dump($match);
-            return "\n<?php\n{$match[1]}\n?>\n";
+            return "\n<?php \n{$match[1]}\n?>\n";
         }, $expression);
         return $output == $expression ? '' : $output;
     }
