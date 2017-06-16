@@ -26,13 +26,13 @@ trait CompileExtends
      */
     protected function compileBlock($expression)
     {
-        $output = preg_replace_callback("/\n*\%block\s*\((.+?)(?:,(.+?))?\)\n*/m", function ($match) {
+        $output = preg_replace_callback("/\n*\#block\s*\((.+?)(?:,(.+?))?\)\n*/m", function ($match) {
             array_shift($match);
             $content = 'null';
             if (count($match) == 2) {
                 $content = $match[1];
             }
-            return "<?php \$__tintin->startStack('{$match[0]}', $content); ?>";
+            return "<?php \$__tintin->startStack({$match[0]}, $content); ?>";
         }, $expression);
 
         return $output == $expression ? '' : $output;
@@ -44,7 +44,7 @@ trait CompileExtends
      */
     protected function compileEndBlock($expression)
     {
-        $output = preg_replace_callback("/\n*%endblock\n*/m", function () {
+        $output = preg_replace_callback("/\n*#endblock\n*/m", function () {
             return "<?php \$__tintin->endStack(); ?>";
         }, $expression);
 
@@ -57,9 +57,9 @@ trait CompileExtends
      */
     protected function compileInclude($expression)
     {
-        $base_r = "/\%include\s*\(((?:\n|\s|\t)*(?:.+?)(?:\n|\s|\t)*)\)/sm";
+        $base_r = "/\#include\s*\(((?:\n|\s|\t)*(?:.+?)(?:\n|\s|\t)*)\)/sm";
         $output = preg_replace_callback($base_r, function ($match) {
-            return "<?php \$__tintin->include({$match[1]}, ['__tintin' => \$__tintin]); ?>";
+            return "<?php \$__tintin->includeFile({$match[1]}, ['__tintin' => \$__tintin]); ?>";
         }, $expression);
 
         return $output == $expression ? '' : $output;
@@ -71,9 +71,9 @@ trait CompileExtends
      */
     protected function compileExtends($expression)
     {
-        $base_r = "/\%extends\s*\(((?:\n|\s|\t)*(?:.+?)(?:\n|\s|\t)*)\)/sm";
+        $base_r = "/\#extends\s*\(((?:\n|\s|\t)*(?:.+?)(?:\n|\s|\t)*)\)/sm";
         $output = preg_replace_callback($base_r, function ($match) {
-            return "<?php \$__tintin->include({$match[1]}, ['__tintin' => \$__tintin]); ?>";
+            return "<?php \$__tintin->includeFIle({$match[1]}, ['__tintin' => \$__tintin]); ?>";
         }, $expression);
         return $output == $expression ? '' : $output;
     }
@@ -86,7 +86,7 @@ trait CompileExtends
      */
     protected function compileInject($expression)
     {
-        $base_r = "/\%inject\s*\(((?:\n|\s|\t)*(?:.+?)(?:\n|\s|\t)*)\)/sm";
+        $base_r = "/\#inject\s*\(((?:\n|\s|\t)*(?:.+?)(?:\n|\s|\t)*)\)/sm";
 
         $output = preg_replace_callback($base_r, function ($match) {
             return "<?php \$__tintin->getStack('{$match[1]}'); ?>";

@@ -1,7 +1,7 @@
 <?php
 namespace Tintin;
 
-use Tintin\Loader\LoaderInterace;
+use Tintin\Loader\LoaderInterface;
 
 class Tintin
 {
@@ -11,16 +11,15 @@ class Tintin
     private $compiler;
 
     /**
-     * @var LoaderInterace
+     * @var LoaderInterface
      */
     private $loader;
 
     /**
      * Tintin constructor.
-     * @param LoaderInterace|null $loader
-     * @param array $config
+     * @param LoaderInterface $loader
      */
-    public function __construct(LoaderInterace $loader = null, $config = [])
+    public function __construct(LoaderInterface $loader = null)
     {
         $this->compiler = new Compiler();
         $this->loader = $loader;

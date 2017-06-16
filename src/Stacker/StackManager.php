@@ -38,7 +38,7 @@ class StackManager
      * @param array $context
      * @return string
      */
-    public function include($filename, $context = [])
+    public function includeFile($filename, $context = [])
     {
         extract($context);
         $out = $this->compiler->complie(file_get_contents($this->directory.'/'.trim($filename, '/')));
@@ -62,7 +62,7 @@ class StackManager
             }
         } else {
             if (is_string($content)) {
-                $this->stacks[$name] = $content;
+                $this->stacks[$name] = $this->compiler->complie($content);
             }
         }
     }
@@ -74,11 +74,9 @@ class StackManager
     {
         if (isset($this->stacks, $this->current_key)) {
             if ($this->stacks[$this->current_key] === true) {
-                $this->stacks[$this->current_key] = ob_get_clean();
+                $this->stacks[$this->current_key] = $this->compiler->complie(ob_get_clean());
             }
         }
-
-        var_dump($this->stacks);
     }
 
     /**

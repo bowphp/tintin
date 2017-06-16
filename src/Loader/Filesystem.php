@@ -1,23 +1,62 @@
 <?php
-namespace Tintin;
+namespace Tintin\Loader;
 
-use Tintin\Loader\LoaderInterace;
-
-class Filesystem implements LoaderInterace
+class Filesystem implements LoaderInterface
 {
     /**
      * Dossier de base des fichiers des template.
      *
-     * @var string
+     * @var array
      */
-    private $dirname;
+    private $data;
 
     /**
      * Filesystem constructor.
-     * @param $dirname
+     * @param $data
      */
-    public function __construct($dirname)
+    public function __construct($data)
     {
-        $this->dirname = $dirname;
+        $this->data = $data;
+    }
+
+    /**
+     * @param string $file
+     * @return mixed
+     */
+    public function getFileResolvedPath($file)
+    {
+        return $this->data['cache'].'/'.ltrim('/', $file);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCachePath()
+    {
+        return $this->data['cache'];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getExtension()
+    {
+        return isset($this->data['extension']) ? $this->data['extension'] : 'tintin.php';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getFileContent($filename)
+    {
+        return $this->data['extension'];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function isExpirate($filename)
+    {
+        return $this->data['extension'];
     }
 }

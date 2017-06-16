@@ -1,6 +1,8 @@
 <?php
 namespace Tintin\Lexique;
 
+use function var_dump;
+
 trait CompileIf
 {
     /**
@@ -26,9 +28,11 @@ trait CompileIf
     private function compileIfStatement($expression, $lexic, $o_lexic)
     {
         $regex = sprintf($this->conditionPatern, $lexic);
+        var_dump($regex);
         $output = preg_replace_callback($regex, function($match) use ($o_lexic, $lexic) {
+            var_dump($match);
             array_shift($match);
-            if ($lexic == '%unless') {
+            if ($lexic == '#unless') {
                 return "<?php $o_lexic (! ({$match[1]})): ?>";
             } else {
                 return "<?php $o_lexic ({$match[1]}): ?>";
@@ -43,7 +47,7 @@ trait CompileIf
      */
     protected function compileIf($expression)
     {
-        return $this->compileIfStatement($expression, '%if', 'if');
+        return $this->compileIfStatement($expression, '#if', 'if');
     }
 
     /**
@@ -52,7 +56,7 @@ trait CompileIf
      */
     protected function compileUnLess($expression)
     {
-        return $this->compileIfStatement($expression, '%unless', 'if');
+        return $this->compileIfStatement($expression, '#unless', 'if');
     }
 
     /**
@@ -61,7 +65,7 @@ trait CompileIf
      */
     protected function compileElse($expression)
     {
-        $output = preg_replace_callback('/\n*@else:\n*/', function() {
+        $output = preg_replace_callback('/\n*#else\n*/', function() {
             return "<?php esle: ?>";
         }, $expression);
         return $output == $expression ? '' : $output;
@@ -73,7 +77,7 @@ trait CompileIf
      */
     protected function compileElseIf($expression)
     {
-        return $this->compileIfStatement($expression, '%elseif', 'elseif');
+        return $this->compileIfStatement($expression, '#elseif', 'elseif');
     }
 
     /**
@@ -82,7 +86,7 @@ trait CompileIf
      */
     protected function compileEndIf($expression)
     {
-        $output = preg_replace_callback('/\n*(%endif|%unless)\n*/', function($match) {
+        $output = preg_replace_callback('/\n*(#endif|#endunless)\n*/', function($match) {
             array_shift($match);
             return "<?php endif; ?>";
         }, $expression);
