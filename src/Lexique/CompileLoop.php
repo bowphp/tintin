@@ -59,7 +59,7 @@ trait CompileLoop
     private function compileEndLoop($expression, $lexic, $o_lexic)
     {
         $output = preg_replace_callback("/\n*$lexic\n*/", function() use ($o_lexic) {
-            return "<?php $o_lexic; ?>\n";
+            return "<?php $o_lexic; ?>";
         }, $expression);
         return $output == $expression ? '' : $output;
     }

@@ -30,10 +30,11 @@ class Tintin
      *
      * @param $data
      * @param array $params
+     * @return string
      */
     public function render($data, array $params)
     {
         extract($params);
-        echo $this->compiler->complie($data);
+        return trim($this->compiler->complie($data), "\n");
     }
 }

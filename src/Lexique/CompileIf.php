@@ -28,9 +28,7 @@ trait CompileIf
     private function compileIfStatement($expression, $lexic, $o_lexic)
     {
         $regex = sprintf($this->conditionPatern, $lexic);
-        var_dump($regex);
         $output = preg_replace_callback($regex, function($match) use ($o_lexic, $lexic) {
-            var_dump($match);
             array_shift($match);
             if ($lexic == '#unless') {
                 return "<?php $o_lexic (! ({$match[1]})): ?>";

@@ -1,6 +1,9 @@
 <?php
 namespace Tintin;
 
+use function preg_match;
+use function unlink;
+
 class Compiler
 {
     use Lexique\CompileIf,
@@ -52,6 +55,12 @@ class Compiler
             $data = preg_split('/\n/', $data);
         } else {
             $data = (array) $data;
+        }
+
+        if (isset($data[0]) && preg_match('/#extends(.+?)\n?/', $data[0])) {
+            $first = $data[0];
+            unset($data[0]);
+            $data[] = "\n".$first;
         }
 
         foreach ($data as $value) {

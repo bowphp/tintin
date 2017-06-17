@@ -1,6 +1,8 @@
 <?php
 namespace Tintin\Lexique;
 
+use function is_null;
+
 trait CompileExtends
 {
     use CompileStacks;
@@ -11,7 +13,7 @@ trait CompileExtends
      */
     protected function compileExtendsStack($expression)
     {
-        foreach (['Include', 'Block', 'EndBlock', 'Extends', 'Inject'] as $token) {
+        foreach (['Include', 'Block', 'EndBlock', 'Inject', 'Extends'] as $token) {
             $out = $this->{'compile'.$token}($expression);
             if (strlen($out) !== 0) {
                 $expression = $out;
@@ -28,11 +30,15 @@ trait CompileExtends
     {
         $output = preg_replace_callback("/\n*\#block\s*\((.+?)(?:,(.+?))?\)\n*/m", function ($match) {
             array_shift($match);
-            $content = 'null';
+            $content = null;
             if (count($match) == 2) {
                 $content = $match[1];
             }
-            return "<?php \$__tintin->startStack({$match[0]}, $content); ?>";
+            if (is_null($content)) {
+                return "<?php \$__tintin->startStack({$match[0]}); ?>";
+            } else {
+                return "<?php \$__tintin->startStack({$match[0]}, $content); ?>";
+            }
         }, $expression);
 
         return $output == $expression ? '' : $output;
