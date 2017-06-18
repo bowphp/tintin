@@ -3,6 +3,7 @@ namespace Tintin\Stacker;
 
 
 use Tintin\Compiler;
+use Tintin\Tintin;
 
 class StackManager
 {
@@ -24,11 +25,12 @@ class StackManager
     /**
      * StackManager constructor.
      * @param $directory
+     * @param Tintin $tintin
      */
-    public function __construct($directory)
+    public function __construct($directory, Tintin $tintin)
     {
         $this->directory = $directory;
-        $this->compiler = new Compiler();
+        $this->tintin = $tintin;
     }
 
     /**
@@ -40,8 +42,11 @@ class StackManager
      */
     public function includeFile($filename, $context = [])
     {
-        extract($context);
-        $out = $this->compiler->complie(file_get_contents($this->directory.'/'.trim($filename, '/')));
+        $out = $this->tintin->render(
+            file_get_contents($this->directory.'/'.trim($filename, '/')),
+            $context
+        );
+        
         file_put_contents(__DIR__.'/gabage/worker.php', $out);
         return require __DIR__.'/gabage/worker.php';
     }
