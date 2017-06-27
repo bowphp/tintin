@@ -12,32 +12,45 @@ class Filesystem implements LoaderInterface
 
     /**
      * Filesystem constructor.
-     * @param $data
+     * @param array $data
      */
-    public function __construct($data)
+    public function __construct(array $data)
     {
         $this->data = $data;
+
+        if (isset($this->data['cache'])) {
+            $this->data['cache'] = rtrim($this->data['cache'], '/');
+        }
     }
 
     /**
-     * @param string $file
-     * @return mixed
+     * @inheritdoc
      */
-    public function getFileResolvedPath($file)
+    public function getFileResolvedPath($filename)
     {
-        return $this->data['cache'].'/'.ltrim('/', $file);
+        return $this->data['path'].'/'.$filename.'.'.$this->getExtension();
     }
 
     /**
-     * @return mixed
+     * @inheritdoc
+     */
+    public function getCacheFileResolvedPath($filename)
+    {
+        $md5 = sha1($filename);
+        $dirname = substr($md5, 0, 2);
+        return $this->getCachePath().'/'.$dirname.'/'.$md5.'.php';
+    }
+
+    /**
+     * @inheritdoc
      */
     public function getCachePath()
     {
-        return $this->data['cache'];
+        return isset($this->data['cache']) ? $this->data['cache'] : sys_get_temp_dir();
     }
 
     /**
-     * @return mixed
+     * @inheritdoc
      */
     public function getExtension()
     {
@@ -49,14 +62,56 @@ class Filesystem implements LoaderInterface
      */
     public function getFileContent($filename)
     {
-        return $this->data['extension'];
+        return file_get_contents($this->getFileResolvedPath($filename));
     }
 
     /**
      * @inheritdoc
      */
-    public function isExpirate($filename)
+    public function isExpirated($filename)
     {
-        return $this->data['extension'];
+        if ($this->isCached($filename)) {
+            return fileatime($this->getFileResolvedPath($filename)) > fileatime($this->getCacheFileResolvedPath($filename));
+        }
+        return true;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function isCached($filename)
+    {
+        return file_exists($this->getCacheFileResolvedPath($filename));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function fileExists($filename)
+    {
+        return file_exists($this->getFileResolvedPath($filename));
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function cache($filename, $data)
+    {
+        $md5 = sha1($filename);
+        $dirname = substr($md5, 0, 2);
+
+        if (! is_dir($this->getCachePath().'/'.$dirname)) {
+            mkdir($this->getCachePath().'/'.$dirname);
+        }
+
+        file_put_contents($this->getCachePath().'/'.$dirname.'/'.$md5.'.php', $data);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function failLoading($message)
+    {
+        throw new \Exception($message);
     }
 }

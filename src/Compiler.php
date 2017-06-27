@@ -1,9 +1,6 @@
 <?php
 namespace Tintin;
 
-use function preg_match;
-use function unlink;
-
 class Compiler
 {
     use Lexique\CompileIf,
@@ -41,7 +38,7 @@ class Compiler
     /**
      * @var string
      */
-    protected $conditionPatern = '/(%s\s*\((.+?)\))+/';
+    protected $conditionPatern = '/(%s\s*\((.+?)?\))+/';
 
     /**
      * Permet de

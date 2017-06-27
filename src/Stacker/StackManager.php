@@ -1,9 +1,10 @@
 <?php
 namespace Tintin\Stacker;
 
-
-use Tintin\Compiler;
+use function ob_end_clean;
+use function ob_get_contents;
 use Tintin\Tintin;
+use function var_dump;
 
 class StackManager
 {
@@ -15,21 +16,14 @@ class StackManager
     /**
      * @var null
      */
-    private $current_key = null;
-
-    /**
-     * @var string
-     */
-    private $directory;
+    private $current_key;
 
     /**
      * StackManager constructor.
-     * @param $directory
      * @param Tintin $tintin
      */
-    public function __construct($directory, Tintin $tintin)
+    public function __construct(Tintin $tintin)
     {
-        $this->directory = $directory;
         $this->tintin = $tintin;
     }
 
@@ -42,13 +36,7 @@ class StackManager
      */
     public function includeFile($filename, $context = [])
     {
-        $out = $this->tintin->render(
-            file_get_contents($this->directory.'/'.trim($filename, '/')),
-            $context
-        );
-        
-        file_put_contents(__DIR__.'/gabage/worker.php', $out);
-        return require __DIR__.'/gabage/worker.php';
+        return $this->tintin->render($filename, $context);
     }
 
     /**
@@ -67,9 +55,10 @@ class StackManager
             }
         } else {
             if (is_string($content)) {
-                $this->stacks[$name] = $this->compiler->complie($content);
+                $this->stacks[$name] = $this->tintin->getCompiler()->complie($content);
             }
         }
+
     }
 
     /**
@@ -79,7 +68,9 @@ class StackManager
     {
         if (isset($this->stacks, $this->current_key)) {
             if ($this->stacks[$this->current_key] === true) {
-                $this->stacks[$this->current_key] = $this->compiler->complie(ob_get_clean());
+                $content = ob_get_contents();
+                ob_end_clean();
+                $this->stacks[$this->current_key] = trim($this->tintin->getCompiler()->complie($content), "\n");
             }
         }
     }

@@ -27,7 +27,7 @@ trait CompileEchos
         $regex = sprintf('/((?:%s\s*(.+?)\s*%s))+/', $this->echoTags[0], $this->echoTags[1]);
         $output = preg_replace_callback($regex, function($match) {
             array_shift($match);
-            return '<?php echo '.$match[1].'; ?>';
+            return '<?php echo isset('.$match[1].') ? '.$match[1].' : null; ?>';
         }, $expression);
         return $output == $expression ? '' : $output;
     }
@@ -41,7 +41,7 @@ trait CompileEchos
         $regex = sprintf('/((?:%s\s*(.+?)\s*%s))+/s', $this->rawEchoTags[0], $this->rawEchoTags[1]);
         $output = preg_replace_callback($regex, function($match) {
             array_shift($match);
-            return '<?php echo e('.$match[1].'); ?>';
+            return '<?php echo isset('.$match[1].') ? e('.$match[1].') : null; ?>';
         }, $expression);
         return $output == $expression ? '' : $output;
     }
