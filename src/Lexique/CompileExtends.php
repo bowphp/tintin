@@ -1,6 +1,7 @@
 <?php
 namespace Tintin\Lexique;
 
+use function array_shift;
 use function is_null;
 
 trait CompileExtends
@@ -63,8 +64,7 @@ trait CompileExtends
      */
     protected function compileInclude($expression)
     {
-        $base_r = "/\#include\s*\(((?:\n|\s|\t)*(?:.+?)(?:\n|\s|\t)*)\)/sm";
-        $output = preg_replace_callback($base_r, function ($match) {
+        $output = preg_replace_callback("/\#include\s*\(((?:\n|\s|\t)*(?:.+?)(?:\n|\s|\t)*)\)/sm", function ($match) {
             return "<?php \$__tintin->stackManager->includeFile({$match[1]}, ['__tintin' => \$__tintin]); ?>";
         }, $expression);
 
@@ -77,8 +77,7 @@ trait CompileExtends
      */
     protected function compileExtends($expression)
     {
-        $base_r = "/\#extends\s*\(((?:\n|\s|\t)*(?:.+?)(?:\n|\s|\t)*)\)/sm";
-        $output = preg_replace_callback($base_r, function ($match) {
+        $output = preg_replace_callback("/\#extends\s*\(((?:\n|\s|\t)*(?:.+?)(?:\n|\s|\t)*)\)/sm", function ($match) {
             return "<?php \$__tintin->stackManager->includeFIle({$match[1]}, ['__tintin' => \$__tintin]); ?>";
         }, $expression);
         return $output == $expression ? '' : $output;

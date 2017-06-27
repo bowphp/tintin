@@ -1,8 +1,12 @@
 <?php
 namespace Tintin\Stacker;
 
+use function array_key_exists;
+use function array_map;
+use function get_defined_vars;
+use function ob_clean;
 use function ob_end_clean;
-use function ob_get_contents;
+use function ob_get_level;
 use Tintin\Tintin;
 use function var_dump;
 
@@ -12,6 +16,11 @@ class StackManager
      * @var array
      */
     private $stacks = [];
+
+    /**
+     * @var array
+     */
+    private $pushes = [];
 
     /**
      * @var null
@@ -43,22 +52,17 @@ class StackManager
      * Permet d'ouvrir le flux pour un block
      *
      * @param string $name
-     * @param null $content
+     * @param string $content
      */
-    public function startStack($name, $content = null)
+    public function startStack($name, $content = '')
     {
-        $this->current_key = $name;
-
         if (is_null($content)) {
             if (ob_start()) {
-                $this->stacks[$name] = true;
+                $this->stacks[] = $name;
             }
         } else {
-            if (is_string($content)) {
-                $this->stacks[$name] = $this->tintin->getCompiler()->complie($content);
-            }
+            $this->pushes[$name] = $content;
         }
-
     }
 
     /**
@@ -66,11 +70,12 @@ class StackManager
      */
     public function endStack()
     {
-        if (isset($this->stacks, $this->current_key)) {
-            if ($this->stacks[$this->current_key] === true) {
-                $content = ob_get_contents();
-                ob_end_clean();
-                $this->stacks[$this->current_key] = trim($this->tintin->getCompiler()->complie($content), "\n");
+        $stacks = array_pop($this->stacks);
+        $stacks = is_array($stacks) ? $stacks : [$stacks];
+
+        foreach ($stacks as $block) {
+            if ($block !== true) {
+                $this->pushes[$block] = trim($this->tintin->getCompiler()->complie(ob_get_clean()), "\n");
             }
         }
     }
@@ -83,7 +88,7 @@ class StackManager
      */
     public function getStack($name)
     {
-        return isset($this->stacks[$name]) ? $this->stacks[$name] : null;
+        return array_key_exists($name, $this->pushes) ? $this->pushes[$name] : null;
     }
 
     /**

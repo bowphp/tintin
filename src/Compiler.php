@@ -38,7 +38,7 @@ class Compiler
     /**
      * @var string
      */
-    protected $conditionPatern = '/(%s\s*\((.+?)?\))+/';
+    protected $conditionPatern = '/(%s\s*\((.+?)?\))+/sm';
 
     /**
      * Permet de
@@ -57,12 +57,12 @@ class Compiler
         if (isset($data[0]) && preg_match('/#extends(.+?)\n?/', $data[0])) {
             $first = $data[0];
             unset($data[0]);
-            $data[] = "\n".$first;
+            $data[] = $first;
         }
 
         foreach ($data as $value) {
             foreach ($this->tokens as $token) {
-                $out = $this->{'compile'.$token}($value);
+                $out = $this->{'compile'.$token}(trim($value, '\n'));
                 if (strlen($out) !== 0) {
                     $value = $out;
                 }

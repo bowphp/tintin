@@ -1,8 +1,6 @@
 <?php
 namespace Tintin\Lexique;
 
-use function var_dump;
-
 trait CompileIf
 {
     /**
@@ -30,6 +28,7 @@ trait CompileIf
         $regex = sprintf($this->conditionPatern, $lexic);
         $output = preg_replace_callback($regex, function($match) use ($o_lexic, $lexic) {
             array_shift($match);
+            var_dump($match);
             if ($lexic == '#unless') {
                 return "<?php $o_lexic (! ({$match[1]})): ?>";
             } else {

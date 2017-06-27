@@ -3,6 +3,7 @@ namespace Tintin;
 
 use function str_replace;
 use Tintin\Loader\LoaderInterface;
+use function var_dump;
 
 class Tintin
 {
@@ -49,11 +50,12 @@ class Tintin
         $__tintin = $this;
 
         if (! $this->loader->isExpirated($filename)) {
+            var_dump($filename);
             return require $this->loader->getCacheFileResolvedPath($filename);
         }
 
         $content = $this->loader->getFileContent($filename);
-        $this->loader->cache($filename, trim($this->compiler->complie($content), "\n"));
+        $this->loader->cache($filename, trim($this->compiler->complie($content), '\n'));
 
         return require $this->loader->getCacheFileResolvedPath($filename);
     }
