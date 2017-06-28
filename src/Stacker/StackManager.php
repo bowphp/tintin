@@ -1,8 +1,14 @@
 <?php
 namespace Tintin\Stacker;
 
-
-use Tintin\Compiler;
+use function array_key_exists;
+use function array_map;
+use function get_defined_vars;
+use function ob_clean;
+use function ob_end_clean;
+use function ob_get_level;
+use Tintin\Tintin;
+use function var_dump;
 
 class StackManager
 {
@@ -12,23 +18,22 @@ class StackManager
     private $stacks = [];
 
     /**
-     * @var null
+     * @var array
      */
-    private $current_key = null;
+    private $pushes = [];
 
     /**
-     * @var string
+     * @var null
      */
-    private $directory;
+    private $current_key;
 
     /**
      * StackManager constructor.
-     * @param $directory
+     * @param Tintin $tintin
      */
-    public function __construct($directory)
+    public function __construct(Tintin $tintin)
     {
-        $this->directory = $directory;
-        $this->compiler = new Compiler();
+        $this->tintin = $tintin;
     }
 
     /**
@@ -38,32 +43,25 @@ class StackManager
      * @param array $context
      * @return string
      */
-    public function include($filename, $context = [])
+    public function includeFile($filename, $context = [])
     {
-        extract($context);
-        $out = $this->compiler->complie(file_get_contents($this->directory.'/'.trim($filename, '/')));
-        file_put_contents(__DIR__.'/gabage/worker.php', $out);
-        return require __DIR__.'/gabage/worker.php';
+        return $this->tintin->render($filename, $context);
     }
 
     /**
      * Permet d'ouvrir le flux pour un block
      *
      * @param string $name
-     * @param null $content
+     * @param string $content
      */
-    public function startStack($name, $content = null)
+    public function startStack($name, $content = '')
     {
-        $this->current_key = $name;
-
         if (is_null($content)) {
             if (ob_start()) {
-                $this->stacks[$name] = true;
+                $this->stacks[] = $name;
             }
         } else {
-            if (is_string($content)) {
-                $this->stacks[$name] = $content;
-            }
+            $this->pushes[$name] = $content;
         }
     }
 
@@ -72,13 +70,14 @@ class StackManager
      */
     public function endStack()
     {
-        if (isset($this->stacks, $this->current_key)) {
-            if ($this->stacks[$this->current_key] === true) {
-                $this->stacks[$this->current_key] = ob_get_clean();
+        $stacks = array_pop($this->stacks);
+        $stacks = is_array($stacks) ? $stacks : [$stacks];
+
+        foreach ($stacks as $block) {
+            if ($block !== true) {
+                $this->pushes[$block] = trim($this->tintin->getCompiler()->complie(ob_get_clean()), "\n");
             }
         }
-
-        var_dump($this->stacks);
     }
 
     /**
@@ -89,7 +88,7 @@ class StackManager
      */
     public function getStack($name)
     {
-        return isset($this->stacks[$name]) ? $this->stacks[$name] : null;
+        return array_key_exists($name, $this->pushes) ? $this->pushes[$name] : null;
     }
 
     /**
