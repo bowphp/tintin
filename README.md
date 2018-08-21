@@ -1,15 +1,16 @@
-# Tintin
 <h1 align="center">
-    <img src="https://github.com/bowphp/tintin/raw/master/logo.jpeg">
-    <br/>Bow
+    <img src="https://github.com/bowphp/tintin/raw/master/logo.jpeg" width="150px">
+    <br/>Tintin
 </h1>
 
 <p align="center">The sample php Template</p>
 
 ## Installation
+
 ```bash
-composer require papac/tintin
+composer require bowphp/tintin
 ```
+
 # Configuration
 
 ```php
