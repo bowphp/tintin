@@ -1,5 +1,5 @@
 {
-    "name": "papac/tintin",
+    "name": "bowphp/tintin",
     "description": "The simple php template",
     "license": "MIT",
     "authors": [
@@ -14,5 +14,7 @@
         }
     },
     "minimum-stability": "dev",
-    "require": {}
+    "require": {
+        "phpunit/phpunit": "^4"
+    }
 }
