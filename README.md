@@ -1,15 +1,20 @@
-# tintin
-The sample php Template
+# Tintin
+<h1 align="center">
+    <img src="https://github.com/bowphp/tintin/raw/master/logo.jpeg">
+    <br/>Bow
+</h1>
+
+<p align="center">The sample php Template</p>
 
 ## Installation
 ```bash
 composer require papac/tintin
 ```
-
 # Configuration
 
 ```php
 require 'vendor/autoload.php';
+
 $loader = new Tintin\Loader\Filesystem(__DIR__.'/views');
 $tintin = new Tintin\Tinitin($loader, [
   'cache' => true,
@@ -17,6 +22,7 @@ $tintin = new Tintin\Tinitin($loader, [
   'extension' => 'tt',
   'expire' => ture
 ]);
+
 echo $tintin->render('Hello {{name}}', ['name' => 'tintin']);
 // -> Hello tintin
 ```
@@ -26,29 +32,27 @@ echo $tintin->render('Hello {{name}}', ['name' => 'tintin']);
 ### Condiction
 
 ```jinja2
-@if name == 'tintin':
+#if name == 'tintin':
   {{ name }}
-@elseif name == 'template':
+#elseif name == 'template':
   {{ name }}
-@else:
+#else:
   {{ name }}
-@endif
+#endif
 ```
 
 ### Loop
 
 ```jinja2
-@loop $names as $name:
-  
-  @if $name == 'tintin':
+#loop $names as $name:
+  #if $name == 'tintin':
     ...
-  @endif
-  
-@endloop
+  #endif
+#endloop
 ```
 
 ### Inclusion
 
 ```jinja2
- @include('filename')
+ #include('filename')
 ```

@@ -1,6 +1,5 @@
-tests/data
+.idea
 vendor
-tests/*
 !tests/.gitkeep
 src/Stacker/gabage/worker.php
-.idea
+composer.lock
