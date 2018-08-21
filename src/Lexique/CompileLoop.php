@@ -10,10 +10,12 @@ trait CompileLoop
     {
         foreach ($this->getLoopStack() as $token) {
             $out = $this->{'compile'.$token}($expression);
+
             if (strlen($out) !== 0) {
                 $expression = $out;
             }
         }
+
         return $expression;
     }
 
@@ -43,10 +45,13 @@ trait CompileLoop
     private function compileLoop($expression, $lexic, $o_lexic)
     {
         $regex = sprintf($this->conditionPatern, $lexic);
+
         $output = preg_replace_callback($regex, function($match) use ($o_lexic) {
             array_shift($match);
+
             return "<?php $o_lexic ({$match[1]}): ?>";
         }, $expression);
+
         return $output == $expression ? '' : $output;
     }
 
@@ -61,6 +66,7 @@ trait CompileLoop
         $output = preg_replace_callback("/\n*$lexic\n*/", function() use ($o_lexic) {
             return "<?php $o_lexic; ?>";
         }, $expression);
+
         return $output == $expression ? '' : $output;
     }
 
@@ -74,12 +80,14 @@ trait CompileLoop
     {
         $output = preg_replace_callback("/($lexic *(\(.+?\))|$lexic)/s", function($match) use ($lexic, $o_lexic) {
             array_shift($match);
+
             if ($match[0] == $lexic) {
                 return "<?php $o_lexic; ?>";
             } else {
                 return "<?php if ({$match[1]}): $o_lexic; endif;?>";
             }
         }, $expression);
+
         return $output == $expression ? '' : $output;
     }
 

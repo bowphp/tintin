@@ -1,4 +1,5 @@
 <?php
+
 namespace Tintin\Loader;
 
 class Filesystem implements LoaderInterface
@@ -37,7 +38,9 @@ class Filesystem implements LoaderInterface
     public function getCacheFileResolvedPath($filename)
     {
         $md5 = sha1($filename);
+
         $dirname = substr($md5, 0, 2);
+
         return $this->getCachePath().'/'.$dirname.'/'.$md5.'.php';
     }
 
@@ -71,8 +74,17 @@ class Filesystem implements LoaderInterface
     public function isExpirated($filename)
     {
         if ($this->isCached($filename)) {
-            return fileatime($this->getFileResolvedPath($filename)) > fileatime($this->getCacheFileResolvedPath($filename));
+            $fileatime = fileatime(
+                $this->getFileResolvedPath($filename)
+            );
+
+            $cache_filetime = fileatime(
+                $this->getCacheFileResolvedPath($filename)
+            );
+
+            return $fileatime > $cache_filetime;
         }
+
         return true;
     }
 
@@ -81,7 +93,9 @@ class Filesystem implements LoaderInterface
      */
     public function isCached($filename)
     {
-        return file_exists($this->getCacheFileResolvedPath($filename));
+        return file_exists(
+            $this->getCacheFileResolvedPath($filename)
+        );
     }
 
     /**
@@ -89,7 +103,9 @@ class Filesystem implements LoaderInterface
      */
     public function fileExists($filename)
     {
-        return file_exists($this->getFileResolvedPath($filename));
+        return file_exists(
+            $this->getFileResolvedPath($filename)
+        );
     }
 
     /**
@@ -98,13 +114,16 @@ class Filesystem implements LoaderInterface
     public function cache($filename, $data)
     {
         $md5 = sha1($filename);
+
         $dirname = substr($md5, 0, 2);
 
         if (! is_dir($this->getCachePath().'/'.$dirname)) {
             mkdir($this->getCachePath().'/'.$dirname);
         }
 
-        file_put_contents($this->getCachePath().'/'.$dirname.'/'.$md5.'.php', $data);
+        $path = $this->getCachePath().'/'.$dirname.'/'.$md5.'.php';
+
+        return file_put_contents($path, $data);
     }
 
     /**

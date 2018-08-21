@@ -1,9 +1,8 @@
 <?php
+
 namespace Tintin;
 
-use function str_replace;
 use Tintin\Loader\LoaderInterface;
-use function var_dump;
 
 class Tintin
 {
@@ -19,12 +18,15 @@ class Tintin
 
     /**
      * Tintin constructor.
+     *
      * @param LoaderInterface $loader
      */
     public function __construct(LoaderInterface $loader = null)
     {
         $this->compiler = new Compiler();
+
         $this->loader = $loader;
+
         $this->stackManager = new Stacker\StackManager($this);
     }
 
@@ -50,17 +52,19 @@ class Tintin
         $__tintin = $this;
 
         if (! $this->loader->isExpirated($filename)) {
-            var_dump($filename);
             return require $this->loader->getCacheFileResolvedPath($filename);
         }
 
         $content = $this->loader->getFileContent($filename);
+
         $this->loader->cache($filename, trim($this->compiler->complie($content), '\n'));
 
         return require $this->loader->getCacheFileResolvedPath($filename);
     }
 
     /**
+     * Get the compiler
+     * 
      * @return Compiler
      */
     public function getCompiler()

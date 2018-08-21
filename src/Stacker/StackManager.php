@@ -71,11 +71,14 @@ class StackManager
     public function endStack()
     {
         $stacks = array_pop($this->stacks);
-        $stacks = is_array($stacks) ? $stacks : [$stacks];
+
+        $stacks = (array) $stacks;
 
         foreach ($stacks as $block) {
             if ($block !== true) {
-                $this->pushes[$block] = trim($this->tintin->getCompiler()->complie(ob_get_clean()), "\n");
+                $content = $this->tintin->getCompiler()->complie(ob_get_clean());
+
+                $this->pushes[$block] = trim($content, "\n");
             }
         }
     }

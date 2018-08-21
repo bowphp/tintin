@@ -10,10 +10,12 @@ trait CompileIf
     {
         foreach (['UnLess', 'If', 'ElseIf', 'Else', 'EndIf'] as $token) {
             $out = $this->{'compile'.$token}($expression);
+
             if (strlen($out) !== 0) {
                 $expression = $out;
             }
         }
+
         return $expression;
     }
 
@@ -26,15 +28,17 @@ trait CompileIf
     private function compileIfStatement($expression, $lexic, $o_lexic)
     {
         $regex = sprintf($this->conditionPatern, $lexic);
+
         $output = preg_replace_callback($regex, function($match) use ($o_lexic, $lexic) {
             array_shift($match);
-            var_dump($match);
+
             if ($lexic == '#unless') {
                 return "<?php $o_lexic (! ({$match[1]})): ?>";
             } else {
                 return "<?php $o_lexic ({$match[1]}): ?>";
             }
         }, $expression);
+
         return $output == $expression ? '' : $output;
     }
 
@@ -65,6 +69,7 @@ trait CompileIf
         $output = preg_replace_callback('/\n*#else\n*/', function() {
             return "<?php esle: ?>";
         }, $expression);
+
         return $output == $expression ? '' : $output;
     }
 
@@ -85,8 +90,10 @@ trait CompileIf
     {
         $output = preg_replace_callback('/\n*(#endif|#endunless)\n*/', function($match) {
             array_shift($match);
+
             return "<?php endif; ?>";
         }, $expression);
+
         return $output == $expression ? '' : $output;
     }
 }
