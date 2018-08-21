@@ -15,7 +15,7 @@ composer require bowphp/tintin
 
 ## Utilisation
 
-Vous pouvez utiliser le package simplement, comme ceci. Mais sauf que cette façon de faire ne permet pas d'exploiter le système d'héritage de façon optimal. Utilisez cette façon de faire seulement si vous voulez tester le package. Ou pour les petites applications.
+Vous pouvez utiliser le package simplement, comme ceci. Mais sauf que cette façon de faire ne permet pas d'exploiter le système d'héritage de façon optimal. Utilisez cette façon de faire, seulement si vous voulez tester le package. Ou pour les petites applications.
 
 ```php
 require 'vendor/autoload.php';
@@ -32,7 +32,7 @@ Pour utiliser proprement le package, il faut suivre plutôt l'installation qui s
 require 'vendor/autoload.php';
 
 $loader = new Tintin\Loader\Filesystem([
-  'path' => __DIR__.'/views',
+  'path' => '/path/to/the/views/source',
   'extension' => 'tintin.php',
   'cache' => '/path/to/the/cache/directory'
 ]);
