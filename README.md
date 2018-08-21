@@ -44,7 +44,7 @@ $tt = new Tintin\Tintin($loader);
 |---------|-------------|
 | __php__ | Le chemin vers le dossier des vues de votre applications |
 | __extension__ | l'extension des fichiers de template. Par defaut, la valeur est `tintin.php` |
-| __cache__ | Le dossier de cache. C'est là que `tintin` va créé le cache. S'il n'est pas défini `tintin` mettra en cache les fichiers compilés dans le répertoire temporaire de `php`.  |
+| __cache__ | Le dossier de cache. C'est là que `tintin` va créé le cache. S'il n'est pas défini, `tintin` mettra en cache les fichiers compilés dans le répertoire temporaire de `php`.  |
 
 Exemple d'utilisation:
 
