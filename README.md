@@ -15,7 +15,7 @@ composer require bowphp/tintin
 
 ## Utilisation
 
-Vous pouvez utiliser le package simple, comme ceci. Mais sauf que cette façon de faire ne permet pas d'exploiter le système d'héritage de façon optimal. Utilisez cette façon de faire seulement si vous voulez tester le package. Ou pour les petites applications.
+Vous pouvez utiliser le package simplement, comme ceci. Mais sauf que cette façon de faire ne permet pas d'exploiter le système d'héritage de façon optimal. Utilisez cette façon de faire seulement si vous voulez tester le package. Ou pour les petites applications.
 
 ```php
 require 'vendor/autoload.php';
