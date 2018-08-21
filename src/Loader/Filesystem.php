@@ -29,6 +29,8 @@ class Filesystem implements LoaderInterface
      */
     public function getFileResolvedPath($filename)
     {
+        $filename = str_replace('.', '/', $filename);
+
         return $this->data['path'].'/'.$filename.'.'.$this->getExtension();
     }
 

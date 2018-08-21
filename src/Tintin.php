@@ -23,7 +23,7 @@ class Tintin
      */
     public function __construct(LoaderInterface $loader = null)
     {
-        $this->compiler = new Compiler();
+        $this->compiler = new Compiler;
 
         $this->loader = $loader;
 
@@ -39,11 +39,14 @@ class Tintin
      */
     public function render($filename, array $params)
     {
-        extract($params);
-
         if (is_null($this->loader)) {
-            return trim($this->compiler->complie($filename), "\n");
+            return $this->executePlainRendering(
+                trim($this->compiler->complie($filename)),
+                $params
+            );
         }
+
+        extract($params);
 
         if (! $this->loader->fileExists($filename)) {
             $this->loader->failLoading($filename .' n\'exists pas');
@@ -57,9 +60,33 @@ class Tintin
 
         $content = $this->loader->getFileContent($filename);
 
-        $this->loader->cache($filename, trim($this->compiler->complie($content), '\n'));
+        $this->loader->cache(
+            $filename, trim($this->compiler->complie($content), '\n')
+        );
 
         return require $this->loader->getCacheFileResolvedPath($filename);
+    }
+
+    /**
+     * Execute plain rendering code
+     * 
+     * @param string $content
+     * @param array $params
+     * @return string
+     */
+    private function executePlainRendering($content, $params)
+    {
+        $file = sys_get_temp_dir().'/'.time().'.php';
+
+        file_put_contents($file, $content);
+
+        extract($params);
+
+        $r = require $file;
+
+        @unlink($file);
+
+        return $r;
     }
 
     /**

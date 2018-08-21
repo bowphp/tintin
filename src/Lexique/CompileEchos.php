@@ -35,7 +35,7 @@ trait CompileEchos
         $output = preg_replace_callback($regex, function($match) {
             array_shift($match);
 
-            return '<?php echo isset('.$match[1].') ? '.$match[1].' : null; ?>';
+            return '<?php echo htmlspecialchars('.$match[1].', ENT_QUOTES); ?>';
         }, $expression);
 
         return $output == $expression ? '' : $output;
@@ -54,7 +54,7 @@ trait CompileEchos
         $output = preg_replace_callback($regex, function($match) {
             array_shift($match);
 
-            return '<?php echo isset('.$match[1].') ? e('.$match[1].') : null; ?>';
+            return '<?php echo '.$match[1].'; ?>';
         }, $expression);
 
         return $output == $expression ? '' : $output;
