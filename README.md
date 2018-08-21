@@ -84,7 +84,7 @@ Pour faire simple, voici un exemple:
 #unless ($name == 'tintin') => #if (!($name == 'tintin'))
 ```
 
-### `#loop` comme `foreach` / `#for`, `#while`
+## `#loop` comme `foreach` / `#for`, `#while`
 
 Souvent vous pouvez être amener à faire des listes ou répétitions sur des éléments. Par exemple, afficher tout les utilisateurs de votre plateforme.
 
@@ -158,7 +158,7 @@ Cette clause faire exactement l'action de `while`.
 #endwhile
 ```
 
-### `include`
+## `include`
 
 Souvent lorsque vous dévéloppez votre code, vous êtes amener à subdiviser les vues de votre application pour être plus flexible et écrire moin de code.
 
@@ -168,7 +168,7 @@ Souvent lorsque vous dévéloppez votre code, vous êtes amener à subdiviser le
  #include('filename')
 ```
 
-### Héritage avec `#extends`, `#block` et `#inject` 
+## Héritage avec `#extends`, `#block` et `#inject` 
 
 Comme tout bon système de temple **tintin** support le partage de code entre fichier. Ceci permet de rendre votre code flexible et maintenable.
 
