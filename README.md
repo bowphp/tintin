@@ -1,5 +1,5 @@
 <h1 align="center">
-    <img src="https://github.com/bowphp/tintin/raw/master/logo.jpeg" width="150px">
+    <img src="https://github.com/bowphp/arts/raw/master/tintin.jpeg" width="150px">
     <br/>Tintin
 </h1>
 
@@ -231,3 +231,5 @@ Pour participer au projet il faut:
 + Enfin faire un [pull-request](https://www.thinkful.com/learn/github-pull-request-tutorial/Keep-Tabs-on-the-Project#Time-to-Submit-Your-First-PR)
 
 Ou bien allez dans la page des [issues](https://github.com/bowphp/tintin/issues), faites vos corrections et enfin suivez [publier](#contribution).
+
+> SVP s'il y a un bogue sur le projet veuillez me contacter sur mon [slack](https://papac.slack.com)
