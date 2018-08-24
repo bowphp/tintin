@@ -67,7 +67,7 @@ trait CompileIf
     protected function compileElse($expression)
     {
         $output = preg_replace_callback('/\n*#else\n*/', function() {
-            return "<?php esle: ?>";
+            return "<?php else: ?>";
         }, $expression);
 
         return $output == $expression ? '' : $output;
