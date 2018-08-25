@@ -8,6 +8,7 @@ class Compiler
         Lexique\CompileLoop,
         Lexique\CompileEchos,
         Lexique\CompileRawPhp,
+        Lexique\CompileComments,
         Lexique\CompileExtends;
 
     /**
@@ -23,12 +24,18 @@ class Compiler
     /**
      * @var array
      */
+    protected $comments = ['{#', '#}'];
+
+    /**
+     * @var array
+     */
     protected $tokens = [
+        'Comments',
         'RawPhp',
         'EchoStack',
         'IfStack',
         'LoopStack',
-        'ExtendsStack'
+        'ExtendsStack',
     ];
 
     /**

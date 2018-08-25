@@ -61,6 +61,10 @@ $tt->render('dossier.filename', ['name' => 'data']);
 
 > Notez que la source des fichiers est toujour le chemin vers `path`.
 
+## Ajouter un commentaire
+
+Cette clause `{# comments #}` permet d'ajouter un commentaire à votre code `tintin`.
+
 ## `#if` / `#elseif` / `#else` 
 
 Ce sont les clauses qui permettent d'établir des branchements conditionnels comme dans la plupart des langages de programmation.
