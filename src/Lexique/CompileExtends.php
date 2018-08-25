@@ -4,8 +4,6 @@ namespace Tintin\Lexique;
 
 trait CompileExtends
 {
-    use CompileStacks;
-
     /**
      * Compile the inherit concept statement
      *
