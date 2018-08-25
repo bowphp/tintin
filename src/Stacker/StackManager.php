@@ -1,14 +1,8 @@
 <?php
+
 namespace Tintin\Stacker;
 
-use function array_key_exists;
-use function array_map;
-use function get_defined_vars;
-use function ob_clean;
-use function ob_end_clean;
-use function ob_get_level;
 use Tintin\Tintin;
-use function var_dump;
 
 class StackManager
 {
@@ -23,9 +17,9 @@ class StackManager
     private $pushes = [];
 
     /**
-     * @var null
+     * @var Tintin
      */
-    private $current_key;
+    private $tintin;
 
     /**
      * StackManager constructor.
@@ -37,7 +31,7 @@ class StackManager
     }
 
     /**
-     * Permet d'inclure un fichier à compiler
+     * Include a file to compile
      *
      * @param string $filename
      * @param array $context
@@ -49,7 +43,7 @@ class StackManager
     }
 
     /**
-     * Permet d'ouvrir le flux pour un block
+     * Open the stream for a #block
      *
      * @param string $name
      * @param string $content
@@ -66,7 +60,7 @@ class StackManager
     }
 
     /**
-     * Permet de ferme le flux courrant
+     * Closes the current flow
      */
     public function endStack()
     {
@@ -84,7 +78,7 @@ class StackManager
     }
 
     /**
-     * Permet de récupérer le contenu d'un stack
+     * Allows you to retrieve the contents of a stack
      *
      * @param string $name
      * @return mixed|null
@@ -95,7 +89,7 @@ class StackManager
     }
 
     /**
-     * Permet de récupérer le stack collector
+     * Collect the collector stack
      *
      * @return mixed|null
      */

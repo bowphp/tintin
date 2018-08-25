@@ -42,7 +42,7 @@ class Compiler
     protected $conditionPatern = '/(%s\s*\((.+?)?\))+/sm';
 
     /**
-     * Permet de
+     * Launch the compilation
      *
      * @param array|string $data
      * @return string

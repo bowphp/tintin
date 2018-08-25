@@ -1,13 +1,19 @@
 <?php
+
 namespace Tintin\Lexique;
 
 trait CompileStacks
 {
+    /**
+     * @var array
+     */
     private $stacks = [];
 
     /**
-     * @param $name
-     * @param null $content
+     * Block collector
+     *
+     * @param string $name
+     * @param string $content
      */
     protected function pushBlock($name, $content = null)
     {

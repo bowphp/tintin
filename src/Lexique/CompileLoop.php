@@ -1,25 +1,12 @@
 <?php
+
 namespace Tintin\Lexique;
 
 trait CompileLoop
 {
     /**
-     * @param $expression
-     */
-    protected function compileLoopStack($expression)
-    {
-        foreach ($this->getLoopStack() as $token) {
-            $out = $this->{'compile'.$token}($expression);
-
-            if (strlen($out) !== 0) {
-                $expression = $out;
-            }
-        }
-
-        return $expression;
-    }
-
-    /**
+     * Definition of all available stack
+     *
      * @return array
      */
     private function getLoopStack()
@@ -37,16 +24,37 @@ trait CompileLoop
     }
 
     /**
-     * @param $expression
-     * @param $lexic
-     * @param $o_lexic
-     * @return mixed|string
+     * Compile the loop statement stack
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileLoopStack($expression)
+    {
+        foreach ($this->getLoopStack() as $token) {
+            $out = $this->{'compile'.$token}($expression);
+
+            if (strlen($out) !== 0) {
+                $expression = $out;
+            }
+        }
+
+        return $expression;
+    }
+
+    /**
+     * Compile the #loop statement
+     *
+     * @param string $expression
+     * @param string $lexic
+     * @param string $o_lexic
+     * @return string
      */
     private function compileLoop($expression, $lexic, $o_lexic)
     {
         $regex = sprintf($this->conditionPatern, $lexic);
 
-        $output = preg_replace_callback($regex, function($match) use ($o_lexic) {
+        $output = preg_replace_callback($regex, function ($match) use ($o_lexic) {
             array_shift($match);
 
             return "<?php $o_lexic ({$match[1]}): ?>";
@@ -56,14 +64,16 @@ trait CompileLoop
     }
 
     /**
-     * @param $expression
-     * @param $lexic
-     * @param $o_lexic
-     * @return mixed|string
+     * Compile the #endloop statement
+     *
+     * @param string $expression
+     * @param string $lexic
+     * @param string $o_lexic
+     * @return string
      */
     private function compileEndLoop($expression, $lexic, $o_lexic)
     {
-        $output = preg_replace_callback("/\n*$lexic\n*/", function() use ($o_lexic) {
+        $output = preg_replace_callback("/\n*$lexic\n*/", function () use ($o_lexic) {
             return "<?php $o_lexic; ?>";
         }, $expression);
 
@@ -71,36 +81,42 @@ trait CompileLoop
     }
 
     /**
-     * @param $expression
-     * @param $lexic
-     * @param $o_lexic
-     * @return mixed|string
+     * Compile the loop breaker statement
+     *
+     * @param string $expression
+     * @param string $lexic
+     * @param string $o_lexic
+     * @return string
      */
     private function compileBreaker($expression, $lexic, $o_lexic)
     {
-        $output = preg_replace_callback("/($lexic *(\(.+?\))|$lexic)/s", function($match) use ($lexic, $o_lexic) {
+        $output = preg_replace_callback("/($lexic *(\(.+?\))|$lexic)/s", function ($match) use ($lexic, $o_lexic) {
             array_shift($match);
 
             if ($match[0] == $lexic) {
                 return "<?php $o_lexic; ?>";
-            } else {
-                return "<?php if ({$match[1]}): $o_lexic; endif;?>";
             }
+
+            return "<?php if ({$match[1]}): $o_lexic; endif;?>";
         }, $expression);
 
         return $output == $expression ? '' : $output;
     }
 
     /**
-     * @param $expression
+     * Compile the #loop statement
+     *
+     * @param string $expression
      * @return string
      */
     protected function compileForeach($expression)
     {
-        return $this->compileLoop($expression, '#foreach', 'foreach');
+        return $this->compileLoop($expression, '#loop', 'foreach');
     }
 
     /**
+     * Compile the #while statement
+     *
      * @param $expression
      * @return string
      */
@@ -110,7 +126,9 @@ trait CompileLoop
     }
 
     /**
-     * @param $expression
+     * Compile the #for statement
+     *
+     * @param string $expression
      * @return string
      */
     protected function compileFor($expression)
@@ -119,16 +137,20 @@ trait CompileLoop
     }
 
     /**
+     * Compile the #endloop statement
+     *
      * @param $expression
      * @return string
      */
     protected function compileEndForeach($expression)
     {
-        return $this->compileEndLoop($expression, '#endforeach', 'endforeach');
+        return $this->compileEndLoop($expression, '#endloop', 'endforeach');
     }
 
     /**
-     * @param $expression
+     * Compile the #endwhile statement
+     *
+     * @param string $expression
      * @return string
      */
     protected function compileEndWhile($expression)
@@ -137,7 +159,9 @@ trait CompileLoop
     }
 
     /**
-     * @param $expression
+     * Compile the #endfor statement
+     *
+     * @param string $expression
      * @return string
      */
     protected function compileEndFor($expression)
@@ -146,7 +170,9 @@ trait CompileLoop
     }
 
     /**
-     * @param $expression
+     * Compile the #jump statement
+     *
+     * @param string $expression
      * @return string
      */
     protected function compileContinue($expression)
@@ -155,7 +181,9 @@ trait CompileLoop
     }
 
     /**
-     * @param $expression
+     * Compile the #stop statement
+     *
+     * @param string $expression
      * @return string
      */
     protected function compileBreak($expression)

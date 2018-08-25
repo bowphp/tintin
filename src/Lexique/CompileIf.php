@@ -1,10 +1,14 @@
 <?php
+
 namespace Tintin\Lexique;
 
 trait CompileIf
 {
     /**
-     * @param $expression
+     * Compile the if statement stack
+     *
+     * @param string $expression
+     * @return string
      */
     protected function compileIfStack($expression)
     {
@@ -20,30 +24,36 @@ trait CompileIf
     }
 
     /**
-     * @param $expression
-     * @param $lexic
-     * @param $o_lexic
-     * @return mixed|string
+     * Compile the #if statement
+     *
+     * Note: $o_lexic is the original PHP lexique
+     *
+     * @param string $expression
+     * @param string $lexic
+     * @param string $o_lexic
+     * @return string
      */
     private function compileIfStatement($expression, $lexic, $o_lexic)
     {
         $regex = sprintf($this->conditionPatern, $lexic);
 
-        $output = preg_replace_callback($regex, function($match) use ($o_lexic, $lexic) {
+        $output = preg_replace_callback($regex, function ($match) use ($o_lexic, $lexic) {
             array_shift($match);
 
             if ($lexic == '#unless') {
                 return "<?php $o_lexic (! ({$match[1]})): ?>";
-            } else {
-                return "<?php $o_lexic ({$match[1]}): ?>";
             }
+
+            return "<?php $o_lexic ({$match[1]}): ?>";
         }, $expression);
 
         return $output == $expression ? '' : $output;
     }
 
     /**
-     * @param $expression
+     * Compile the #if statement
+     *
+     * @param string $expression
      * @return string
      */
     protected function compileIf($expression)
@@ -52,7 +62,9 @@ trait CompileIf
     }
 
     /**
-     * @param $expression
+     * Compile the #unless statement
+     *
+     * @param string $expression
      * @return string
      */
     protected function compileUnLess($expression)
@@ -61,12 +73,14 @@ trait CompileIf
     }
 
     /**
-     * @param $expression
+     * Compile the #else statement
+     *
+     * @param string $expression
      * @return string
      */
     protected function compileElse($expression)
     {
-        $output = preg_replace_callback('/\n*#else\n*/', function() {
+        $output = preg_replace_callback('/\n*#else\n*/', function () {
             return "<?php else: ?>";
         }, $expression);
 
@@ -74,7 +88,9 @@ trait CompileIf
     }
 
     /**
-     * @param $expression
+     * Compile the #elseif statement
+     *
+     * @param string $expression
      * @return string
      */
     protected function compileElseIf($expression)
@@ -83,12 +99,14 @@ trait CompileIf
     }
 
     /**
-     * @param $expression
+     * Compile the #endif statement
+     *
+     * @param string $expression
      * @return string
      */
     protected function compileEndIf($expression)
     {
-        $output = preg_replace_callback('/\n*(#endif|#endunless)\n*/', function($match) {
+        $output = preg_replace_callback('/\n*(#endif|#endunless)\n*/', function ($match) {
             array_shift($match);
 
             return "<?php endif; ?>";

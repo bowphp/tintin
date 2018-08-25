@@ -17,6 +17,11 @@ class Tintin
     private $loader;
 
     /**
+     * @var Stacker\StackManager
+     */
+    private $stackManager;
+
+    /**
      * Tintin constructor.
      *
      * @param LoaderInterface $loader
@@ -36,6 +41,8 @@ class Tintin
      * @param $filename
      * @param array $params
      * @return string
+     *
+     * @throws
      */
     public function render($filename, array $params)
     {
@@ -61,7 +68,8 @@ class Tintin
         $content = $this->loader->getFileContent($filename);
 
         $this->loader->cache(
-            $filename, trim($this->compiler->complie($content), '\n')
+            $filename,
+            trim($this->compiler->complie($content), '\n')
         );
 
         return require $this->loader->getCacheFileResolvedPath($filename);
@@ -69,7 +77,7 @@ class Tintin
 
     /**
      * Execute plain rendering code
-     * 
+     *
      * @param string $content
      * @param array $params
      * @return string
@@ -91,7 +99,7 @@ class Tintin
 
     /**
      * Get the compiler
-     * 
+     *
      * @return Compiler
      */
     public function getCompiler()

@@ -1,11 +1,12 @@
 <?php
+
 namespace Tintin\Lexique;
 
 trait CompileEchos
 {
     /**
-     * Make Echo and RawEcho
-     * 
+     * Compile the echo concept
+     *
      * @param $expression
      * @return mixed
      */
@@ -23,8 +24,8 @@ trait CompileEchos
     }
 
     /**
-     * Compile Echo
-     * 
+     * Compile the {{ $name }} statement
+     *
      * @param $expression
      * @return string
      */
@@ -32,7 +33,7 @@ trait CompileEchos
     {
         $regex = sprintf('/((?:%s\s*(.+?)\s*%s))+/', $this->echoTags[0], $this->echoTags[1]);
 
-        $output = preg_replace_callback($regex, function($match) {
+        $output = preg_replace_callback($regex, function ($match) {
             array_shift($match);
 
             return '<?php echo htmlspecialchars('.$match[1].', ENT_QUOTES); ?>';
@@ -42,8 +43,8 @@ trait CompileEchos
     }
 
     /**
-     * Compile RawEcho
-     * 
+     * Compile the {{{ $name }}} statement
+     *
      * @param $expression
      * @return string
      */
@@ -51,7 +52,7 @@ trait CompileEchos
     {
         $regex = sprintf('/((?:%s\s*(.+?)\s*%s))+/s', $this->rawEchoTags[0], $this->rawEchoTags[1]);
 
-        $output = preg_replace_callback($regex, function($match) {
+        $output = preg_replace_callback($regex, function ($match) {
             array_shift($match);
 
             return '<?php echo '.$match[1].'; ?>';

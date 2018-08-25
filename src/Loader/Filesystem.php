@@ -5,22 +5,23 @@ namespace Tintin\Loader;
 class Filesystem implements LoaderInterface
 {
     /**
-     * Dossier de base des fichiers des template.
+     * config
      *
      * @var array
      */
-    private $data;
+    private $config;
 
     /**
      * Filesystem constructor.
-     * @param array $data
+     *
+     * @param array $config
      */
-    public function __construct(array $data)
+    public function __construct(array $config)
     {
-        $this->data = $data;
+        $this->config = $config;
 
-        if (isset($this->data['cache'])) {
-            $this->data['cache'] = rtrim($this->data['cache'], '/');
+        if (isset($this->config['cache'])) {
+            $this->config['cache'] = rtrim($this->config['cache'], '/');
         }
     }
 
@@ -31,7 +32,7 @@ class Filesystem implements LoaderInterface
     {
         $filename = str_replace('.', '/', $filename);
 
-        return $this->data['path'].'/'.$filename.'.'.$this->getExtension();
+        return $this->config['path'].'/'.$filename.'.'.$this->getExtension();
     }
 
     /**
@@ -51,7 +52,7 @@ class Filesystem implements LoaderInterface
      */
     public function getCachePath()
     {
-        return isset($this->data['cache']) ? $this->data['cache'] : sys_get_temp_dir();
+        return isset($this->config['cache']) ? $this->config['cache'] : sys_get_temp_dir();
     }
 
     /**
@@ -59,7 +60,7 @@ class Filesystem implements LoaderInterface
      */
     public function getExtension()
     {
-        return isset($this->data['extension']) ? $this->data['extension'] : 'tintin.php';
+        return isset($this->config['extension']) ? $this->config['extension'] : 'tintin.php';
     }
 
     /**
@@ -75,19 +76,19 @@ class Filesystem implements LoaderInterface
      */
     public function isExpirated($filename)
     {
-        if ($this->isCached($filename)) {
-            $fileatime = fileatime(
-                $this->getFileResolvedPath($filename)
-            );
-
-            $cache_filetime = fileatime(
-                $this->getCacheFileResolvedPath($filename)
-            );
-
-            return $fileatime > $cache_filetime;
+        if (!$this->isCached($filename)) {
+            return true;
         }
 
-        return true;
+        $fileatime = fileatime(
+            $this->getFileResolvedPath($filename)
+        );
+
+        $cache_filetime = fileatime(
+            $this->getCacheFileResolvedPath($filename)
+        );
+
+        return $fileatime > $cache_filetime;
     }
 
     /**
@@ -113,7 +114,7 @@ class Filesystem implements LoaderInterface
     /**
      * @inheritdoc
      */
-    public function cache($filename, $data)
+    public function cache($filename, $config)
     {
         $md5 = sha1($filename);
 
@@ -125,7 +126,7 @@ class Filesystem implements LoaderInterface
 
         $path = $this->getCachePath().'/'.$dirname.'/'.$md5.'.php';
 
-        return file_put_contents($path, $data);
+        return file_put_contents($path, $config);
     }
 
     /**
