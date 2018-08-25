@@ -97,7 +97,7 @@ trait CompileLoop
      */
     protected function compileForeach($expression)
     {
-        return $this->compileLoop($expression, '#foreach', 'foreach');
+        return $this->compileLoop($expression, '#loop', 'foreach');
     }
 
     /**
@@ -124,7 +124,7 @@ trait CompileLoop
      */
     protected function compileEndForeach($expression)
     {
-        return $this->compileEndLoop($expression, '#endforeach', 'endforeach');
+        return $this->compileEndLoop($expression, '#endloop', 'endforeach');
     }
 
     /**
