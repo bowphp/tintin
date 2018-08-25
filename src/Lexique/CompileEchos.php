@@ -5,7 +5,7 @@ namespace Tintin\Lexique;
 trait CompileEchos
 {
     /**
-     * Compile the echo concept
+     * Compile the echo statement concept
      *
      * @param $expression
      * @return mixed
