@@ -172,7 +172,7 @@ Souvent lorsque vous dévéloppez votre code, vous êtes amener à subdiviser le
 
 ## Héritage avec `#extends`, `#block` et `#inject` 
 
-Comme tout bon système de temple **tintin** support le partage de code entre fichier. Ceci permet de rendre votre code flexible et maintenable.
+Comme tout bon système de template **tintin** support le partage de code entre fichier. Ceci permet de rendre votre code flexible et maintenable.
 
 Considérérons le code **tintin** suivant:
 ```
@@ -193,6 +193,7 @@ Considérérons le code **tintin** suivant:
 ```
 
 Et aussi, on a un autre fichier qui hérite du code du fichier `layout.tintin.php`
+
 ```
 // le fichier se nomme `content.tintin.php`
 #extends('layout')
