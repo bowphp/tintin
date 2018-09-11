@@ -1,0 +1,19 @@
+language: php
+dist: trusty
+
+branches:
+  only:
+    - master
+
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+php:
+  - 7.0
+  - nightly
+
+script:
+  - ./vendor/bin/phpunit --configuration phpunit.dist.xml
