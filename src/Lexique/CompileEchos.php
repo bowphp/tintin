@@ -45,7 +45,7 @@ trait CompileEchos
     /**
      * Compile the {{{ $name }}} statement
      *
-     * @param $expression
+     * @param string $expression
      * @return string
      */
     protected function compileRawEcho($expression)
