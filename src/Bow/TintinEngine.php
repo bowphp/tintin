@@ -30,7 +30,7 @@ class TintinEngine extends EngineAbstract
         $this->template = new Tintin([
             'path' => $config['view.path'],
             'cache' => $config['view.cache'],
-            'extension' => 'tintin.php'
+            'extension' => isset($config['view.extension']) ? $config['view.extension'] : 'tintin.php'
         ]);
     }
 
