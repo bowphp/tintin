@@ -4,7 +4,6 @@ namespace Tintin\Bow;
 
 use Bow\Config\Config;
 use Bow\View\EngineAbstract;
-use duncan3dc\Laravel\BladeInstance as BladeInstance;
 
 class TintinEngine extends EngineAbstract
 {
