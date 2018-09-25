@@ -3,3 +3,4 @@ vendor
 !tests/.gitkeep
 src/Stacker/gabage/worker.php
 composer.lock
+phpunit.xml
