@@ -12,7 +12,7 @@ trait CompileIf
      */
     protected function compileIfStack($expression)
     {
-        foreach (['UnLess', 'If', 'ElseIf', 'Else', 'EndIf'] as $token) {
+        foreach (['UnLess', 'If', 'ElseIf', 'ElseIfAlias', 'Else', 'EndIf'] as $token) {
             $out = $this->{'compile'.$token}($expression);
 
             if (strlen($out) !== 0) {
@@ -96,6 +96,17 @@ trait CompileIf
     protected function compileElseIf($expression)
     {
         return $this->compileIfStatement($expression, '#elseif', 'elseif');
+    }
+
+    /**
+     * Compile the #elseif statement
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileElseIfAlias($expression)
+    {
+        return $this->compileIfStatement($expression, '#elif', 'elseif');
     }
 
     /**
