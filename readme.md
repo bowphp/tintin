@@ -71,7 +71,7 @@ $tt->render('dossier.filename', ['name' => 'data']);
 
 Cette clause `{# comments #}` permet d'ajouter un commentaire à votre code `tintin`.
 
-## `#if` / `#elseif` / `#else` 
+## `#if` / `#elseif` or `#elfi`  / `#else` 
 
 Ce sont les clauses qui permettent d'établir des branchements conditionnels comme dans la plupart des langages de programmation.
 
@@ -84,6 +84,8 @@ Ce sont les clauses qui permettent d'établir des branchements conditionnels com
   {{ $name }}
 #endif
 ```
+
+> Vous pouvez utiliser `#elif` à la place de `#elseif`.
 
 ## `#unless`
 
