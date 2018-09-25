@@ -46,6 +46,8 @@ class Tintin
      */
     public function render($filename, array $params)
     {
+        ob_start();
+
         if (is_null($this->loader)) {
             return $this->executePlainRendering(
                 trim($this->compiler->complie($filename)),
@@ -62,17 +64,21 @@ class Tintin
         $__tintin = $this;
 
         if (! $this->loader->isExpirated($filename)) {
-            return require $this->loader->getCacheFileResolvedPath($filename);
+            require $this->loader->getCacheFileResolvedPath($filename);
+            
+            return ob_get_clean();
         }
 
         $content = $this->loader->getFileContent($filename);
 
         $this->loader->cache(
             $filename,
-            trim($this->compiler->complie($content), '\n')
+            $this->compiler->complie($content)
         );
 
-        return require $this->loader->getCacheFileResolvedPath($filename);
+        require $this->loader->getCacheFileResolvedPath($filename);
+
+        return ob_get_clean();
     }
 
     /**
@@ -90,11 +96,9 @@ class Tintin
 
         extract($params);
 
-        $r = require $file;
+        require $file;
 
-        @unlink($file);
-
-        return $r;
+        return ob_get_clean();
     }
 
     /**

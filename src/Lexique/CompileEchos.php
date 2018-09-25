@@ -50,7 +50,7 @@ trait CompileEchos
      */
     protected function compileRawEcho($expression)
     {
-        $regex = sprintf('/((?:%s\s*(.+?)\s*%s))+/s', $this->rawEchoTags[0], $this->rawEchoTags[1]);
+        $regex = sprintf('/((?:%s\s*(.+?)\s*%s))+/', $this->rawEchoTags[0], $this->rawEchoTags[1]);
 
         $output = preg_replace_callback($regex, function ($match) {
             array_shift($match);
