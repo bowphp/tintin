@@ -13,8 +13,8 @@
             "Tintin\\": "src"
         }
     },
-    "minimum-stability": "dev",
     "require": {
         "phpunit/phpunit": "^4"
-    }
+    },
+    "minimum-stability": "dev"
 }
