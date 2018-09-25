@@ -39,13 +39,34 @@ class TintinTest extends \PHPUnit\Framework\TestCase
     /**
      * Test simplate rendering 1
      */
-    public function testRenderSimpeDate()
+    public function testRenderSimpeData()
     {
         $tintin = new Tintin;
 
         $render = $tintin->render('{{ $name }}', ['name' => "Tintin"]);
 
         $this->assertEquals($render, 'Tintin');
+    }
+
+    /**
+     * Test simplate rendering 1
+     */
+    public function testRenderSimpeDataCalcule()
+    {
+        $tintin = new Tintin;
+
+        $render1 = $tintin->render('{{{ $num + $num }}}', ['num' => 5]);
+
+        $render2 = $tintin->render('{{{ $num - $num }}}', ['num' => 5]);
+
+        $render3 = $tintin->render('{{{ $num * $num }}}', ['num' => 5]);
+
+        $render4 = $tintin->render('{{{ $num / $num }}}', ['num' => 5]);
+
+        $this->assertEquals($render1, "10");
+        $this->assertEquals($render2, "0");
+        $this->assertEquals($render3, "25");
+        $this->assertEquals($render4, "1");
     }
 
     /**

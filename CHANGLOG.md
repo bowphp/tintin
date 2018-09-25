@@ -12,3 +12,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Fix] remove content triming after compilation
 - [Fix] Fix compile rending
 - [Add] Test unity test
+- [Add] Add ignore file
+- [Fix] Reset all value apply to compilator

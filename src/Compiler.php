@@ -82,6 +82,20 @@ class Compiler
             $this->result .= $value."\n";
         }
 
-        return $this->result;
+        return $this->resetCompilationAccumulator();
+    }
+
+    /**
+     * Reset Compilation accumulatior
+     *
+     * @return string
+     */
+    private function resetCompilationAccumulator()
+    {
+        $result = $this->result;
+
+        $this->result = '';
+
+        return $result;
     }
 }

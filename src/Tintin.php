@@ -44,7 +44,7 @@ class Tintin
      *
      * @throws
      */
-    public function render($filename, array $params)
+    public function render($filename, array $params = [])
     {
         ob_start();
 
@@ -66,7 +66,7 @@ class Tintin
         if (! $this->loader->isExpirated($filename)) {
             require $this->loader->getCacheFileResolvedPath($filename);
             
-            return ob_get_clean();
+            return $this->obGetContent();
         }
 
         $content = $this->loader->getFileContent($filename);
@@ -78,7 +78,7 @@ class Tintin
 
         require $this->loader->getCacheFileResolvedPath($filename);
 
-        return ob_get_clean();
+        return $this->obGetContent();
     }
 
     /**
@@ -90,15 +90,40 @@ class Tintin
      */
     private function executePlainRendering($content, $params)
     {
-        $file = sys_get_temp_dir().'/'.time().'.php';
+        extract($params);
+
+        require $filename = $this->createTmpFile($content);
+
+        @unlink($filename);
+
+        return $this->obGetContent();
+    }
+
+    /**
+     * Clean buffer
+     *
+     * @return string
+     */
+    private function obGetContent()
+    {
+        $data = ob_get_clean();
+
+        return $data;
+    }
+
+    /**
+     * Create tmp compile file
+     *
+     * @param string $content
+     * @return string
+     */
+    private function createTmpFile($content)
+    {
+        $file = sys_get_temp_dir().'/'.md5(microtime(true)).'.php';
 
         file_put_contents($file, $content);
 
-        extract($params);
-
-        require $file;
-
-        return ob_get_clean();
+        return $file;
     }
 
     /**
