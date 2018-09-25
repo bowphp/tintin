@@ -9,7 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [Change] update readme
 - [Add] add travis ci configuration
-- [2016-09-25]
-	- [Fix] remove content triming after compilation
-	- [Fix] Fix compile rending
-	- [Add] Test unity test
+- [Fix] remove content triming after compilation
+- [Fix] Fix compile rending
+- [Add] Test unity test
