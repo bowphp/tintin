@@ -15,5 +15,9 @@ php:
   - 7.0
   - nightly
 
+install:
+  - composer install
+  - cp phpunit.dist.xml phpunit.xml
+
 script:
-  - ./vendor/bin/phpunit --configuration phpunit.dist.xml
+  - ./vendor/bin/phpunit
