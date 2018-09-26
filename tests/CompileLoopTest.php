@@ -27,4 +27,9 @@ class CompileLoopTest extends \PHPUnit\Framework\TestCase
 
         return $reflection;
     }
+
+    public function testLoop()
+    {
+        
+    }
 }
