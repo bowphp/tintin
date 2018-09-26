@@ -12,10 +12,12 @@ trait CompileRawPhp
      */
     protected function compileRawPhp($expression)
     {
-        $output = preg_replace_callback('/\n*\#raw\s*(\n*(?:.+?)\n*)\#endraw\n*/sm', function ($match) {
+        $expression = trim($expression);
+
+        $output = preg_replace_callback('/\n*\#raw\s*(\n*(?:.+?)\n*)\#endraw\n*/m', function ($match) {
             array_shift($match);
 
-            return "\n<?php \n{$match[1]}\n?>\n";
+            return "<?php ".trim($match[0])." ?>";
         }, $expression);
 
         return $output == $expression ? '' : $output;
