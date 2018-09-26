@@ -34,6 +34,6 @@ class CompileRawPhpTest extends \PHPUnit\Framework\TestCase
 
         $render = $compile_raw_php->invoke(new Compiler, '#raw echo "Hello, world"; #endraw');
 
-        $this->assertEquals($render, '<?php echo "Hello, world"; ?>');     
+        $this->assertEquals($render, '<?php echo "Hello, world"; ?>');
     }
 }

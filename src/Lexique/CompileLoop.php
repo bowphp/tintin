@@ -93,11 +93,11 @@ trait CompileLoop
         $output = preg_replace_callback("/($lexic *(\(.+?\))|$lexic)/s", function ($match) use ($lexic, $o_lexic) {
             array_shift($match);
 
-            if ($match[0] == $lexic) {
+            if (trim($match[0]) == $lexic) {
                 return "<?php $o_lexic; ?>";
             }
 
-            return "<?php if ({$match[1]}): $o_lexic; endif;?>";
+            return "<?php if {$match[1]}: $o_lexic; endif; ?>";
         }, $expression);
 
         return $output == $expression ? '' : $output;

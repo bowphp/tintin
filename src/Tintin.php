@@ -48,6 +48,8 @@ class Tintin
     {
         ob_start();
 
+        $params = array_merge(get_defined_vars(), $params);
+
         if (is_null($this->loader)) {
             return $this->executePlainRendering(
                 trim($this->compiler->complie($filename)),
@@ -55,13 +57,13 @@ class Tintin
             );
         }
 
-        extract($params);
-
         if (! $this->loader->fileExists($filename)) {
             $this->loader->failLoading($filename .' n\'exists pas');
         }
 
         $__tintin = $this;
+
+        extract($params);
 
         if (! $this->loader->isExpirated($filename)) {
             require $this->loader->getCacheFileResolvedPath($filename);
