@@ -80,4 +80,18 @@ class TintinTest extends \PHPUnit\Framework\TestCase
 
         $this->assertTrue((bool) preg_match('/Tintin/', $render));
     }
+
+    /**
+     * Test simple rendering 2
+     */
+    public function testRenderExtends()
+    {
+        $tintin = new Tintin($this->loader);
+
+        $render = $tintin->render('child');
+
+        var_dump($render);
+
+        $this->assertTrue((bool) preg_match('/<p>(.+?)<\/p>/', $render));
+    }
 }

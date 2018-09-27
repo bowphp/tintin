@@ -92,11 +92,11 @@ trait CompileExtends
     {
         $regex = "/\#extends\s*\(((?:\n|\s|\t)*(?:.+?)(?:\n|\s|\t)*)\)/sm";
 
-        $output = preg_replace_callback($regex, function ($match) {
-            return "<?php \$__tintin->stackManager->includeFIle({$match[1]}, ['__tintin' => \$__tintin]); ?>";
-        }, $expression);
+        if (preg_match($regex, $expression, $match)) {
+            $this->footer[] = "<?php \$__tintin->stackManager->includeFIle({$match[1]}, ['__tintin' => \$__tintin]); ?>";
+        }
 
-        return $output == $expression ? '' : $output;
+        return '';
     }
 
     /**

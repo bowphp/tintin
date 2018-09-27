@@ -49,6 +49,11 @@ class Compiler
     protected $conditionPatern = '/(^%s\s*\((.+?)?\)$)+/sm';
 
     /**
+     * @var array
+     */
+    protected $footer = [];
+
+    /**
      * Launch the compilation
      *
      * @param array|string $data
@@ -62,27 +67,30 @@ class Compiler
             $data = (array) $data;
         }
 
-        if (isset($data[0]) && preg_match('/#extends(.+?)\n?/', $data[0])) {
-            $first = $data[0];
-
-            unset($data[0]);
-
-            $data[] = $first;
-        }
-
         foreach ($data as $value) {
-            foreach ($this->tokens as $token) {
-                $out = $this->{'compile'.$token}(trim($value, '\n'));
-
-                if (strlen($out) !== 0) {
-                    $value = $out;
-                }
-            }
-
-            $this->result .= $value."\n";
+            $this->result .= $this->compileToken($value)."\n";
         }
 
         return $this->resetCompilationAccumulator();
+    }
+
+    /**
+     * Compile All define token
+     *
+     * @param string $value
+     * @return string
+     */
+    private function compileToken($value)
+    {
+        foreach ($this->tokens as $token) {
+            $out = $this->{'compile'.$token}(trim($value, '\n'));
+
+            if (strlen($out) !== 0) {
+                $value = $out;
+            }
+        }
+
+        return $value;
     }
 
     /**
@@ -96,6 +104,6 @@ class Compiler
 
         $this->result = '';
 
-        return $result;
+        return $result.implode("\n", $this->footer);
     }
 }
