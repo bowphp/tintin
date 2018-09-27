@@ -4,6 +4,8 @@ namespace Tintin\Bow;
 
 use Bow\Config\Config;
 use Bow\View\EngineAbstract;
+use Tintin\Loader\Filesystem as TintinFilesystem;
+use Tintin\Tintin;
 
 class TintinEngine extends EngineAbstract
 {
@@ -26,11 +28,13 @@ class TintinEngine extends EngineAbstract
     {
         $this->config = $config;
 
-        $this->template = new Tintin([
+        $loader = new TintinFilesystem([
             'path' => $config['view.path'],
             'cache' => $config['view.cache'],
             'extension' => is_null($config['view.extension']) ? $config['view.extension'] : 'tintin.php'
         ]);
+
+        $this->template = new Tintin($loader);
     }
 
     /**

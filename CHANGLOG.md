@@ -15,3 +15,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Add] Add ignore file
 - [Fix] Reset all value apply to compilator
 - [Fix] Compile #raw statement bug fix
+- [Fix] Bow plugin bug fixed
