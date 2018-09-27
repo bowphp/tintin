@@ -61,14 +61,14 @@ class Compiler
      */
     public function complie($data)
     {
-        if (is_string($data)) {
-            $data = preg_split('/\n/', $data);
-        } else {
-            $data = (array) $data;
-        }
+        $data = preg_split('/\n|\r\n/', $data);
 
         foreach ($data as $value) {
-            $this->result .= $this->compileToken($value)."\n";
+            $value = trim($value);
+
+            if (strlen($value) != 0) {
+                $this->result .= $this->compileToken($value)."\n";
+            }
         }
 
         return $this->resetCompilationAccumulator();
