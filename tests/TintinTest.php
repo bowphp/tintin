@@ -90,8 +90,6 @@ class TintinTest extends \PHPUnit\Framework\TestCase
 
         $render = $tintin->render('child');
 
-        var_dump($render);
-
         $this->assertTrue((bool) preg_match('/<p>(.+?)<\/p>/', $render));
     }
 }

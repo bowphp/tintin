@@ -85,7 +85,11 @@ class StackManager
      */
     public function getStack($name)
     {
-        return array_key_exists($name, $this->pushes) ? $this->pushes[$name] : null;
+        if (array_key_exists($name, $this->pushes)) {
+            return $this->tintin->renderString($this->pushes[$name], get_defined_vars());
+        }
+
+        return null;
     }
 
     /**

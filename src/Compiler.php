@@ -83,11 +83,7 @@ class Compiler
     private function compileToken($value)
     {
         foreach ($this->tokens as $token) {
-            $out = $this->{'compile'.$token}(trim($value, '\n'));
-
-            if (strlen($out) !== 0) {
-                $value = $out;
-            }
+            $value = $this->{'compile'.$token}(trim($value, '\n'));
         }
 
         return $value;

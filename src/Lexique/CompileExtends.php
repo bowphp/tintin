@@ -94,9 +94,11 @@ trait CompileExtends
 
         if (preg_match($regex, $expression, $match)) {
             $this->footer[] = "<?php \$__tintin->stackManager->includeFIle({$match[1]}, ['__tintin' => \$__tintin]); ?>";
+
+            return '';
         }
 
-        return '';
+        return $expression;
     }
 
     /**
@@ -110,7 +112,7 @@ trait CompileExtends
         $regex = "/\#inject\s*\(((?:\n|\s|\t)*(?:.+?)(?:\n|\s|\t)*)\)/sm";
 
         $output = preg_replace_callback($regex, function ($match) {
-            return "<?php echo \$__tintin->stackManager->getStack({$match[1]}); ?>";
+            return "<?php \$__tintin->stackManager->getStack({$match[1]}); ?>";
         }, $expression);
 
         return $output == $expression ? '' : $output;

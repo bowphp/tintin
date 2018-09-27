@@ -84,6 +84,21 @@ class Tintin
     }
 
     /**
+     * Compile simple template code
+     *
+     * @param string $data
+     * @param array $params
+     * @return string
+     */
+    public function renderString($data, $params)
+    {
+        return $this->executePlainRendering(
+            trim($this->compiler->complie($data)),
+            $params
+        );
+    }
+
+    /**
      * Execute plain rendering code
      *
      * @param string $content
