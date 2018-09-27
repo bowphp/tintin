@@ -46,15 +46,8 @@ class Tintin
      */
     public function render($filename, array $params = [])
     {
-        ob_start();
-
-        $params = array_merge(get_defined_vars(), $params);
-
         if (is_null($this->loader)) {
-            return $this->executePlainRendering(
-                trim($this->compiler->complie($filename)),
-                $params
-            );
+            return $this->renderString($filename, $params);
         }
 
         if (! $this->loader->fileExists($filename)) {
@@ -62,7 +55,7 @@ class Tintin
         }
 
         $__tintin = $this;
-
+        ob_start();
         extract($params);
 
         if (! $this->loader->isExpirated($filename)) {
@@ -90,8 +83,10 @@ class Tintin
      * @param array $params
      * @return string
      */
-    public function renderString($data, $params)
+    public function renderString($data, array $params = [])
     {
+        ob_start();
+
         return $this->executePlainRendering(
             trim($this->compiler->complie($data)),
             $params

@@ -61,14 +61,10 @@ class Compiler
      */
     public function complie($data)
     {
-        $data = preg_split("/\n|\r\n/", $data);
+        $data = preg_split('/\n|\r\n/', $data);
 
         foreach ($data as $value) {
-            $value = trim($value);
-
-            if (strlen($value) != 0) {
-                $this->result .= $this->compileToken($value)."\n";
-            }
+            $this->result .= $this->compileToken($value)."\n";
         }
 
         return $this->resetCompilationAccumulator();
@@ -83,7 +79,11 @@ class Compiler
     private function compileToken($value)
     {
         foreach ($this->tokens as $token) {
-            $value = $this->{'compile'.$token}($value);
+            $out = $this->{'compile'.$token}($value);
+
+            if (strlen($out) !== 0) {
+                $value = $out;
+            }
         }
 
         return $value;
