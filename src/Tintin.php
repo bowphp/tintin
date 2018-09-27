@@ -111,7 +111,7 @@ class Tintin
 
         require $filename = $this->createTmpFile($content);
 
-        // @unlink($filename);
+         @unlink($filename);
 
         return $this->obGetContent();
     }

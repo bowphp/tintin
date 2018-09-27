@@ -61,7 +61,7 @@ class Compiler
      */
     public function complie($data)
     {
-        $data = preg_split('/\n|\r\n/', $data);
+        $data = preg_split("/\n|\r\n/", $data);
 
         foreach ($data as $value) {
             $value = trim($value);
@@ -83,7 +83,7 @@ class Compiler
     private function compileToken($value)
     {
         foreach ($this->tokens as $token) {
-            $value = $this->{'compile'.$token}(trim($value, '\n'));
+            $value = $this->{'compile'.$token}($value);
         }
 
         return $value;
