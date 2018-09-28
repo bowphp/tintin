@@ -14,9 +14,13 @@ class TintinTemplateService extends Service
      */
     public function make(Config $config)
     {
-        View::pushEngine('tintin', TintinEngine::class);
+        $this->app->capsule('view', function () {
+            View::pushEngine('tintin', TintinEngine::class);
 
-        View::configure($config);
+            View::configure($config);
+
+            return View::getInstance();
+        });
     }
 
     /**
@@ -25,6 +29,6 @@ class TintinTemplateService extends Service
      */
     public function start()
     {
-        View::getInstance()->setEngine('tintin');
+        $this->app->capsule('view')->setEngine('tintin');
     }
 }
