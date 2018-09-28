@@ -55,7 +55,9 @@ class Tintin
         }
 
         $__tintin = $this;
+        
         ob_start();
+
         extract($params);
 
         if (! $this->loader->isExpirated($filename)) {
