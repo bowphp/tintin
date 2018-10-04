@@ -3,20 +3,20 @@
 namespace Tintin\Bow;
 
 use Bow\View\View;
-use Bow\Config\Config;
-use Bow\Application\Service;
+use Bow\Configuration\Loader;
+use Bow\Configuration\Configuration;
 
-class TintinTemplateService extends Service
+class TintinConfiguration extends Configuration
 {
     /**
      * @inheritDoc
      * @throws
      */
-    public function make(Config $config)
+    public function create(Loader $config)
     {
         $config['view.engine'] = 'tintin';
 
-        $this->app->capsule('view', function () use ($config) {
+        $this->container->bind('view', function () use ($config) {
             View::pushEngine('tintin', TintinEngine::class);
 
             View::configure($config);
@@ -29,8 +29,8 @@ class TintinTemplateService extends Service
      * @inheritDoc
      * @throws
      */
-    public function start()
+    public function run()
     {
-        $this->app->capsule('view');
+        $this->container->make('view');
     }
 }
