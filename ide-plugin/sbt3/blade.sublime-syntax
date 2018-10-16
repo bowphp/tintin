@@ -1,0 +1,141 @@
+%YAML 1.2
+---
+name: Bow Tintin
+file_extensions: [tintin, tintin.php]
+scope: text.tintin
+contexts:
+  main:
+    - match: ''
+      push:
+        - include: 'scope:text.html.basic'
+        - meta_scope: text.html.tintin
+          pop: true
+      with_prototype:
+
+        - match: '{#'
+          captures:
+            0: punctuation.definition.comment.begin.tintin
+          push:
+            - meta_scope: comment.block.html.tintin
+            - match: '#}'
+              scope: punctuation.definition.comment.end.tintin
+              pop: true
+            - match: "#"
+              scope: invalid.illegal.bad-comments-or-CDATA.html.tintin
+
+        - match: '\{\{\{?'
+          captures:
+            0: punctuation.section.embedded.begin.tintin
+          push:
+            - meta_scope: entity.name.tag.tintin
+            - meta_content_scope: source.php.tintin
+            - match: '\}?\}\}'
+              captures:
+                0: punctuation.section.embedded.end.tintin
+                1: punctuation.section.embedded.end.tintin
+              pop: true
+            - include: 'scope:source.php'
+
+        - match: '#\{\{\{?'
+          captures:
+            0: punctuation.section.embedded.ignore.begin.tintin
+          push:
+            - meta_scope: 'scope:text.html.basic'
+            - meta_content_scope: 'scope:text.html.basic'
+            - match: '\}?\}\}'
+              captures:
+                0: punctuation.section.embedded.ignore.end.tintin
+                1: punctuation.section.embedded.ignore.end.tintin
+              pop: true
+
+        - match: '<\?(?i:php|=)?'
+          captures:
+            0: punctuation.section.embedded.begin.tintin
+          push:
+            - meta_content_scope: source.php.tintin
+            - meta_scope: entity.name.tag.tintin
+            - match: (?=\?>)(\?>)
+              captures:
+                0: punctuation.section.embedded.end.tintin
+              pop: true
+            - include: 'scope:source.php'
+            
+        - match: '((\s{0}|^)(#)(php)(?![^?]*\(*\))|<\?(?i:php|=)?)(?![^?]*\?>)'
+          scope: punctuation.section.embedded.begin.php
+          captures:
+              0: punctuation.section.embedded.begin.php
+              3: constant.other.inline-data.html
+              4: entity.name.tag.block.any.html
+          push:
+            - meta_content_scope: source.php
+            - meta_scope: meta.embedded.block.tintin.php
+          with_prototype:
+          - match: (?=\?>|(\s{0}|^)(#)(endphp))(\?>|(\s{0}|^)(#)(endphp))
+            captures:
+              0: punctuation.section.embedded.end.php
+              6: constant.other.inline-data.html
+              7: entity.name.tag.block.any.html
+            pop: true
+          - include: 'scope:source.php'
+
+        - match: '<\?(?i:php|=)?'
+          scope: punctuation.section.embedded.begin.php
+          push:
+            - meta_content_scope: source.php.tintin
+            - meta_scope: meta.embedded.line.tintin.php
+          with_prototype:
+          - match: (?=\?>)(\?>)
+            captures:
+              0: punctuation.section.embedded.end.php
+            pop: true
+          - include: 'scope:source.php'
+
+        - match: '(\s{0}|^)(\#)\b(auth|break|continue|elseif|extends|for|loop|guest|if|isset|include|php|block|switch|unless|while|inject)\b(?=(|\s*|)\(\()'
+          captures:
+            0: punctuation.section.embedded.php
+            2: constant.other.inline-data.html
+            3: entity.name.tag.block.any.html
+          push:
+            - meta_scope: custom.compiler.tintin.php
+            - meta_content_scope: source.php.tintin
+            - match: '(?<=\)\))'
+              pop: true
+            - include: 'scope:source.php'
+
+        - match: '(\s{0}|^)(\#)\b(auth|break|continue|elseif|extends|for|loop|guest|if|isset|include|php|block|switch|unless|while|inject)\b(?=(|\s*|)\()'
+          captures:
+            0: punctuation.section.embedded.php
+            2: constant.other.inline-data.html
+            3: entity.name.tag.block.any.html
+          push:
+            - meta_scope: custom.compiler.tintin.php
+            - meta_content_scope: source.php.tintin
+            - match: '(?<=\))'
+              pop: true
+            - include: 'scope:source.php'
+
+        - match: '(\s{0}|^)(\#)\b(auth|break|continue|else|empty|endswitch|endauth|endempty|endfor|endloop|endif|endisset|endblock|endwhile)\b'
+          scope: custom.compiler.tintin.php
+          captures:
+            0: punctuation.section.embedded.php
+            2: constant.other.inline-data.html
+            3: entity.name.tag.block.any.html
+          pop: false
+
+        - match: '(\s{0}|^)(\#)\b([a-zA-Z_]+)\b(?=(|\s*|)\()'
+          captures:
+            0: support.function
+            2: constant.other.inline-data.html
+          push:
+            - meta_scope: custom.compiler.tintin.php
+            - meta_content_scope: source.php.tintin
+            - match: '(?<=\))'
+              pop: true
+            - include: 'scope:source.php'
+
+        - match: '(\s{0}|^)(\#)\b([a-zA-Z_]+)\b(\s?)\b'
+          scope: custom.compiler.tintin.php
+          captures:
+            0: support.function
+            2: constant.other.inline-data.html
+          pop: false

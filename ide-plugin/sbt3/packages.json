@@ -1,0 +1,36 @@
+{
+	"schema_version": "3.0.0",
+	"packages": [
+		{
+			"name": "Bow Tintin Highlighter",
+			"description": "Bow Tintin syntax highlighter support for Sublime Text.",
+			"author": "Eric Percifield",
+			"homepage": "https://github.com/papac/bow-tintin",
+			"details": "https://github.com/papac/bow-tintin",
+			"labels": ["php", "Bow", "Tintin", "language syntax"],
+			"releases": [
+				{
+					"sublime_text": "<=3083",
+					"platforms": ["windows", "osx", "linux"],
+					"version": "master",
+					"url": "https://nodeload.github.com/Medalink/bow-tintin/zip/master",
+					"date": "2015-05-13 11:09:00"
+				},
+				{
+					"sublime_text": "3084",
+					"platforms": ["windows", "osx", "linux"],
+					"version": "master",
+					"url": "https://nodeload.github.com/papac/bow-tintin/zip/master",
+					"date": "2015-10-08 12:57:00"
+				},
+				{
+					"sublime_text": ">3084",
+					"platforms": ["windows", "osx", "linux"],
+					"version": "1.6.12",
+					"url": "https://nodeload.github.com/papac/bow-tintin/zip/master",
+					"date": "2018-05-31 10:04:00"
+				}
+			]
+		}
+	]
+}
