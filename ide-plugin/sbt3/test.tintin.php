@@ -52,7 +52,7 @@ Hello, {{{ $name }}}.
         </title>
     </head>
     <body>
-        #blocl('sidebar')
+        #block('sidebar')
             This is the master sidebar.
         #endblock
 
