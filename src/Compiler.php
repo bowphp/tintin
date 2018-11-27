@@ -46,7 +46,7 @@ class Compiler
     /**
      * @var string
      */
-    protected $conditionPatern = '/(^%s\s*\((.+?)?\)$)+/sm';
+    protected $conditionPatern = '/(%s\s*\((.+?)?\)$)+/sm';
 
     /**
      * @var array
