@@ -76,7 +76,7 @@ trait CompileExtends
         $regex = "/\#include\s*\(((?:\n|\s|\t)*(?:.+?)(?:\n|\s|\t)*)\)/sm";
 
         $output = preg_replace_callback($regex, function ($match) {
-            return "<?php \$__tintin->stackManager->includeFile({$match[1]}, ['__tintin' => \$__tintin]); ?>";
+            return "<?php echo \$__tintin->stackManager->includeFile({$match[1]}, ['__tintin' => \$__tintin]); ?>";
         }, $expression);
 
         return $output == $expression ? '' : $output;

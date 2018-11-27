@@ -34,11 +34,14 @@ class StackManager
      * Include a file to compile
      *
      * @param string $filename
+     * @param array $data
      * @param array $context
      * @return string
      */
-    public function includeFile($filename, $context = [])
+    public function includeFile($filename, $data = [], $context = [])
     {
+        $context = array_merge($context, $data);
+
         return $this->tintin->render($filename, $context);
     }
 
