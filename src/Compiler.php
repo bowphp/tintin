@@ -64,12 +64,10 @@ class Compiler
         $data = preg_split('/\n|\r\n/', $data);
 
         foreach ($data as $value) {
-            $value = trim($value);
-
             if (strlen($value) > 0) {
-                $value = trim($this->compileToken($value));
+                $value = $this->compileToken($value);
 
-                $this->result .= strlen($value) == 0 ? $value : $value."\n";
+                $this->result .= strlen($value) == 0 || $value == ' ' ? trim($value) : $value."\n";
             }
         }
 
