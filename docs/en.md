@@ -1,15 +1,19 @@
-<h1 align="center">
-    <img src="https://github.com/bowphp/arts/raw/master/tintin.jpeg" width="100px" style="border-radius: 50px">
-    <br/><strong>Tintin</strong>
-</h1>
-
-<p align="center">THE VERY SMALL PHP TEMPLATE</p>
-<p align="center">
-    <a href="https://github.com/bowphp/docs/blog/master/tintin.md" title="docs"><img src="https://img.shields.io/badge/docs-read%20docs-blue.svg?style=flat-square"/></a>
-    <a href="https://packagist.org/packages/bowphp/tintin" title="version"><img src="https://img.shields.io/packagist/v/bowphp/tintin.svg?style=flat-square"/></a>
-    <a href="https://github.com/bowphp/tintin/blob/master/LICENSE" title="license"><img src="https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square"/></a>
-    <a href="https://travis-ci.org/bowphp/tintin" title="Travis branch"><img src="https://img.shields.io/travis/bowphp/tintin/master.svg?style=flat-square"/></a>
-</p>
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Add comment](#add-comment)
+  - [#if / #elseif or #elif / #else](#if-elseif-or-elif-else)
+  - [#unless](#unless)
+  - [#loop / #for, #while](#loop-comme-foreach-for-while)
+    - [Using #loop](#using-loop)
+    - [Syntax sugars #jump and #stop](#syntax-sugars-jump-and-stop)
+    - [Using #for](#using-for)
+    - [Using #while](#using-while)
+  - [Include of file](#include-of-file)
+    - [Example of inclusion](#example-of-inclusion)
+- [Inherit with #extends, #block and #inject](#inherit-with-extends-block-and-inject)
+  - [Explication](#explication)
+- [Contribution](#contribution)
+- [Author](#author)
 
 ## Installation
 
@@ -67,11 +71,11 @@ $tt->render('dossier.filename', ['name' => 'data']);
 
 > Note that the source of the files is always the path to `path`.
 
-### add a comment
+### Add a comment
 
 This `{# comments #}` clause adds a comment to your `tintin` code.
 
-### `#if` / `#elseif` or `#elif`  / `#else` 
+### #if / #elseif or #elif / #else 
 
 Ce sont les clauses qui permettent d'établir des branchements conditionnels comme dans la plupart des langages de programmation.
 
@@ -87,7 +91,7 @@ Ce sont les clauses qui permettent d'établir des branchements conditionnels com
 
 > You can use `#elif` instead of `#elseif`.
 
-### `#unless`
+### #unless
 
 Small specificity, the `#unless` meanwhile, it allows to make a reverse condition of `#if`.
 To put it simply, here is an example:
@@ -96,11 +100,11 @@ To put it simply, here is an example:
 #unless ($name == 'tintin') => #if (!($name == 'tintin'))
 ```
 
-### `#loop` as `foreach` / `#for`, `#while`
+### #loop / #for / #while
 
 Often you may have to make lists or repetitions on items. For example, view all users of your platform.
 
-#### Using `# loop`
+#### Using #loop
 
 This clause does exactly the `foreach` action.
 
@@ -124,7 +128,7 @@ A quick example.
 
 You may have noticed the `#stop` it allows to stop the execution of the loop. There is also his spouse `#jump`, him parcontre allows to stop the execution at his level and launch execution of the next round of the loop.
 
-#### Syntax sugars `#jump (condition)` and `#stop (condition)`
+#### Syntax sugars #jump and #stop
 
 Often the developer is made to make stop conditions of the `#loop` like this:
 
@@ -148,7 +152,7 @@ With syntactic sugars, we can reduce the code like this:
 #endloop
 ```
 
-#### Using `# for`
+#### Using #for
 
 This clause does exactly the `for` action.
 
@@ -158,7 +162,7 @@ This clause does exactly the `for` action.
 #endfor
 ```
 
-#### Using `#while`
+#### Using #while
 
 This clause does exactly the `while` action.
 
@@ -168,7 +172,7 @@ This clause does exactly the `while` action.
 #endwhile
 ```
 
-### Include file with `#include`
+### Include of file
 
 Often when you are developing your code, you have to subdivide the views of your application to be more flexible and write less code.
 
@@ -193,7 +197,7 @@ Use:
 // => Hello Tintin
 ```
 
-## Inherit with `#extends`,` #block` and `#inject`
+## Inherit with #extends, #block and #inject
 
 Like any good template system **tintin** supports code sharing between files. This makes your code flexible and maintainable.
 
@@ -247,7 +251,7 @@ The `content.tintin.php` file will inherit the code from` layout.tintin.php` and
 </html>
 ```
 
-# Contribution
+## Contribution
 
 To participate in the project you must:
 

@@ -1,15 +1,19 @@
-<h1 align="center">
-    <img src="https://github.com/bowphp/arts/raw/master/tintin.jpeg" width="100px" style="border-radius: 50px">
-    <br/><strong>Tintin</strong>
-</h1>
-
-<p align="center">THE VERY SMALL PHP TEMPLATE</p>
-<p align="center">
-    <a href="https://github.com/bowphp/docs/blog/master/tintin.md" title="docs"><img src="https://img.shields.io/badge/docs-read%20docs-blue.svg?style=flat-square"/></a>
-    <a href="https://packagist.org/packages/bowphp/tintin" title="version"><img src="https://img.shields.io/packagist/v/bowphp/tintin.svg?style=flat-square"/></a>
-    <a href="https://github.com/bowphp/tintin/blob/master/LICENSE" title="license"><img src="https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square"/></a>
-    <a href="https://travis-ci.org/bowphp/tintin" title="Travis branch"><img src="https://img.shields.io/travis/bowphp/tintin/master.svg?style=flat-square"/></a>
-</p>
+- [Installation](#installation)
+- [Utilisation](#utilisation)
+  - [Ajouter un commentaire](#ajouter-un-commentaire)
+  - [#if / #elseif ou #elif / #else](#if-elseif-ou-elif-else)
+  - [#unless](#unless)
+  - [#loop / #for, #while](#loop-comme-foreach-for-while)
+    - [L'utilisation de #loop](#l-utilisation-de-loop)
+    - [Les sucres syntaxiques #jump et #stop](#les-sucres-syntaxiques-jump-et-stop)
+    - [L'utilisation de #for](#l-utilisation-de-for)
+    - [L'utilisation de #while](#l-utilisation-de-while)
+  - [Inclusion de fichier include](#inclusion-de-fichier)
+    - [Exemple d'inclusion](#exemple-d-inclusion)
+- [Héritage avec #extends, #block et #inject](#heritage-avec-extends-block-et-inject)
+  - [Explication](#explication)
+- [Contribution](#contribution)
+- [Auteur](#auteur)
 
 ## Installation
 
@@ -71,7 +75,7 @@ $tt->render('dossier.filename', ['name' => 'data']);
 
 Cette clause `{# comments #}` permet d'ajouter un commentaire à votre code `tintin`.
 
-### `#if` / `#elseif` or `#elif`  / `#else` 
+### #if / #elseif or #elif  / #else 
 
 Ce sont les clauses qui permettent d'établir des branchements conditionnels comme dans la plupart des langages de programmation.
 
@@ -87,7 +91,7 @@ Ce sont les clauses qui permettent d'établir des branchements conditionnels com
 
 > Vous pouvez utiliser `#elif` à la place de `#elseif`.
 
-### `#unless`
+### #unless
 
 Petite spécificité, le `#unless` quant à lui, il permet de faire une condition inverse du `#if`.
 Pour faire simple, voici un exemple:
@@ -96,11 +100,11 @@ Pour faire simple, voici un exemple:
 #unless ($name == 'tintin') => #if (!($name == 'tintin'))
 ```
 
-### `#loop` comme `foreach` / `#for`, `#while`
+### #loop / #for / #while
 
 Souvent vous pouvez être amener à faire des listes ou répétitions sur des éléments. Par exemple, afficher tout les utilisateurs de votre plateforme.
 
-#### L'utilisation de `#loop`
+#### L'utilisation de #loop
 
 Cette clause faire exactement l'action de `foreach`.
 
@@ -124,7 +128,7 @@ Un exemple rapide.
 
 Vous avez peut-être remarquer le `#stop` il permet de stoper l'éxécution de la boucle. Il y a aussi son conjoint le `#jump`, lui parcontre permet d'arrêter l'éxécution à son niveau et de lancer s'éxécution du prochain tour de la boucle.
 
-#### Les sucres syntaxiques `#jump(condition)` et `#stop(condition)`
+#### Les sucres syntaxiques #jump et #stop
 
 Souvent le dévéloppeur est amené à faire des conditions d'arrêt de la boucle `#loop` comme ceci:
 
@@ -148,7 +152,7 @@ Avec les sucres syntaxique, on peut réduire le code comme ceci:
 #endloop
 ```
 
-#### L'utilisation de `#for`
+#### L'utilisation de #for
 
 Cette clause faire exactement l'action de `for`.
 
@@ -158,7 +162,7 @@ Cette clause faire exactement l'action de `for`.
 #endfor
 ```
 
-#### L'utilisation de `#while`
+#### L'utilisation de #while
 
 Cette clause faire exactement l'action de `while`.
 
@@ -168,11 +172,11 @@ Cette clause faire exactement l'action de `while`.
 #endwhile
 ```
 
-### Inclusion de fichier `include`
+### Inclusion de fichier
 
 Souvent lorsque vous dévéloppez votre code, vous êtes amener à subdiviser les vues de votre application pour être plus flexible et écrire moin de code.
 
-`include` permet d'include un autre fichier de template dans un autre.
+`#include` permet d'include un autre fichier de template dans un autre.
 
 ```
  #include('filename', data)
@@ -193,7 +197,7 @@ Utilisation:
 // => Hello Tintin
 ```
 
-## Héritage avec `#extends`, `#block` et `#inject` 
+## Héritage avec #extends, #block et #inject 
 
 Comme tout bon système de template **tintin** support le partage de code entre fichier. Ceci permet de rendre votre code flexible et maintenable.
 
@@ -247,7 +251,7 @@ Le fichier `content.tintin.php` va hérité du code de `layout.tintin.php` et si
 </html>
 ```
 
-# Contribution
+## Contribution
 
 Pour participer au projet il faut:
 
@@ -259,9 +263,9 @@ Pour participer au projet il faut:
 
 Ou bien allez dans la page des [issues](https://github.com/bowphp/tintin/issues), faites vos corrections et enfin suivez [publier](#contribution).
 
-## Auteur
+### Auteur
 
-**Franck DAKIA** est un développeur Full Stack basé actuellement en Afrique, Côte d'ivoire. Passioné de code, et développement collaboratif, Speaker, Formateur et Membre de plusieurs communautés de développeurs.
+**Franck DAKIA** est un développeur Full Stack basé actuellement en Afrique, Côte d'ivoire, Abidjan. Passioné de code, et développement collaboratif, Speaker, Formateur et Membre de plusieurs communautés de développeurs.
 
 Contact: [dakiafranck@gmail.com](mailto:dakiafranck@gmail.com) - [@franck_dakia](https://twitter.com/franck_dakia)
 
