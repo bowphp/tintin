@@ -1,19 +1,20 @@
 - [Installation](#installation)
 - [Utilisation](#utilisation)
+  - [Configuration pour Bow](#configuration-pour-bow)
   - [Ajouter un commentaire](#ajouter-un-commentaire)
-  - [#if / #elseif ou #elif / #else](#if-elseif-ou-elif-else)
+  - [#if / #elseif or #elif / #else](#if--elseif-or-elif--else)
   - [#unless](#unless)
-  - [#loop / #for, #while](#loop-comme-foreach-for-while)
-    - [L'utilisation de #loop](#l-utilisation-de-loop)
+  - [#loop / #for / #while](#loop--for--while)
+    - [L'utilisation de #loop](#lutilisation-de-loop)
     - [Les sucres syntaxiques #jump et #stop](#les-sucres-syntaxiques-jump-et-stop)
-    - [L'utilisation de #for](#l-utilisation-de-for)
-    - [L'utilisation de #while](#l-utilisation-de-while)
-  - [Inclusion de fichier include](#inclusion-de-fichier)
-    - [Exemple d'inclusion](#exemple-d-inclusion)
-- [Héritage avec #extends, #block et #inject](#heritage-avec-extends-block-et-inject)
+    - [L'utilisation de #for](#lutilisation-de-for)
+    - [L'utilisation de #while](#lutilisation-de-while)
+  - [Inclusion de fichier](#inclusion-de-fichier)
+    - [Exemple d'inclusion](#exemple-dinclusion)
+- [Héritage avec #extends, #block et #inject](#h%C3%A9ritage-avec-extends-block-et-inject)
   - [Explication](#explication)
 - [Contribution](#contribution)
-- [Auteur](#auteur)
+  - [Auteur](#auteur)
 
 ## Installation
 
@@ -71,15 +72,45 @@ $tt->render('dossier.filename', ['name' => 'data']);
 
 > Notez que la source des fichiers est toujour le chemin vers `path`.
 
+### Configuration pour Bow
+
+Pour permet à Bow d'utiliser Tintin comme moteur de template par defaut, il va faloir faire quelque petit configuration.
+
+Ajouter cette configuration dans le fichier `app/Kernel/Loader.php`:
+
+```php
+public function configurations() {
+  return [
+    ...
+    \Tintin\Bow\TintinConfiguration::class,
+    ...
+  ];
+}
+```
+
+Et encore dans le fichier de configuration des vues situés dans `config/view.php`.
+
+```php
+return [
+  // Définir le moteur à utiliser
+  'engine' => 'tintin',
+
+  // Extension de fichier
+  'extension' => '.tintin.php'
+];
+```
+
+Et c'est tout, désormais votre moteur de template par defaut est `tintin` :+1:
+
 ### Ajouter un commentaire
 
 Cette clause `{# comments #}` permet d'ajouter un commentaire à votre code `tintin`.
 
-### #if / #elseif or #elif  / #else 
+### #if / #elseif or #elif / #else
 
 Ce sont les clauses qui permettent d'établir des branchements conditionnels comme dans la plupart des langages de programmation.
 
-```
+```c
 #if ($name == 'tintin')
   {{ $name }}
 #elseif ($name == 'template')
@@ -96,7 +127,7 @@ Ce sont les clauses qui permettent d'établir des branchements conditionnels com
 Petite spécificité, le `#unless` quant à lui, il permet de faire une condition inverse du `#if`.
 Pour faire simple, voici un exemple:
 
-```
+```c
 #unless ($name == 'tintin') => #if (!($name == 'tintin'))
 ```
 
@@ -108,7 +139,7 @@ Souvent vous pouvez être amener à faire des listes ou répétitions sur des é
 
 Cette clause faire exactement l'action de `foreach`.
 
-```
+```c
 #loop ($names as $name)
   Bonjour {{ $name }}
 #endloop
@@ -117,7 +148,7 @@ Cette clause faire exactement l'action de `foreach`.
 Cette clause peux être aussi coupler avec tout autre clause telque `#if`.
 Un exemple rapide.
 
-```
+```c
 #loop ($names as $name)
   #if ($name == 'tintin')
     Bonjour {{ $name }}
@@ -132,7 +163,7 @@ Vous avez peut-être remarquer le `#stop` il permet de stoper l'éxécution de l
 
 Souvent le dévéloppeur est amené à faire des conditions d'arrêt de la boucle `#loop` comme ceci:
 
-```
+```c
 #loop ($names as $name)
   #if ($name == 'tintin')
     #stop
@@ -144,7 +175,7 @@ Souvent le dévéloppeur est amené à faire des conditions d'arrêt de la boucl
 
 Avec les sucres syntaxique, on peut réduire le code comme ceci:
 
-```
+```c
 #loop ($names as $name)
   #stop($name == 'tintin')
   // Ou
@@ -156,7 +187,7 @@ Avec les sucres syntaxique, on peut réduire le code comme ceci:
 
 Cette clause faire exactement l'action de `for`.
 
-```
+```c
 #for ($i = 0; $i < 10; $i++)
  // ..
 #endfor
@@ -166,7 +197,7 @@ Cette clause faire exactement l'action de `for`.
 
 Cette clause faire exactement l'action de `while`.
 
-```
+```c
 #while ($name != 'tintin')
  // ..
 #endwhile
@@ -178,7 +209,7 @@ Souvent lorsque vous dévéloppez votre code, vous êtes amener à subdiviser le
 
 `#include` permet d'include un autre fichier de template dans un autre.
 
-```
+```c
  #include('filename', data)
 ```
 
@@ -192,18 +223,18 @@ Hello {{ $name }}
 
 Utilisation:
 
-```
+```c
 #include('hello', ['name' => 'Tintin'])
 // => Hello Tintin
 ```
 
-## Héritage avec #extends, #block et #inject 
+## Héritage avec #extends, #block et #inject
 
 Comme tout bon système de template **tintin** support le partage de code entre fichier. Ceci permet de rendre votre code flexible et maintenable.
 
 Considérérons le code **tintin** suivant:
 
-```
+```c
 // le fichier `layout.tintin.php`
 <!DOCTYPE html>
 <html>
@@ -222,7 +253,7 @@ Considérérons le code **tintin** suivant:
 
 Et aussi, on a un autre fichier qui hérite du code du fichier `layout.tintin.php`
 
-```
+```c
 // le fichier se nomme `content.tintin.php`
 #extends('layout')
 
@@ -235,7 +266,7 @@ Et aussi, on a un autre fichier qui hérite du code du fichier `layout.tintin.ph
 
 Le fichier `content.tintin.php` va hérité du code de `layout.tintin.php` et si vous rémarquez bien, dans le fichier `layout.tintin.php` on a la clause `#inject` qui a pour paramètre le nom du `#block` de `content.tintin.php` qui est `content`. Ce qui veut dire que le contenu du `#block` `content` sera remplacé par `#inject`. Ce qui donnéra à la fin ceci:
 
-```
+```c
 <!DOCTYPE html>
 <html>
 <head>
@@ -255,11 +286,11 @@ Le fichier `content.tintin.php` va hérité du code de `layout.tintin.php` et si
 
 Pour participer au projet il faut:
 
-+ Fork le projet afin qu'il soit parmi les répertoires de votre compte github ex :`https://github.com/votre-compte/app`
-+ Cloner le projet depuis votre compte github `git clone https://github.com/votre-crompte/tintin`
-+ Créer un branche qui aura pour nom le résumé de votre modification `git branch branche-de-vos-traveaux`
-+ Faire une publication sur votre dépot `git push origin branche-de-vos-traveaux`
-+ Enfin faire un [pull-request](https://www.thinkful.com/learn/github-pull-request-tutorial/Keep-Tabs-on-the-Project#Time-to-Submit-Your-First-PR)
+- Fork le projet afin qu'il soit parmi les répertoires de votre compte github ex :`https://github.com/votre-compte/app`
+- Cloner le projet depuis votre compte github `git clone https://github.com/votre-crompte/tintin`
+- Créer un branche qui aura pour nom le résumé de votre modification `git branch branche-de-vos-traveaux`
+- Faire une publication sur votre dépot `git push origin branche-de-vos-traveaux`
+- Enfin faire un [pull-request](https://www.thinkful.com/learn/github-pull-request-tutorial/Keep-Tabs-on-the-Project#Time-to-Submit-Your-First-PR)
 
 Ou bien allez dans la page des [issues](https://github.com/bowphp/tintin/issues), faites vos corrections et enfin suivez [publier](#contribution).
 

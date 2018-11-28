@@ -1,9 +1,10 @@
 - [Installation](#installation)
 - [Usage](#usage)
-  - [Add comment](#add-comment)
-  - [#if / #elseif or #elif / #else](#if-elseif-or-elif-else)
+  - [Configuration for Bow](#configuration-for-bow)
+  - [Add a comment](#add-a-comment)
+  - [#if / #elseif or #elif / #else](#if--elseif-or-elif--else)
   - [#unless](#unless)
-  - [#loop / #for, #while](#loop-comme-foreach-for-while)
+  - [#loop / #for / #while](#loop--for--while)
     - [Using #loop](#using-loop)
     - [Syntax sugars #jump and #stop](#syntax-sugars-jump-and-stop)
     - [Using #for](#using-for)
@@ -71,15 +72,45 @@ $tt->render('dossier.filename', ['name' => 'data']);
 
 > Note that the source of the files is always the path to `path`.
 
+### Configuration for Bow
+
+To allow Bow to use Tintin as default template engine, he will need to make some small configuration.
+
+Add this configuration to the file `app/Kernel/Loader.php`:
+
+```php
+public function configurations() {
+  return [
+    ...
+    \Tintin\Bow\TintinConfiguration::class,
+    ...
+  ];
+}
+```
+
+And again in the configuration file views located in `config/view.php`.
+
+```php
+return [
+  // Define the engine to use
+  'engine' => 'tintin',
+
+  // Extension de fichier
+  'extension' => '.tintin.php'
+];
+```
+
+And that's it, now your default template engine is `tintin`: +1:
+
 ### Add a comment
 
 This `{# comments #}` clause adds a comment to your `tintin` code.
 
-### #if / #elseif or #elif / #else 
+### #if / #elseif or #elif / #else
 
 Ce sont les clauses qui permettent d'établir des branchements conditionnels comme dans la plupart des langages de programmation.
 
-```
+```c
 #if ($name == 'tintin')
   {{ $name }}
 #elseif ($name == 'template')
@@ -96,7 +127,7 @@ Ce sont les clauses qui permettent d'établir des branchements conditionnels com
 Small specificity, the `#unless` meanwhile, it allows to make a reverse condition of `#if`.
 To put it simply, here is an example:
 
-```
+```c
 #unless ($name == 'tintin') => #if (!($name == 'tintin'))
 ```
 
@@ -108,7 +139,7 @@ Often you may have to make lists or repetitions on items. For example, view all 
 
 This clause does exactly the `foreach` action.
 
-```
+```c
 #loop ($names as $name)
   Bonjour {{ $name }}
 #endloop
@@ -117,7 +148,7 @@ This clause does exactly the `foreach` action.
 This clause can also be paired with any other clause such as `#if`.
 A quick example.
 
-```
+```c
 #loop ($names as $name)
   #if ($name == 'tintin')
     Bonjour {{ $name }}
@@ -132,7 +163,7 @@ You may have noticed the `#stop` it allows to stop the execution of the loop. Th
 
 Often the developer is made to make stop conditions of the `#loop` like this:
 
-```
+```c
 #loop ($names as $name)
   #if ($name == 'tintin')
     #stop
@@ -144,7 +175,7 @@ Often the developer is made to make stop conditions of the `#loop` like this:
 
 With syntactic sugars, we can reduce the code like this:
 
-```
+```c
 #loop ($names as $name)
   #stop($name == 'tintin')
   // Ou
@@ -156,7 +187,7 @@ With syntactic sugars, we can reduce the code like this:
 
 This clause does exactly the `for` action.
 
-```
+```c
 #for ($i = 0; $i < 10; $i++)
  // ..
 #endfor
@@ -166,7 +197,7 @@ This clause does exactly the `for` action.
 
 This clause does exactly the `while` action.
 
-```
+```c
 #while ($name != 'tintin')
  // ..
 #endwhile
@@ -178,7 +209,7 @@ Often when you are developing your code, you have to subdivide the views of your
 
 `#include` allows to include another template file in another.
 
-```
+```c
  #include('filename', data)
 ```
 
@@ -192,7 +223,7 @@ Hello {{ $name }}
 
 Use:
 
-```
+```c
 #include('hello', ['name' => 'Tintin'])
 // => Hello Tintin
 ```
@@ -203,7 +234,7 @@ Like any good template system **tintin** supports code sharing between files. Th
 
 Consider the following **tintin** code:
 
-```
+```c
 // The `layout.tintin.php` file
 <!DOCTYPE html>
 <html>
@@ -222,7 +253,7 @@ Consider the following **tintin** code:
 
 And also, we have another file that inherits the code of the file `layout.tintin.php`
 
-```
+```c
 // the file is named `content.tintin.php`
 #extends('layout')
 
@@ -235,7 +266,7 @@ And also, we have another file that inherits the code of the file `layout.tintin
 
 The `content.tintin.php` file will inherit the code from` layout.tintin.php` and if you mark it well, in the file `layout.tintin.php` we have the clause `#inject` which has as parameter the name of `content.tintin.php` `block` which is `content`. Which means that the content of `# block` `content` will be replaced by `#inject`. Which will give in the end this:
 
-```
+```c
 <!DOCTYPE html>
 <html>
 <head>
@@ -255,11 +286,11 @@ The `content.tintin.php` file will inherit the code from` layout.tintin.php` and
 
 To participate in the project you must:
 
-+ Fork the project so that it is among the directories of your github ex account: `https://github.com/your-account/app`
-+ Clone the project from your github `git clone account https://github.com/your-account/tintin`
-+ Create a branch whose name will be the summary of your change `git branch branch-of-your-works`
-+ Make a publication on your depot `git push origin branch-of-your-works`
-+ Finally make a [pull-request](https://www.thinkful.com/learn/github-pull-request-tutorial/Keep-Tabs-on-the-Project#Time-to-Submit-Your-First-PR)
+- Fork the project so that it is among the directories of your github ex account: `https://github.com/your-account/app`
+- Clone the project from your github `git clone account https://github.com/your-account/tintin`
+- Create a branch whose name will be the summary of your change `git branch branch-of-your-works`
+- Make a publication on your depot `git push origin branch-of-your-works`
+- Finally make a [pull-request](https://www.thinkful.com/learn/github-pull-request-tutorial/Keep-Tabs-on-the-Project#Time-to-Submit-Your-First-PR)
 
 Or go to the [issues](https://github.com/bowphp/tintin/issues) page, make your corrections and finally follow [publish](#contribution).
 
