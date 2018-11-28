@@ -19,6 +19,15 @@ composer require bowphp/tintin
 
 Documentation is available in [english](./docs/en.md) and [frensh](./docs/fr.md).
 
+#### Sublime Text Support
+
+How to install Sublime Package Control
+
+- Search for **Bow Tintin** and install it / Download or clone this repository into [install-dir]/Packages/bow-tintin
+- Restart Sublime Text.
+- Reopen any `.tintin` or `.tintin.php` files.
+- Enjoy :smile:
+
 #### Author
 
 **Franck DAKIA** is a Full Stack developer currently based in Africa, Ivory Coast, Abidjan. Passionate about code, and collaborative development, Speaker, Trainer and Member of several communities of developers.
