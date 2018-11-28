@@ -150,9 +150,7 @@ class Tintin
      */
     private function obGetContent()
     {
-        $data = ob_get_contents();
-
-        ob_end_flush();
+        $data = ob_get_clean();
 
         return $data;
     }
