@@ -1,9 +1,9 @@
 <h1 align="center">
-    <img src="https://github.com/bowphp/arts/raw/master/tintin.jpeg" width="150px">
-    <br/>Tintin
+    <img src="https://github.com/bowphp/arts/raw/master/tintin.jpeg" width="100px" style="border-radius: 50px">
+    <br/><strong>Tintin</strong>
 </h1>
 
-<p align="center">The sample php Template</p>
+<p align="center">THE VERY SMALL PHP TEMPLATE</p>
 <p align="center">
     <a href="https://github.com/bowphp/docs/blog/master/tintin.md" title="docs"><img src="https://img.shields.io/badge/docs-read%20docs-blue.svg?style=flat-square"/></a>
     <a href="https://packagist.org/packages/bowphp/tintin" title="version"><img src="https://img.shields.io/packagist/v/bowphp/tintin.svg?style=flat-square"/></a>

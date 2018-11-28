@@ -1,9 +1,9 @@
 <h1 align="center">
-    <img src="https://github.com/bowphp/arts/raw/master/tintin.jpeg" width="150px">
-    <br/>Tintin
+    <img src="https://github.com/bowphp/arts/raw/master/tintin.jpeg" width="100px" style="border-radius: 50px">
+    <br/><strong>Tintin</strong>
 </h1>
 
-<p align="center">The sample php Template</p>
+<p align="center">THE VERY SMALL PHP TEMPLATE</p>
 <p align="center">
     <a href="https://github.com/bowphp/docs/blog/master/tintin.md" title="docs"><img src="https://img.shields.io/badge/docs-read%20docs-blue.svg?style=flat-square"/></a>
     <a href="https://packagist.org/packages/bowphp/tintin" title="version"><img src="https://img.shields.io/packagist/v/bowphp/tintin.svg?style=flat-square"/></a>
@@ -122,7 +122,7 @@ A quick example.
 #endloop
 ```
 
-You may have noticed the `#stop` it allows to stop the execution of the loop. There is also his spouse `#jump` ', him parcontre allows to stop the execution at his level and launch execution of the next round of the loop.
+You may have noticed the `#stop` it allows to stop the execution of the loop. There is also his spouse `#jump`, him parcontre allows to stop the execution at his level and launch execution of the next round of the loop.
 
 #### Syntax sugars `#jump (condition)` and `#stop (condition)`
 
@@ -259,7 +259,7 @@ To participate in the project you must:
 
 Or go to the [issues](https://github.com/bowphp/tintin/issues) page, make your corrections and finally follow [publish](#contribution).
 
-## Auteur
+## Author
 
 **Franck DAKIA** is a Full Stack developer currently based in Africa, Ivory Coast, Abidjan. Passionate about code, and collaborative development, Speaker, Trainer and Member of several communities of developers.
 
