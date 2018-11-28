@@ -1,42 +1,63 @@
 <?php
 
-use Tintin\Compiler;
+use Tintin\Tintin;
+use Tintin\Loader\Filesystem;
 
 class CompileExtendsTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var Compiler
+     * @var
      */
-    private $compiler;
+    private $loader;
+
+    /**
+     * @var Tintin
+     */
+    private $instance;
 
     public function setUp()
     {
-        $this->compiler = new Compiler;
+        $this->loader = new Filesystem([
+          'path' => __DIR__.'/view',
+          'extension' => 'tintin.php',
+          'cache' => __DIR__.'/cache'
+        ]);
     }
 
     /**
-     * Reflection maker
-     *
-     * @param string $method
+     * Test configuration
      */
-    public function makeReflectionFor($method)
+    public function testConfiguration()
     {
-        $reflection = new \ReflectionMethod('\Tintin\Compiler', $method);
-    
-        $reflection->setAccessible(true);
+        $this->assertInstanceOf(\Tintin\Loader\Filesystem::class, $this->loader);
+        
+        $instance = new Tintin($this->loader);
 
-        return $reflection;
+        $this->assertInstanceOf(Tintin::class, $instance);
     }
 
-    /**
-     * Test #While statement
-     */
-    public function testCompileInclude()
+    public function testStack()
     {
-        $compile_include = $this->makeReflectionFor('compileInclude');
+        $tintin = new Tintin($this->loader);
 
-        $render = $compile_include->invoke(new Compiler, 'include', ['name' => 'Tintin']);
+        $stack_manager = $tintin->getStackManager();
 
-        $this->assertEquals('Tintin', $render);
+        $this->assertInstanceOf(\Tintin\Stacker\StackManager::class, $stack_manager);
+
+        $stack_manager->startStack('name');
+        echo 'Tintin';
+        $stack_manager->endStack();
+
+        $this->assertEquals('Tintin', $stack_manager->getStack('name'));
+
+        $stack_manager->startStack('hello');
+        echo 'Hello';
+        $stack_manager->endStack();
+
+        $this->assertEquals('Hello', $stack_manager->getStack('hello'));
+
+        $stack_manager->startStack('pack', 'Tintin template');
+
+        $this->assertEquals('Tintin template', $stack_manager->getStack('pack'));
     }
 }
