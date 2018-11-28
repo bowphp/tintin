@@ -96,7 +96,7 @@ return [
   'engine' => 'tintin',
 
   // Extension de fichier
-  'extension' => '.tintin.php'
+  'extension' => 'tintin.php'
 ];
 ```
 
