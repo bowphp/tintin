@@ -13,15 +13,15 @@
 
 ## Installation
 
-Pour installer le package il sera plus mieux utiliser `composer` qui est gestionnaire de package `php`.
+To install the package it will be better to use `composer` who is `php` package manager.
 
 ```bash
 composer require bowphp/tintin
 ```
 
-## Utilisation
+## Usage
 
-Vous pouvez utiliser le package simplement, comme ceci. Mais sauf que cette façon de faire ne permet pas d'exploiter le système d'héritage de façon optimal. Utilisez cette façon de faire, seulement si vous voulez tester le package ou pour les petites applications.
+You can use the package simply, like this. But except that this way of doing does not allow to exploit the inheritance system in an optimal way. Use this way of doing things, only if you want to test the package or for small applications.
 
 ```php
 require 'vendor/autoload.php';
@@ -32,7 +32,7 @@ echo $tintin->render('Hello, world {{ strtoupper($name) }}', ['name' => 'tintin'
 // -> Hello, world TINTIN
 ```
 
-Pour utiliser proprement le package, il faut suivre plutôt l'installation qui suivant:
+To use the package properly, you must rather follow the installation that follows:
 
 ```php
 require 'vendor/autoload.php';
@@ -48,14 +48,14 @@ $tt = new Tintin\Tintin($loader);
 
 | paramêtre | Description |
 |---------|-------------|
-| __php__ | Le chemin vers le dossier des vues de votre applications |
-| __extension__ | l'extension des fichiers de template. Par defaut, la valeur est `tintin.php` |
-| __cache__ | Le dossier de cache. C'est là que `tintin` va créé le cache. S'il n'est pas défini, `tintin` mettra en cache les fichiers compilés dans le répertoire temporaire de `php`.  |
+| __php__ | The path to the views folder of your applications |
+| __extension__ | the extension of the template files. By default, the value is `tintin.php` |
+| __cache__ | The cache folder. This is where `tintin` will create the cache. If it is not set, `tintin` will cache the compiled files in the temporary `php` directory. |
 
-Exemple d'utilisation:
+Example:
 
 ```php
-// Configuration faite qu préalabe
+// Configuration made previously
 $tt = new Tintin\Tintin($loader);
 
 $tt->render('filename', ['name' => 'data']);
@@ -65,11 +65,11 @@ $tt->render('dossier/filename', ['name' => 'data']);
 $tt->render('dossier.filename', ['name' => 'data']);
 ```
 
-> Notez que la source des fichiers est toujour le chemin vers `path`.
+> Note that the source of the files is always the path to `path`.
 
-### Ajouter un commentaire
+### add a comment
 
-Cette clause `{# comments #}` permet d'ajouter un commentaire à votre code `tintin`.
+This `{# comments #}` clause adds a comment to your `tintin` code.
 
 ### `#if` / `#elseif` or `#elif`  / `#else` 
 
@@ -85,24 +85,24 @@ Ce sont les clauses qui permettent d'établir des branchements conditionnels com
 #endif
 ```
 
-> Vous pouvez utiliser `#elif` à la place de `#elseif`.
+> You can use `#elif` instead of `#elseif`.
 
 ### `#unless`
 
-Petite spécificité, le `#unless` quant à lui, il permet de faire une condition inverse du `#if`.
-Pour faire simple, voici un exemple:
+Small specificity, the `#unless` meanwhile, it allows to make a reverse condition of `#if`.
+To put it simply, here is an example:
 
 ```
 #unless ($name == 'tintin') => #if (!($name == 'tintin'))
 ```
 
-### `#loop` comme `foreach` / `#for`, `#while`
+### `#loop` as `foreach` / `#for`, `#while`
 
-Souvent vous pouvez être amener à faire des listes ou répétitions sur des éléments. Par exemple, afficher tout les utilisateurs de votre plateforme.
+Often you may have to make lists or repetitions on items. For example, view all users of your platform.
 
-#### L'utilisation de `#loop`
+#### Using `# loop`
 
-Cette clause faire exactement l'action de `foreach`.
+This clause does exactly the `foreach` action.
 
 ```
 #loop ($names as $name)
@@ -110,8 +110,8 @@ Cette clause faire exactement l'action de `foreach`.
 #endloop
 ```
 
-Cette clause peux être aussi coupler avec tout autre clause telque `#if`.
-Un exemple rapide.
+This clause can also be paired with any other clause such as `#if`.
+A quick example.
 
 ```
 #loop ($names as $name)
@@ -122,11 +122,11 @@ Un exemple rapide.
 #endloop
 ```
 
-Vous avez peut-être remarquer le `#stop` il permet de stoper l'éxécution de la boucle. Il y a aussi son conjoint le `#jump`, lui parcontre permet d'arrêter l'éxécution à son niveau et de lancer s'éxécution du prochain tour de la boucle.
+You may have noticed the `#stop` it allows to stop the execution of the loop. There is also his spouse `#jump` ', him parcontre allows to stop the execution at his level and launch execution of the next round of the loop.
 
-#### Les sucres syntaxiques `#jump(condition)` et `#stop(condition)`
+#### Syntax sugars `#jump (condition)` and `#stop (condition)`
 
-Souvent le dévéloppeur est amené à faire des conditions d'arrêt de la boucle `#loop` comme ceci:
+Often the developer is made to make stop conditions of the `#loop` like this:
 
 ```
 #loop ($names as $name)
@@ -138,7 +138,7 @@ Souvent le dévéloppeur est amené à faire des conditions d'arrêt de la boucl
 #endloop
 ```
 
-Avec les sucres syntaxique, on peut réduire le code comme ceci:
+With syntactic sugars, we can reduce the code like this:
 
 ```
 #loop ($names as $name)
@@ -148,9 +148,9 @@ Avec les sucres syntaxique, on peut réduire le code comme ceci:
 #endloop
 ```
 
-#### L'utilisation de `#for`
+#### Using `# for`
 
-Cette clause faire exactement l'action de `for`.
+This clause does exactly the `for` action.
 
 ```
 #for ($i = 0; $i < 10; $i++)
@@ -158,9 +158,9 @@ Cette clause faire exactement l'action de `for`.
 #endfor
 ```
 
-#### L'utilisation de `#while`
+#### Using `#while`
 
-Cette clause faire exactement l'action de `while`.
+This clause does exactly the `while` action.
 
 ```
 #while ($name != 'tintin')
@@ -168,39 +168,39 @@ Cette clause faire exactement l'action de `while`.
 #endwhile
 ```
 
-### Inclusion de fichier `include`
+### Include file with `#include`
 
-Souvent lorsque vous dévéloppez votre code, vous êtes amener à subdiviser les vues de votre application pour être plus flexible et écrire moin de code.
+Often when you are developing your code, you have to subdivide the views of your application to be more flexible and write less code.
 
-`include` permet d'include un autre fichier de template dans un autre.
+`#include` allows to include another template file in another.
 
 ```
  #include('filename', data)
 ```
 
-#### Exemple d'inclusion
+#### Example of inclusion
 
-Considérons le fichier `hello.tintin.php` suivant:
+Consider the following `hello.tintin.php` file:
 
 ```jinja
 Hello {{ $name }}
 ```
 
-Utilisation:
+Use:
 
 ```
 #include('hello', ['name' => 'Tintin'])
 // => Hello Tintin
 ```
 
-## Héritage avec `#extends`, `#block` et `#inject` 
+## Inherit with `#extends`,` #block` and `#inject`
 
-Comme tout bon système de template **tintin** support le partage de code entre fichier. Ceci permet de rendre votre code flexible et maintenable.
+Like any good template system **tintin** supports code sharing between files. This makes your code flexible and maintainable.
 
-Considérérons le code **tintin** suivant:
+Consider the following **tintin** code:
 
 ```
-// le fichier `layout.tintin.php`
+// The `layout.tintin.php` file
 <!DOCTYPE html>
 <html>
 <head>
@@ -216,10 +216,10 @@ Considérérons le code **tintin** suivant:
 </html>
 ```
 
-Et aussi, on a un autre fichier qui hérite du code du fichier `layout.tintin.php`
+And also, we have another file that inherits the code of the file `layout.tintin.php`
 
 ```
-// le fichier se nomme `content.tintin.php`
+// the file is named `content.tintin.php`
 #extends('layout')
 
 #block('content')
@@ -229,7 +229,7 @@ Et aussi, on a un autre fichier qui hérite du code du fichier `layout.tintin.ph
 
 ### Explication
 
-Le fichier `content.tintin.php` va hérité du code de `layout.tintin.php` et si vous rémarquez bien, dans le fichier `layout.tintin.php` on a la clause `#inject` qui a pour paramètre le nom du `#block` de `content.tintin.php` qui est `content`. Ce qui veut dire que le contenu du `#block` `content` sera remplacé par `#inject`. Ce qui donnéra à la fin ceci:
+The `content.tintin.php` file will inherit the code from` layout.tintin.php` and if you mark it well, in the file `layout.tintin.php` we have the clause `#inject` which has as parameter the name of `content.tintin.php` `block` which is `content`. Which means that the content of `# block` `content` will be replaced by `#inject`. Which will give in the end this:
 
 ```
 <!DOCTYPE html>
@@ -249,20 +249,20 @@ Le fichier `content.tintin.php` va hérité du code de `layout.tintin.php` et si
 
 # Contribution
 
-Pour participer au projet il faut:
+To participate in the project you must:
 
-+ Fork le projet afin qu'il soit parmi les répertoires de votre compte github ex :`https://github.com/votre-compte/app`
-+ Cloner le projet depuis votre compte github `git clone https://github.com/votre-crompte/tintin`
-+ Créer un branche qui aura pour nom le résumé de votre modification `git branch branche-de-vos-traveaux`
-+ Faire une publication sur votre dépot `git push origin branche-de-vos-traveaux`
-+ Enfin faire un [pull-request](https://www.thinkful.com/learn/github-pull-request-tutorial/Keep-Tabs-on-the-Project#Time-to-Submit-Your-First-PR)
++ Fork the project so that it is among the directories of your github ex account: `https://github.com/your-account/app`
++ Clone the project from your github `git clone account https://github.com/your-account/tintin`
++ Create a branch whose name will be the summary of your change `git branch branch-of-your-works`
++ Make a publication on your depot `git push origin branch-of-your-works`
++ Finally make a [pull-request](https://www.thinkful.com/learn/github-pull-request-tutorial/Keep-Tabs-on-the-Project#Time-to-Submit-Your-First-PR)
 
-Ou bien allez dans la page des [issues](https://github.com/bowphp/tintin/issues), faites vos corrections et enfin suivez [publier](#contribution).
+Or go to the [issues](https://github.com/bowphp/tintin/issues) page, make your corrections and finally follow [publish](#contribution).
 
 ## Auteur
 
-**Franck DAKIA** est un développeur Full Stack basé actuellement en Afrique, Côte d'ivoire. Passioné de code, et développement collaboratif, Speaker, Formateur et Membre de plusieurs communautés de développeurs.
+**Franck DAKIA** is a Full Stack developer currently based in Africa, Ivory Coast, Abidjan. Passionate about code, and collaborative development, Speaker, Trainer and Member of several communities of developers.
 
 Contact: [dakiafranck@gmail.com](mailto:dakiafranck@gmail.com) - [@franck_dakia](https://twitter.com/franck_dakia)
 
-**SVP s'il y a un bogue sur le projet veuillez me contacter par email ou laissez moi un message sur le [slack](https://bowphp.slack.com).**
+**Please, if there is a bug on the project please contact me by email or leave me a message on the [slack](https://bowphp.slack.com).**
