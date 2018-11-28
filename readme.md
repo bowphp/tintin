@@ -11,7 +11,7 @@
     <a href="https://travis-ci.org/bowphp/tintin" title="Travis branch"><img src="https://img.shields.io/travis/bowphp/tintin/master.svg?style=flat-square"/></a>
 </p>
 
-This very simplicity php template for small projet. To install the installation tintin, you must use `composer` (PHP package manager) like this.
+It's a very simplicity php template for small projet. To install the installation tintin, you must use `composer` (PHP package manager) like this.
 
 ```bash
 composer require bowphp/tintin
