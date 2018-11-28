@@ -12,7 +12,7 @@ trait CompileExtends
      */
     protected function compileExtendsStack($expression)
     {
-        foreach (['Include', 'Block', 'EndBlock', 'Inject', 'Extends'] as $token) {
+        foreach (['Block', 'EndBlock', 'Include', 'Inject', 'Extends'] as $token) {
             $out = $this->{'compile'.$token}($expression);
 
             if (strlen($out) !== 0) {
@@ -41,9 +41,9 @@ trait CompileExtends
             }
 
             if (is_null($content)) {
-                return "<?php \$__tintin->stackManager->startStack({$match[0]}); ?>";
+                return "<?php \$__tintin->getStackManager()->startStack({$match[0]}); ?>";
             } else {
-                return "<?php \$__tintin->stackManager->startStack({$match[0]}, $content); ?>";
+                return "<?php \$__tintin->getStackManager()->startStack({$match[0]}, $content); ?>";
             }
         }, $expression);
 
@@ -59,7 +59,7 @@ trait CompileExtends
     protected function compileEndBlock($expression)
     {
         $output = preg_replace_callback("/\n*#endblock\n*/m", function () {
-            return "<?php \$__tintin->stackManager->endStack(); ?>";
+            return "<?php \$__tintin->getStackManager()->endStack(); ?>";
         }, $expression);
 
         return $output == $expression ? '' : $output;
@@ -76,7 +76,7 @@ trait CompileExtends
         $regex = "/\#include\s*\(((?:\n|\s|\t)*(?:.+?)(?:\n|\s|\t)*)\)/sm";
 
         $output = preg_replace_callback($regex, function ($match) {
-            return "<?php echo \$__tintin->stackManager->includeFile({$match[1]}, ['__tintin' => \$__tintin]); ?>";
+            return "<?php echo \$__tintin->getStackManager()->includeFile({$match[1]}, ['__tintin' => \$__tintin]); ?>";
         }, $expression);
 
         return $output == $expression ? '' : $output;
@@ -93,9 +93,9 @@ trait CompileExtends
         $regex = "/\#extends\s*\(((?:\n|\s|\t)*(?:.+?)(?:\n|\s|\t)*)\)/sm";
 
         if (preg_match($regex, $expression, $match)) {
-            $this->footer[] = "<?php \$__tintin->stackManager->includeFIle({$match[1]}, ['__tintin' => \$__tintin]); ?>";
+            $this->footer[] = "<?php echo \$__tintin->getStackManager()->includeFile({$match[1]}, ['__tintin' => \$__tintin]); ?>";
 
-            return '';
+            return ' ';
         }
 
         return $expression;
@@ -112,7 +112,7 @@ trait CompileExtends
         $regex = "/\#inject\s*\(((?:\n|\s|\t)*(?:.+?)(?:\n|\s|\t)*)\)/sm";
 
         $output = preg_replace_callback($regex, function ($match) {
-            return "<?php \$__tintin->stackManager->getStack({$match[1]}); ?>";
+            return "<?php echo \$__tintin->getStackManager()->getStack({$match[1]}); ?>";
         }, $expression);
 
         return $output == $expression ? '' : $output;

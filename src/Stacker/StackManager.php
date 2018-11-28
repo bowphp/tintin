@@ -51,15 +51,15 @@ class StackManager
      * @param string $name
      * @param string $content
      */
-    public function startStack($name, $content = '')
+    public function startStack($name, $content = null)
     {
         if (is_null($content)) {
-            if (ob_start()) {
-                $this->stacks[] = $name;
-            }
-        } else {
-            $this->pushes[$name] = $content;
+            ob_start();
         }
+
+        $this->stacks[] = $name;
+        
+        $this->pushes[$name] = $content;
     }
 
     /**
@@ -72,11 +72,13 @@ class StackManager
         $stacks = (array) $stacks;
 
         foreach ($stacks as $block) {
-            if ($block !== true) {
-                $content = $this->tintin->getCompiler()->complie(ob_get_clean());
+            $content = $this->pushes[$block];
 
-                $this->pushes[$block] = trim($content, "\n");
+            if (is_null($content)) {
+                $content = $this->tintin->getCompiler()->complie(ob_get_clean());
             }
+
+            $this->pushes[$block] = trim($content, "\n");
         }
     }
 
@@ -89,7 +91,9 @@ class StackManager
     public function getStack($name)
     {
         if (array_key_exists($name, $this->pushes)) {
-            return $this->tintin->renderString($this->pushes[$name], get_defined_vars());
+            return $this->tintin->renderString(
+                $this->pushes[$name], ['__tintin' => $this->tintin]
+            );
         }
 
         return null;
@@ -98,7 +102,7 @@ class StackManager
     /**
      * Collect the collector stack
      *
-     * @return mixed|null
+     * @return array
      */
     public function getStacks()
     {

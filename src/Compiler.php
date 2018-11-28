@@ -64,10 +64,16 @@ class Compiler
         $data = preg_split('/\n|\r\n/', $data);
 
         foreach ($data as $value) {
-            $this->result .= $this->compileToken($value)."\n";
+            $value = trim($value);
+
+            if (strlen($value) > 0) {
+                $value = trim($this->compileToken($value));
+
+                $this->result .= strlen($value) == 0 ? $value : $value."\n";
+            }
         }
 
-        return $this->resetCompilationAccumulator();
+        return $this->resetCompilatorAccumulator();
     }
 
     /**
@@ -94,12 +100,14 @@ class Compiler
      *
      * @return string
      */
-    private function resetCompilationAccumulator()
+    private function resetCompilatorAccumulator()
     {
-        $result = $this->result;
+        $result = $this->result.implode("\n", $this->footer);
 
         $this->result = '';
 
-        return $result.implode("\n", $this->footer);
+        $this->footer = [];
+
+        return $result;
     }
 }

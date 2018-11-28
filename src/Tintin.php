@@ -36,7 +36,27 @@ class Tintin
     }
 
     /**
-     * Permet de faire le rendu
+     * Get stack manager
+     * 
+     * @return Stacker\StackManager
+     */
+    public function getStackManager()
+    {
+        return $this->stackManager;
+    }
+
+    /**
+     * Get loader
+     * 
+     * @return LoaderInterface
+     */
+    public function getLoader()
+    {
+        return $this->loader;
+    }
+
+    /**
+     * Make template rendering
      *
      * @param $filename
      * @param array $params
@@ -50,28 +70,36 @@ class Tintin
             return $this->renderString($filename, $params);
         }
 
-        if (! $this->loader->fileExists($filename)) {
-            $this->loader->failLoading($filename .' n\'exists pas');
-        }
+        // if (! $this->loader->fileExists($filename)) {
+        //     $this->loader->failLoading($filename .' not found');
+        // }
 
         $__tintin = $this;
-        
-        ob_start();
 
         extract($params);
 
+        /**
+         * Load template when is not a cached file
+         */
         if (! $this->loader->isExpirated($filename)) {
+            $this->obFlushAndStar();
+
             require $this->loader->getCacheFileResolvedPath($filename);
             
             return $this->obGetContent();
         }
 
+        /**
+         * Put the template into cache
+         */
         $content = $this->loader->getFileContent($filename);
 
         $this->loader->cache(
             $filename,
             $this->compiler->complie($content)
         );
+
+        $this->obFlushAndStar();
 
         require $this->loader->getCacheFileResolvedPath($filename);
 
@@ -87,8 +115,6 @@ class Tintin
      */
     public function renderString($data, array $params = [])
     {
-        ob_start();
-
         return $this->executePlainRendering(
             trim($this->compiler->complie($data)),
             $params
@@ -104,9 +130,13 @@ class Tintin
      */
     private function executePlainRendering($content, $params)
     {
+        $this->obFlushAndStar();
+
         extract($params);
 
-        require $filename = $this->createTmpFile($content);
+        $filename = $this->createTmpFile($content);
+
+        require $filename;
 
          @unlink($filename);
 
@@ -128,6 +158,14 @@ class Tintin
     }
 
     /**
+     * Flush OB buffer and start new OB buffering
+     */
+    private function obFlushAndStar()
+    {
+        ob_start();
+    }
+
+    /**
      * Create tmp compile file
      *
      * @param string $content
@@ -135,7 +173,13 @@ class Tintin
      */
     private function createTmpFile($content)
     {
-        $file = sys_get_temp_dir().'/'.md5(microtime(true)).'.php';
+        $tmp_dir = sys_get_temp_dir().'/__tintin';
+
+        if (!is_dir($tmp_dir)) {
+            mkdir($tmp_dir, 0777);
+        }
+
+        $file = $tmp_dir.'/'.md5(microtime(true)).'.php';
 
         file_put_contents($file, $content);
 
