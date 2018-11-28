@@ -92,7 +92,8 @@ class StackManager
     {
         if (array_key_exists($name, $this->pushes)) {
             return $this->tintin->renderString(
-                $this->pushes[$name], ['__tintin' => $this->tintin]
+                $this->pushes[$name],
+                ['__tintin' => $this->tintin]
             );
         }
 

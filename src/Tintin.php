@@ -37,7 +37,7 @@ class Tintin
 
     /**
      * Get stack manager
-     * 
+     *
      * @return Stacker\StackManager
      */
     public function getStackManager()
@@ -47,7 +47,7 @@ class Tintin
 
     /**
      * Get loader
-     * 
+     *
      * @return LoaderInterface
      */
     public function getLoader()
@@ -138,7 +138,7 @@ class Tintin
 
         require $filename;
 
-         @unlink($filename);
+        @unlink($filename);
 
         return $this->obGetContent();
     }
