@@ -14,7 +14,7 @@
 - [Héritage avec #extends, #block et #inject](#h%C3%A9ritage-avec-extends-block-et-inject)
   - [Explication](#explication)
 - [Contribution](#contribution)
-  - [Auteur](#auteur)
+- [Auteur](#auteur)
 
 ## Installation
 
@@ -294,7 +294,7 @@ Pour participer au projet il faut:
 
 Ou bien allez dans la page des [issues](https://github.com/bowphp/tintin/issues), faites vos corrections et enfin suivez [publier](#contribution).
 
-### Auteur
+## Auteur
 
 **Franck DAKIA** est un développeur Full Stack basé actuellement en Afrique, Côte d'ivoire, Abidjan. Passioné de code, et développement collaboratif, Speaker, Formateur et Membre de plusieurs communautés de développeurs.
 
