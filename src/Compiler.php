@@ -9,6 +9,7 @@ class Compiler
         Lexique\CompileEchos,
         Lexique\CompileRawPhp,
         Lexique\CompileComments,
+        Lexique\CompileCustomDirective,
         Lexique\CompileExtends;
 
     /**
@@ -36,6 +37,7 @@ class Compiler
         'IfStack',
         'LoopStack',
         'ExtendsStack',
+        'CustomDirective'
     ];
 
     /**
@@ -52,6 +54,14 @@ class Compiler
      * @var array
      */
     protected $footer = [];
+
+    /**
+     * The custom directive collector
+     * 
+     * @var array
+     */
+    private $directives = [];
+
 
     /**
      * Launch the compilation
@@ -107,5 +117,29 @@ class Compiler
         $this->footer = [];
 
         return $result;
+    }
+
+    /**
+     * Push more directive in template system
+     * 
+     * @param string $name
+     * @param callable $handler
+     * @return mixed
+     */
+    public function pushDirective($name, $handler)
+    {
+        $this->directives[$name] = $handler;
+    }
+
+    /**
+     * Execute custom directory
+     * 
+     * @param callable $handler
+     * @param array $param
+     * @return mixed
+     */
+    public function _____executeCustomDirectory($name, ...$params)
+    {
+        return call_user_func_array($this->directives[$name], [$params]);
     }
 }

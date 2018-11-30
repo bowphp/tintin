@@ -5,6 +5,7 @@ namespace Tintin\Bow;
 use Bow\View\View;
 use Bow\Configuration\Loader;
 use Bow\Configuration\Configuration;
+use Tintin\Tintin;
 
 class TintinConfiguration extends Configuration
 {
@@ -14,8 +15,6 @@ class TintinConfiguration extends Configuration
      */
     public function create(Loader $config)
     {
-        $config['view.engine'] = 'tintin';
-
         $this->container->bind('view', function () use ($config) {
             View::pushEngine('tintin', TintinEngine::class);
 
@@ -32,5 +31,18 @@ class TintinConfiguration extends Configuration
     public function run()
     {
         $this->container->make('view');
+    }
+
+    /**
+     * Customize tintin action
+     * 
+     * @param Tintin $tintin
+     * @return mixed
+     */
+    public function customizer(Tintin $tintin)
+    {
+        $tintin->directive('csrf', function (array $attribues = []) {
+            return \csrf_token();
+        });
     }
 }
