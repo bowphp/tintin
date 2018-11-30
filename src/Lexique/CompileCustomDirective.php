@@ -24,7 +24,6 @@ trait CompileCustomDirective
             }
 
             return "<?php echo \$__tintin->getCompiler()->_____executeCustomDirectory(\"$name\");";
-
         }, $expression);
         
         return is_null($output) ? $expression : $output;
@@ -32,7 +31,7 @@ trait CompileCustomDirective
 
     /**
      * Get partern
-     * 
+     *
      * @return string
      */
     private function getPartern()

@@ -30,19 +30,19 @@ class TintinConfiguration extends Configuration
      */
     public function run()
     {
-        $this->container->make('view');
+        $view = $this->container->make('view');
+
+        $this->customizer($view->getTemplate());
     }
 
     /**
      * Customize tintin action
-     * 
+     *
      * @param Tintin $tintin
      * @return mixed
      */
-    public function customizer(Tintin $tintin)
+    private function customizer(Tintin $tintin)
     {
-        $tintin->directive('csrf', function (array $attribues = []) {
-            return \csrf_token();
-        });
+        //
     }
 }

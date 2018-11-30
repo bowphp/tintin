@@ -134,6 +134,6 @@ class Filesystem implements LoaderInterface
      */
     public function failLoading($message)
     {
-        throw new \Exception($message);
+        throw new \Tintin\Exception\FileNotFoundException($message);
     }
 }

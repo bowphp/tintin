@@ -8,21 +8,21 @@ class Tintin
 {
     /**
      * The tintin parse instance
-     * 
+     *
      * @var Compiler;
      */
     private $compiler;
 
     /**
      * The loader interface instance
-     * 
+     *
      * @var LoaderInterface
      */
     private $loader;
 
     /**
      * The stack manager instance
-     * 
+     *
      * @var Stacker\StackManager
      */
     private $stackManager;
@@ -202,7 +202,7 @@ class Tintin
 
     /**
      * Push more directive in template system
-     * 
+     *
      * @param string $name
      * @param callable $handler
      * @return mixed

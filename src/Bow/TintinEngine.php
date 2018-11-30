@@ -60,13 +60,13 @@ class TintinEngine extends EngineAbstract
 
     /**
      * Get template extension
-     * 
+     *
      * @return string
      */
     private function getExtension()
     {
-        return is_null($config['view.extension']) 
-            ? $config['view.extension'] 
+        return is_null($config['view.extension'])
+            ? $config['view.extension']
             : 'tintin.php';
     }
 }
