@@ -2,7 +2,7 @@
 - [Utilisation](#utilisation)
   - [Configuration pour Bow](#configuration-pour-bow)
   - [Ajouter un commentaire](#ajouter-un-commentaire)
-  - [#if / #elseif or #elif / #else](#if--elseif-or-elif--else)
+  - [#if / #elseif ou #elif / #else](#if--elseif-ou-elif--else)
   - [#unless](#unless)
   - [#loop / #for / #while](#loop--for--while)
     - [L'utilisation de #loop](#lutilisation-de-loop)
@@ -106,7 +106,7 @@ Et c'est tout, désormais votre moteur de template par defaut est `tintin` :+1:
 
 Cette clause `{# comments #}` permet d'ajouter un commentaire à votre code `tintin`.
 
-### #if / #elseif or #elif / #else
+### #if / #elseif ou #elif / #else
 
 Ce sont les clauses qui permettent d'établir des branchements conditionnels comme dans la plupart des langages de programmation.
 
