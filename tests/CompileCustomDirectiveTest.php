@@ -46,8 +46,6 @@ class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
 
         $r = $this->tintin->render('#input(["type" => "text", "value" => null, "name" => "name"])');
 
-        var_dump($r);
-
         $this->assertEquals($r, '<input type="text" name="name" value="" />');
     }
 }
