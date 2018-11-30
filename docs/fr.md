@@ -20,6 +20,7 @@
   - [Utilisation des directives](#utilisation-des-directives)
   - [Compilation du template](#compilation-du-template)
   - [Sortie après compilation](#sortie-apr%C3%A8s-compilation)
+  - [Ajouter vos directive de la configuration](#ajouter-vos-directive-de-la-configuration)
 - [Contribution](#contribution)
 - [Auteur](#auteur)
 
@@ -375,6 +376,38 @@ echo $tintin->render('form');
   <textarea name="content"></textarea>
   <button type="submit">Add</button>
 </form>
+```
+
+### Ajouter vos directive de la configuration
+
+Dans le cas ou vous utilisez la configuration Tintin pour Bow Framework.
+
+Vous pouvez créer une classe dans le dossier `app`, par exemple, avec le nom `CustomTintinConfiguration` qui va étendre la configuration par défaut de Tintin qui est `\Tintin\Bow\TintinConfiguration::class` et ensuite modifier la méthode `customizer`.
+
+```php
+use Tintin\Tintin;
+
+class CustomTintinConfiguration extends \Tintin\Bow\TintinConfiguration
+{
+  /**
+   * Add action in tintin
+   *
+   * @param Tintin $tintin
+   */
+  public function customizer(Tintin $tintin)
+  {
+    $tintin->directive('super', function (array $attributes = []) {
+      return "Super !";
+    });
+  }
+}
+```
+
+Maintenant la directive `#super` est disponible et vous pouvez l'utiliser.
+
+```php
+  return $tintin->render('#super');
+  // => Super !
 ```
 
 ## Contribution

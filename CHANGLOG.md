@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2018-11-28
+
+- [Add] custom directive [#da7504b](https://github.com/bowphp/tintin/commit/da7504b911ce704581f0341b61884a7f3759d304)
+- [Change] Update documentation
+
 ## [1.1.5] - 2018-11-28
 
 - [Fix] fix duplicate rendering output
