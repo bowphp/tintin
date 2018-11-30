@@ -117,7 +117,7 @@ class Tintin
     {
         return $this->executePlainRendering(
             trim($this->compiler->complie($data)),
-            $params
+            array_merge($params, ['__tintin' => $this])
         );
     }
 
