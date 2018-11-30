@@ -1,4 +1,6 @@
+- [Introduction](#introduction)
 - [Installation](#installation)
+- [Configuration](#configuration)
 - [Usage](#usage)
   - [Configuration for Bow](#configuration-for-bow)
   - [Add a comment](#add-a-comment)
@@ -22,6 +24,10 @@
 - [Contribution](#contribution)
 - [Author](#author)
 
+## Introduction
+
+Tintin est un template PHP qui se veut très simple et extensible. Il peut être utilisable dans n'importe quel projet PHP.
+
 ## Installation
 
 To install the package it will be better to use `composer` who is `php` package manager.
@@ -30,7 +36,7 @@ To install the package it will be better to use `composer` who is `php` package 
 composer require bowphp/tintin
 ```
 
-## Usage
+### Configuration
 
 You can use the package simply, like this. But except that this way of doing does not allow to exploit the inheritance system in an optimal way. Use this way of doing things, only if you want to test the package or for small applications.
 
@@ -63,7 +69,7 @@ $tt = new Tintin\Tintin($loader);
 | __extension__ | the extension of the template files. By default, the value is `tintin.php` |
 | __cache__ | The cache folder. This is where `tintin` will create the cache. If it is not set, `tintin` will cache the compiled files in the temporary `php` directory. |
 
-Example:
+## Usage
 
 ```php
 // Configuration made previously

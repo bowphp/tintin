@@ -1,6 +1,6 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
-  - [Configuration](#configuration)
+- [Configuration](#configuration)
 - [Utilisation](#utilisation)
   - [Configuration pour Bow](#configuration-pour-bow)
   - [Ajouter un commentaire](#ajouter-un-commentaire)
