@@ -1,4 +1,6 @@
+- [Introduction](#introduction)
 - [Installation](#installation)
+  - [Configuration](#configuration)
 - [Utilisation](#utilisation)
   - [Configuration pour Bow](#configuration-pour-bow)
   - [Ajouter un commentaire](#ajouter-un-commentaire)
@@ -13,8 +15,17 @@
     - [Exemple d'inclusion](#exemple-dinclusion)
 - [Héritage avec #extends, #block et #inject](#h%C3%A9ritage-avec-extends-block-et-inject)
   - [Explication](#explication)
+- [Directive personnelisée](#directive-personnelis%C3%A9e)
+  - [Example](#example)
+  - [Utilisation des directives](#utilisation-des-directives)
+  - [Compilation du template](#compilation-du-template)
+  - [Sortie après compilation](#sortie-apr%C3%A8s-compilation)
 - [Contribution](#contribution)
 - [Auteur](#auteur)
+
+## Introduction
+
+Tintin est un template PHP qui se veut très simple et extensible. Il peut être utilisable dans n'importe quel projet PHP.
 
 ## Installation
 
@@ -24,7 +35,7 @@ Pour installer le package il sera plus mieux utiliser `composer` qui est gestion
 composer require bowphp/tintin
 ```
 
-## Utilisation
+### Configuration
 
 Vous pouvez utiliser le package simplement, comme ceci. Mais sauf que cette façon de faire ne permet pas d'exploiter le système d'héritage de façon optimal. Utilisez cette façon de faire, seulement si vous voulez tester le package ou pour les petites applications.
 
@@ -37,7 +48,7 @@ echo $tintin->render('Hello, world {{ strtoupper($name) }}', ['name' => 'tintin'
 // -> Hello, world TINTIN
 ```
 
-Pour utiliser proprement le package, il faut suivre plutôt l'installation qui suivant:
+Pour utiliser proprement le package, il faut suivre plutôt la configuration qui suivant:
 
 ```php
 require 'vendor/autoload.php';
@@ -48,7 +59,7 @@ $loader = new Tintin\Loader\Filesystem([
   'cache' => '/path/to/the/cache/directory'
 ]);
 
-$tt = new Tintin\Tintin($loader);
+$tintin = new Tintin\Tintin($loader);
 ```
 
 | paramêtre | Description |
@@ -57,17 +68,17 @@ $tt = new Tintin\Tintin($loader);
 | __extension__ | l'extension des fichiers de template. Par defaut, la valeur est `tintin.php` |
 | __cache__ | Le dossier de cache. C'est là que `tintin` va créé le cache. S'il n'est pas défini, `tintin` mettra en cache les fichiers compilés dans le répertoire temporaire de `php`.  |
 
-Exemple d'utilisation:
+## Utilisation
 
 ```php
 // Configuration faite qu préalabe
-$tt = new Tintin\Tintin($loader);
+$tintin = new Tintin\Tintin($loader);
 
-$tt->render('filename', ['name' => 'data']);
+$tintin->render('filename', ['name' => 'data']);
 // Ou
-$tt->render('dossier/filename', ['name' => 'data']);
+$tintin->render('dossier/filename', ['name' => 'data']);
 // Ou
-$tt->render('dossier.filename', ['name' => 'data']);
+$tintin->render('dossier.filename', ['name' => 'data']);
 ```
 
 > Notez que la source des fichiers est toujour le chemin vers `path`.
@@ -280,6 +291,90 @@ Le fichier `content.tintin.php` va hérité du code de `layout.tintin.php` et si
   <p>Page footer</p>
 </body>
 </html>
+```
+
+## Directive personnelisée
+
+Tintin peut être étendu avec son systême de directive personnalisé, pour ce faire utilisé la méthode `directive`
+
+```php
+$tintin->directive('hello', function (array $attributes = []) {
+  return 'Hello, '. $attributes[0];
+});
+
+echo $tintin->render('#hello("Tintin")');
+// => Hello, Tintin
+```
+
+### Example
+
+Création de directive pour gérer un formulaires:
+
+```php
+$tintin->directive('input', function (array $attributes = []) {
+  $attribute = $attributes[0];
+
+  return '<input type="'.$attribute['type'].'" name="'.$attribute['name'].'" value="'.$attribute['value'].'" />';
+});
+
+$tintin->directive('textarea', function (array $attributes = []) {
+  $attribute = $attributes[0];
+
+  return '<textarea name="'.$attribute['name'].'">"'.$attribute['value'].'"</textarea>';
+});
+
+$tintin->directive('button', function (array $attributes = []) {
+  $attribute = $attributes[0];
+
+  return '<button type="'.$attribute['type'].'">'.$attribute['label'].'"</button>';
+});
+
+$tintin->directive('form', function (array $attributes = []) {
+  $attribute = " ";
+  
+  if (isset($attributes[0])) {
+    foreach ($attributes[0] as $key => $value) {
+      $attribute .= $key . '="'.$value.'" ';
+    }
+  }
+
+  return '<form "'.trim($attribute).'">';
+});
+
+$tintin->directive('endform', function (array $attributes = []) {
+  return '</form>';
+});
+```
+
+### Utilisation des directives
+
+Pour utiliser ces directives, rien de plus simple. Ecrivez le nom de la directive précédé la par `#`. Ensuite si cette directive prend des paramètres, lancer la directive comme vous lancez les fonctions dans votre programme. Les paramètres seront régroupés dans la varibles `$attributes` dans l'ordre d'ajout.
+
+```c
+// Fichier form.tintin.php
+#form(['method' => 'post', "action" => "/posts", "enctype" => "multipart/form-data"])
+  #input(["type" => "text", "value" => null, "name" => "name"])
+  #textarea(["value" => null, "name" => "content"])
+  #button(['type' => 'submit', 'label' => 'Add'])
+#endform
+```
+
+### Compilation du template
+
+La compilation se fait comme d'habitude, pour plus d'information sur la [compilation](#utilisation).
+
+```php
+echo $tintin->render('form');
+```
+
+### Sortie après compilation
+
+```html
+<form action="/posts" method="post" enctype="multipart/form-data">
+  <input type="text" name="name" value="" />
+  <textarea name="content"></textarea>
+  <button type="submit">Add</button>
+</form>
 ```
 
 ## Contribution

@@ -7,16 +7,22 @@ use Tintin\Loader\LoaderInterface;
 class Tintin
 {
     /**
+     * The tintin parse instance
+     *
      * @var Compiler;
      */
     private $compiler;
 
     /**
+     * The loader interface instance
+     *
      * @var LoaderInterface
      */
     private $loader;
 
     /**
+     * The stack manager instance
+     *
      * @var Stacker\StackManager
      */
     private $stackManager;
@@ -192,5 +198,17 @@ class Tintin
     public function getCompiler()
     {
         return $this->compiler;
+    }
+
+    /**
+     * Push more directive in template system
+     *
+     * @param string $name
+     * @param callable $handler
+     * @return mixed
+     */
+    public function directive($name, $handler)
+    {
+        $this->compiler->pushDirective($name, $handler);
     }
 }

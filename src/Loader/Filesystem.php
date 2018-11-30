@@ -60,7 +60,7 @@ class Filesystem implements LoaderInterface
      */
     public function getExtension()
     {
-        return isset($this->config['extension']) ? $this->config['extension'] : 'tintin.php';
+        return isset($this->config['extension']) ? trim($this->config['extension'], '.') : 'tintin.php';
     }
 
     /**
@@ -134,6 +134,6 @@ class Filesystem implements LoaderInterface
      */
     public function failLoading($message)
     {
-        throw new \Exception($message);
+        throw new \Tintin\Exception\FileNotFoundException($message);
     }
 }

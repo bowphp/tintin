@@ -31,7 +31,7 @@ class TintinEngine extends EngineAbstract
         $loader = new TintinFilesystem([
             'path' => $config['view.path'],
             'cache' => $config['view.cache'],
-            'extension' => is_null($config['view.extension']) ? $config['view.extension'] : 'tintin.php'
+            'extension' => $this->getExtension()
         ]);
 
         $this->template = new Tintin($loader);
@@ -49,12 +49,24 @@ class TintinEngine extends EngineAbstract
     }
 
     /**
-     * Get the BladeEngine instance
+     * Get the Tintin Engine instance
      *
-     * @return BladeInstance
+     * @return Tintin
      */
     public function getTemplate()
     {
         return $this->template;
+    }
+
+    /**
+     * Get template extension
+     *
+     * @return string
+     */
+    private function getExtension()
+    {
+        return is_null($config['view.extension'])
+            ? $config['view.extension']
+            : 'tintin.php';
     }
 }

@@ -9,6 +9,7 @@ class Compiler
         Lexique\CompileEchos,
         Lexique\CompileRawPhp,
         Lexique\CompileComments,
+        Lexique\CompileCustomDirective,
         Lexique\CompileExtends;
 
     /**
@@ -36,6 +37,7 @@ class Compiler
         'IfStack',
         'LoopStack',
         'ExtendsStack',
+        'CustomDirective'
     ];
 
     /**
@@ -52,6 +54,40 @@ class Compiler
      * @var array
      */
     protected $footer = [];
+
+    /**
+     * The custom directive collector
+     *
+     * @var array
+     */
+    private $directives = [];
+
+    /**
+     * Liste of default directive
+     *
+     * @var array
+     */
+    private $directivesProtected = [
+        'if',
+        'else',
+        'elseif',
+        'elif',
+        'endif',
+        'unless',
+        'extends',
+        'block',
+        'inject',
+        'include',
+        'endblock',
+        'while',
+        'endwhile',
+        'for',
+        'endfor',
+        'loop',
+        'endloop',
+        'stop',
+        'jump',
+    ];
 
     /**
      * Launch the compilation
@@ -107,5 +143,33 @@ class Compiler
         $this->footer = [];
 
         return $result;
+    }
+
+    /**
+     * Push more directive in template system
+     *
+     * @param string $name
+     * @param callable $handler
+     * @return mixed
+     */
+    public function pushDirective($name, $handler)
+    {
+        if (in_array($name, $this->directivesProtected)) {
+            throw new \Tintin\Exception\DirectiveNotAllowException('The ' . $name . ' directive is not allow.');
+        }
+
+        $this->directives[$name] = $handler;
+    }
+
+    /**
+     * Execute custom directory
+     *
+     * @param callable $handler
+     * @param array $param
+     * @return mixed
+     */
+    public function _____executeCustomDirectory($name, ...$params)
+    {
+        return call_user_func_array($this->directives[$name], [$params]);
     }
 }
