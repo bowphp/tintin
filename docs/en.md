@@ -13,6 +13,11 @@
     - [Example of inclusion](#example-of-inclusion)
 - [Inherit with #extends, #block and #inject](#inherit-with-extends-block-and-inject)
   - [Explication](#explication)
+- [Personalized directive](#personalized-directive)
+  - [Example](#example)
+  - [Use of directives](#use-of-directives)
+  - [Compilation du template](#compilation-du-template)
+  - [Output after compilation](#output-after-compilation)
 - [Contribution](#contribution)
 - [Author](#author)
 
@@ -280,6 +285,90 @@ The `content.tintin.php` file will inherit the code from` layout.tintin.php` and
   <p>Page footer</p>
 </body>
 </html>
+```
+
+## Personalized directive
+
+Tintin can be expanded with its custom directive system, to do this used the method `directive`
+
+```php
+$tintin->directive('hello', function (array $attributes = []) {
+  return 'Hello, '. $attributes[0];
+});
+
+echo $tintin->render('#hello("Tintin")');
+// => Hello, Tintin
+```
+
+### Example
+
+Creating a directive to manage a form:
+
+```php
+$tintin->directive('input', function (array $attributes = []) {
+  $attribute = $attributes[0];
+
+  return '<input type="'.$attribute['type'].'" name="'.$attribute['name'].'" value="'.$attribute['value'].'" />';
+});
+
+$tintin->directive('textarea', function (array $attributes = []) {
+  $attribute = $attributes[0];
+
+  return '<textarea name="'.$attribute['name'].'">"'.$attribute['value'].'"</textarea>';
+});
+
+$tintin->directive('button', function (array $attributes = []) {
+  $attribute = $attributes[0];
+
+  return '<button type="'.$attribute['type'].'">'.$attribute['label'].'"</button>';
+});
+
+$tintin->directive('form', function (array $attributes = []) {
+  $attribute = " ";
+  
+  if (isset($attributes[0])) {
+    foreach ($attributes[0] as $key => $value) {
+      $attribute .= $key . '="'.$value.'" ';
+    }
+  }
+
+  return '<form "'.trim($attribute).'">';
+});
+
+$tintin->directive('endform', function (array $attributes = []) {
+  return '</form>';
+});
+```
+
+### Use of directives
+
+To use these guidelines, nothing is easier. Write the name of the directive preceded by `#`. Then if this directive takes parameters, launch the directive as you run the functions in your program. The parameters will be grouped in the `$attributes` varibles in the added order.
+
+```c
+// File form.tintin.php
+#form(['method' => 'post', "action" => "/posts", "enctype" => "multipart/form-data"])
+  #input(["type" => "text", "value" => null, "name" => "name"])
+  #textarea(["value" => null, "name" => "content"])
+  #button(['type' => 'submit', 'label' => 'Add'])
+#endform
+```
+
+### Compilation du template
+
+The compilation is done as usual, for more information on the [compilation](#use).
+
+```php
+echo $tintin->render('form');
+```
+
+### Output after compilation
+
+```html
+<form action="/posts" method="post" enctype="multipart/form-data">
+  <input type="text" name="name" value="" />
+  <textarea name="content"></textarea>
+  <button type="submit">Add</button>
+</form>
 ```
 
 ## Contribution

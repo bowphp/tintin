@@ -16,7 +16,7 @@
 - [Héritage avec #extends, #block et #inject](#h%C3%A9ritage-avec-extends-block-et-inject)
   - [Explication](#explication)
 - [Directive personnelisée](#directive-personnelis%C3%A9e)
-  - [Example](#example)
+  - [Exemple](#exemple)
   - [Utilisation des directives](#utilisation-des-directives)
   - [Compilation du template](#compilation-du-template)
   - [Sortie après compilation](#sortie-apr%C3%A8s-compilation)
@@ -306,7 +306,7 @@ echo $tintin->render('#hello("Tintin")');
 // => Hello, Tintin
 ```
 
-### Example
+### Exemple
 
 Création de directive pour gérer un formulaires:
 
