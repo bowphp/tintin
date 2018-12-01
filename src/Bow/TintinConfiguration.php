@@ -32,7 +32,7 @@ class TintinConfiguration extends Configuration
     {
         $view = $this->container->make('view');
 
-        $this->customizer($view->getTemplate());
+        $this->customizer($view->getTemplate()->getTemplate());
     }
 
     /**

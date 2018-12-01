@@ -10,7 +10,7 @@ use Tintin\Tintin;
 class TintinEngine extends EngineAbstract
 {
     /**
-     * @var BladeInstance
+     * @var Tintin
      */
     private $template;
 
@@ -65,8 +65,8 @@ class TintinEngine extends EngineAbstract
      */
     private function getExtension()
     {
-        return is_null($config['view.extension'])
-            ? $config['view.extension']
+        return is_null($this->config['view.extension'])
+            ? $this->config['view.extension']
             : 'tintin.php';
     }
 }
