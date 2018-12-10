@@ -21,17 +21,25 @@ class FilesystemTest extends \PHPUnit\Framework\TestCase
     /**
      * @inheritdoc
      */
-    public function testGetFileResolvedPath()
+    public function testFileExists()
     {
-        //
+        $this->assertTrue(
+            $this->filesystem->exists('app')
+        );
+        $this->assertFalse(
+            $this->filesystem->exists('other')
+        );
     }
 
     /**
      * @inheritdoc
      */
-    public function testGetCacheFileResolvedPath()
+    public function testGetFileResolvedPath()
     {
-        //
+        $this->assertEquals(
+            $this->filesystem->getFileResolvedPath('app'),
+            __DIR__.'/view/app.tintin.php'
+        );
     }
 
     /**
@@ -39,7 +47,10 @@ class FilesystemTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetCachePath()
     {
-        //
+        $this->assertEquals(
+            $this->filesystem->getCachePath(),
+            __DIR__.'/cache'
+        );
     }
 
     /**
@@ -47,7 +58,10 @@ class FilesystemTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetExtension()
     {
-        //
+        $this->assertEquals(
+            $this->filesystem->getExtension(),
+           'tintin.php'
+        );
     }
 
     /**
@@ -55,38 +69,9 @@ class FilesystemTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetFileContent()
     {
-        //
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function testIsExpirated()
-    {
-        //
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function testIsCached()
-    {
-        //
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function testFileExists()
-    {
-        //
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function testCache()
-    {
-        //
+        $this->assertEquals(
+            $this->filesystem->getFileContent('file'),
+            'tintin'
+        );
     }
 }

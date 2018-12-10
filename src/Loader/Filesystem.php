@@ -40,6 +40,10 @@ class Filesystem implements LoaderInterface
      */
     public function getCacheFileResolvedPath($filename)
     {
+        if (!$this->exists($filename)) {
+            $this->failLoading($filename . ' file not exists !');
+        }
+
         $md5 = sha1($filename);
 
         $dirname = substr($md5, 0, 2);
@@ -104,7 +108,7 @@ class Filesystem implements LoaderInterface
     /**
      * @inheritdoc
      */
-    public function fileExists($filename)
+    public function exists($filename)
     {
         return file_exists(
             $this->getFileResolvedPath($filename)

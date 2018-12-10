@@ -114,6 +114,30 @@ return [
 
 And that's it, now your default template engine is `tintin`: +1:
 
+### Data display
+
+Vous pouvez afficher le contenu de la variable name de la manière suivante:
+
+```c
+Hello, {{ $name }}.
+```
+
+Bien entendu, vous n'êtes pas limité à afficher le contenu des variables transmises à la vue. Vous pouvez également faire écho aux résultats de toute fonction PHP. En fait, vous pouvez insérer n'importe quel code PHP dans une instruction echo Blade:
+
+```html
+Hello, {{ strtoupper($name) }}.
+```
+
+> Les instructions Tintin `{{}}` sont automatiquement envoyées via la fonction PHP `htmlspecialchars` pour empêcher les attaques XSS.
+
+#### Affichage des données non échappées
+
+Par défaut, les instructions Tintin `{{}}` sont automatiquement envoyées via la fonction PHP `htmlspecialchars` pour empêcher les attaques XSS. Si vous ne souhaitez pas que vos données soient protégées, vous pouvez utiliser la syntaxe suivante:
+
+```html
+Hello, {{{ $name }}}.
+```
+
 ### Add a comment
 
 This `{# comments #}` clause adds a comment to your `tintin` code.

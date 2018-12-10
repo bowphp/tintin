@@ -76,7 +76,7 @@ class Tintin
             return $this->renderString($filename, $params);
         }
 
-        if (! $this->loader->fileExists($filename)) {
+        if (! $this->loader->exists($filename)) {
             $this->loader->failLoading($filename .' not found');
         }
 

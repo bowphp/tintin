@@ -33,7 +33,7 @@ interface LoaderInterface
      * @param $filename
      * @return bool
      */
-    public function fileExists($filename);
+    public function exists($filename);
 
     /**
      * Check if file is expirate
