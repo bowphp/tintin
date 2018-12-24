@@ -16,5 +16,15 @@
     "require": {
         "phpunit/phpunit": "^4"
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Tintin\\Laravel\\TintinServiceProvider"
+            ],
+            "aliases": {
+                "Tintin": "Tintin\\Laravel\\Facade\\Tintin"
+            }
+        }
+    }
 }

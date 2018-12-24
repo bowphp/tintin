@@ -12,8 +12,10 @@ class TintinServiceProvider extends ViewServiceProvider
      */
     public function register()
     {
-        //
+        $this->registerViewFinder();
+        $this->registerViewLoader();
     }
+    
     /**
      * {@inheritdoc}
      */
@@ -29,13 +31,27 @@ class TintinServiceProvider extends ViewServiceProvider
      */
     public function registerViewFinder()
     {
-        $this->app->bind('view.finder', function ($app) {
+        $this->app->singleton('view.finder', function ($app) {
             return new TintinFilesystem([
-                'path' => $app['config']['view.paths'],
-                'extension' => $app['config']['app.extension'],
-                'cache' => '/path/to/the/cache/directory'
+                'path' => $app['config']['tintin.path'],
+                'extension' => $app['config']['tintin.extension'],
+                'cache' => $app['config']['tintin.cache']
             ]);
         });
+    }
+
+    /**
+     * Register the view load implementation.
+     *
+     * @return void
+     */
+    public function registerViewLoader()
+    {
+        $this->app->singleton('view', function ($app) {
+            return new Tintin($app['view.finder']);
+        });
+
+        $this->app->singleton('tintin', $this->app['view']);
     }
 
     /**
@@ -45,10 +61,12 @@ class TintinServiceProvider extends ViewServiceProvider
      */
     protected function loadConfiguration()
     {
-        $config_path = __DIR__ . '/../config/tintin.php';
+        $config_path = __DIR__.'/../../config/tintin.php';
 
-        if ( ! $this->isLumen()) {
-            $this->publishes([$config_path => config_path('tintin.php')], 'config');
+        if (!$this->isLumen()) {
+            $this->publishes([
+                $config_path => config_path('tintin.php')
+            ], 'config');
         }
 
         $this->mergeConfigFrom($config_path, 'tintin');
@@ -62,5 +80,15 @@ class TintinServiceProvider extends ViewServiceProvider
     protected function isLumen()
     {
         return strpos($this->app->version(), 'Lumen') !== false;
+    }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return ['view', Tintin::class];
     }
 }

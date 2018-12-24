@@ -60,7 +60,7 @@ class FilesystemTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(
             $this->filesystem->getExtension(),
-           'tintin.php'
+            'tintin.php'
         );
     }
 
