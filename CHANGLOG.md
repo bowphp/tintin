@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.4] - 2018-12-25
+
+- [change] change Laravel TintinServiceProvider extended at the base Laravel ServiceProvider
+- [fix] undefined Tintin class bug fix [#b6911d4](https://github.com/bowphp/tintin/commit/f2e91bfceb66ed33703f383d41148ec2eb031912)
+
+## [1.2.3] - 2018-12-25
+
+- [fix] remane method: `complie` to `compile`
+- [fix] coment compilation error
+
 ## [1.2.0] - 2018-11-28
 
 - [Add] custom directive [#da7504b](https://github.com/bowphp/tintin/commit/da7504b911ce704581f0341b61884a7f3759d304)
