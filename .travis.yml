@@ -12,7 +12,7 @@ cache:
     - $HOME/.composer/cache
 
 php:
-  - 7.0
+  - 7.1.9
   - nightly
 
 install:
