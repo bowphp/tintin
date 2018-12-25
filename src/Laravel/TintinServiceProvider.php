@@ -4,7 +4,7 @@ namespace Tintin\Laravel;
 
 use Illuminate\Support\ServiceProvider;
 use Tintin\Loader\Filesystem as TintinFilesystem;
-use Tintin\Tintin;
+use Tintin\Laraval\Tintin;
 
 class TintinServiceProvider extends ServiceProvider
 {
@@ -32,7 +32,7 @@ class TintinServiceProvider extends ServiceProvider
      */
     public function registerViewFinder()
     {
-        $this->app->singleton('tintin.finder', function ($app) {
+        $this->app->singleton('view.finder', function ($app) {
             return new TintinFilesystem([
                 'path' => $app['config']['tintin.path'],
                 'extension' => $app['config']['tintin.extension'],
@@ -48,8 +48,8 @@ class TintinServiceProvider extends ServiceProvider
      */
     public function registerViewLoader()
     {
-        $this->app->singleton('tintin', function ($app) {
-            return new Tintin($app['tintin.finder']);
+        $this->app->singleton('view', function ($app) {
+            return new Tintin($app['view.finder']);
         });
     }
 
@@ -68,7 +68,7 @@ class TintinServiceProvider extends ServiceProvider
             ], 'config');
         }
 
-        $this->mergeConfigFrom($config_path, 'tintin');
+        $this->mergeConfigFrom($config_path, 'view');
     }
 
     /**
@@ -88,6 +88,6 @@ class TintinServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['tintin'];
+        return ['view'];
     }
 }
