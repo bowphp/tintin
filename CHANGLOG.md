@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.4] - 2018-12-25
 
+- [change] change Laravel container name for Tintin
 - [change] change Laravel TintinServiceProvider extended at the base Laravel ServiceProvider
 - [fix] undefined Tintin class bug fix [#b6911d4](https://github.com/bowphp/tintin/commit/f2e91bfceb66ed33703f383d41148ec2eb031912)
 

@@ -32,7 +32,7 @@ class TintinServiceProvider extends ServiceProvider
      */
     public function registerViewFinder()
     {
-        $this->app->singleton('view.finder', function ($app) {
+        $this->app->singleton('tintin.finder', function ($app) {
             return new TintinFilesystem([
                 'path' => $app['config']['tintin.path'],
                 'extension' => $app['config']['tintin.extension'],
@@ -48,11 +48,9 @@ class TintinServiceProvider extends ServiceProvider
      */
     public function registerViewLoader()
     {
-        $this->app->singleton('view', function ($app) {
-            return new Tintin($app['view.finder']);
+        $this->app->singleton('tintin', function ($app) {
+            return new Tintin($app['tintin.finder']);
         });
-
-        $this->app->singleton('tintin', $this->app['view']);
     }
 
     /**
@@ -90,6 +88,6 @@ class TintinServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['view', 'tintin'];
+        return ['tintin'];
     }
 }
