@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.5] - 2018-12-25
+
+- [fix] many bug fixed about Laravel Packaging
+
 ## [1.2.4] - 2018-12-25
 
 - [change] change Laravel container name for Tintin
