@@ -12,16 +12,9 @@ class TintinServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->loadConfiguration();
         $this->registerViewFinder();
         $this->registerViewLoader();
-    }
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function boot()
-    {
-        $this->loadConfiguration();
     }
 
     /**

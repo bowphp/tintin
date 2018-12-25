@@ -13,6 +13,6 @@ class Tintin extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'tintin';
+        return 'view';
     }
 }
