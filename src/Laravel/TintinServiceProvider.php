@@ -4,6 +4,7 @@ namespace Tintin\Laravel;
 
 use Illuminate\View\ViewServiceProvider;
 use Tintin\Loader\Filesystem as TintinFilesystem;
+use Tintin\Tintin;
 
 class TintinServiceProvider extends ViewServiceProvider
 {
