@@ -26,9 +26,9 @@ class TintinServiceProvider extends ServiceProvider
     {
         $this->app->singleton('view.finder', function ($app) {
             return new TintinFilesystem([
-                'path' => $app['config']['tintin.path'],
-                'extension' => $app['config']['tintin.extension'],
-                'cache' => $app['config']['tintin.cache']
+                'path' => $app['config']['view.path'],
+                'extension' => $app['config']['view.extension'],
+                'cache' => $app['config']['view.cache']
             ]);
         });
     }
@@ -56,7 +56,7 @@ class TintinServiceProvider extends ServiceProvider
 
         if (!$this->isLumen()) {
             $this->publishes([
-                $config_path => config_path('tintin.php')
+                $config_path => config_path('view.php')
             ], 'config');
         }
 
