@@ -2,11 +2,11 @@
 
 namespace Tintin\Laravel;
 
-use Illuminate\View\ViewServiceProvider;
+use Illuminate\Support\ServiceProvider;
 use Tintin\Loader\Filesystem as TintinFilesystem;
 use Tintin\Tintin;
 
-class TintinServiceProvider extends ViewServiceProvider
+class TintinServiceProvider extends ServiceProvider
 {
     /**
      * {@inheritdoc}
@@ -90,6 +90,6 @@ class TintinServiceProvider extends ViewServiceProvider
      */
     public function provides()
     {
-        return ['view', 'tintin', Tintin::class];
+        return ['view', 'tintin'];
     }
 }
