@@ -89,6 +89,6 @@ class TintinServiceProvider extends ViewServiceProvider
      */
     public function provides()
     {
-        return ['view', Tintin::class, 'tintin'];
+        return ['view', 'tintin', Tintin::class];
     }
 }

@@ -75,7 +75,7 @@ class StackManager
             $content = $this->pushes[$block];
 
             if (is_null($content)) {
-                $content = $this->tintin->getCompiler()->complie(ob_get_clean());
+                $content = $this->tintin->getCompiler()->compile(ob_get_clean());
             }
 
             $this->pushes[$block] = trim($content, "\n");

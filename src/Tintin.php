@@ -102,7 +102,7 @@ class Tintin
 
         $this->loader->cache(
             $filename,
-            $this->compiler->complie($content)
+            $this->compiler->compile($content)
         );
 
         $this->obFlushAndStar();
@@ -122,7 +122,7 @@ class Tintin
     public function renderString($data, array $params = [])
     {
         return $this->executePlainRendering(
-            trim($this->compiler->complie($data)),
+            trim($this->compiler->compile($data)),
             array_merge($params, ['__tintin' => $this])
         );
     }

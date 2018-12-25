@@ -95,7 +95,7 @@ class Compiler
      * @param array|string $data
      * @return string
      */
-    public function complie($data)
+    public function compile($data)
     {
         $data = preg_split('/\n|\r\n/', $data);
 
@@ -120,6 +120,12 @@ class Compiler
     {
         foreach ($this->tokens as $token) {
             $out = $this->{'compile'.$token}($value);
+
+            if ($token == 'Comments') {
+                if (strlen($out) == 0) {
+                    return "";
+                }
+            }
 
             if (strlen($out) !== 0) {
                 $value = $out;

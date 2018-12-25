@@ -93,6 +93,6 @@ class CompileIfTest extends \PHPUnit\Framework\TestCase
     {
         $html = file_get_contents(__DIR__.'/view/sample.tintin.php');
 
-        $render = $this->compiler->complie($html);
+        $render = $this->compiler->compile($html);
     }
 }
