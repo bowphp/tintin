@@ -12,7 +12,7 @@ trait CompileCustomDirective
      */
     protected function compileCustomDirective($expression)
     {
-        $output = preg_replace_callback($this->getPartern(), function ($match) {
+        $output = preg_replace_callback($this->getCustomDirectivePartern(), function ($match) {
             $name = $match[1];
 
             if (!isset($this->directives[$name])) {
@@ -34,7 +34,7 @@ trait CompileCustomDirective
      *
      * @return string
      */
-    private function getPartern()
+    private function getCustomDirectivePartern()
     {
         return "/\n*\#([a-zA-Z_]+)\s*(\((.+?)?\)\n?)?/";
     }
