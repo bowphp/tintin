@@ -40,9 +40,11 @@ class StackManager
      */
     public function includeFile($filename, $data = [], $context = [])
     {
-        $context = array_merge($context, $data);
+        $this->tintin->pushSharedData(array_merge($context, $data));
 
-        return $this->tintin->render($filename, $context);
+        $data = $this->tintin->getSharedData();
+
+        return $this->tintin->render($filename, $data);
     }
 
     /**
