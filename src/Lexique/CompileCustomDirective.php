@@ -23,7 +23,10 @@ trait CompileCustomDirective
             $directive = $this->directives[$name];
 
             if ($directive['broken']) {
-                return $this->_____executeCustomDirectory($name, isset($match[3]) ? $match[3] : null);
+                return $this->_____executeCustomDirectory(
+                    $name,
+                    isset($match[3]) ? $match[3] : null
+                );
             }
 
             $params = isset($match[3]) ? $match[3] : 'null';
