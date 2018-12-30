@@ -11,10 +11,8 @@ class CompileExtendsTest extends \PHPUnit\Framework\TestCase
     private $loader;
 
     /**
-     * @var Tintin
+     * On setup
      */
-    private $instance;
-
     public function setUp()
     {
         $this->loader = new Filesystem([

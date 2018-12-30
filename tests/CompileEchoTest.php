@@ -18,6 +18,8 @@ class CompilerEchoTest extends \PHPUnit\Framework\TestCase
      * Reflection maker
      *
      * @param string $method
+     * @throws ReflectionException
+     * @return ReflectionMethod
      */
     public function makeReflectionFor($method)
     {
@@ -30,6 +32,8 @@ class CompilerEchoTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test echo
+     *
+     * @throws ReflectionException
      */
     public function testCompileEcho()
     {
@@ -42,6 +46,8 @@ class CompilerEchoTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test row echo
+     *
+     * @throws ReflectionException
      */
     public function testCompileRawEcho()
     {

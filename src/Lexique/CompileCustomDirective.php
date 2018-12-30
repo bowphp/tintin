@@ -5,25 +5,30 @@ namespace Tintin\Lexique;
 trait CompileCustomDirective
 {
     /**
-     * Compile the {# commentes #} statement
+     * Compile the custom statement
      *
-     * @param  string  $value
+     * @param string $expression
      * @return string
      */
     protected function compileCustomDirective($expression)
     {
-        $output = preg_replace_callback($this->getCustomDirectivePartern(), function ($match) {
+        $output = preg_replace_callback($this->getCustomDirectivePartern(), function ($match) 
+        {
             $name = $match[1];
 
             if (!isset($this->directives[$name])) {
                 return null;
             }
 
-            if (count($match) == 4) {
-                return "<?php echo \$__tintin->getCompiler()->_____executeCustomDirectory(\"$name\", $match[3]);";
+            $directive = $this->directives[$name];
+
+            if ($directive['broken']) {
+                return $this->_____executeCustomDirectory($name, isset($match[3]) ? $match[3] : null);
             }
 
-            return "<?php echo \$__tintin->getCompiler()->_____executeCustomDirectory(\"$name\");";
+            $params = isset($match[3]) ? $match[3] : 'null';
+
+            return "<?php echo \$__tintin->getCompiler()->_____executeCustomDirectory(\"$name\", $params);";
         }, $expression);
         
         return is_null($output) ? $expression : $output;

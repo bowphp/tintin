@@ -2,6 +2,7 @@
 
 namespace Tintin;
 
+use Tintin\Exception\DirectiveNotAllowException;
 use Tintin\Loader\LoaderInterface;
 
 class Tintin
@@ -234,10 +235,12 @@ class Tintin
      *
      * @param string $name
      * @param callable $handler
+     * @param boolean $broken
      * @return mixed
+     * @throws DirectiveNotAllowException
      */
-    public function directive($name, $handler)
+    public function directive($name, $handler, $broken = false)
     {
-        $this->compiler->pushDirective($name, $handler);
+        $this->compiler->pushDirective($name, $handler, $broken);
     }
 }

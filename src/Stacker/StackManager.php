@@ -88,9 +88,11 @@ class StackManager
      * Allows you to retrieve the contents of a stack
      *
      * @param string $name
+     * @param string $default
+     *
      * @return mixed|null
      */
-    public function getStack($name)
+    public function getStack($name, $default = null)
     {
         if (array_key_exists($name, $this->pushes)) {
             return $this->tintin->renderString(
@@ -99,7 +101,7 @@ class StackManager
             );
         }
 
-        return null;
+        return $default;
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace Tintin;
 
+use Tintin\Exception\DirectiveNotAllowException;
+
 class Compiler
 {
     use Lexique\CompileIf,
@@ -156,26 +158,33 @@ class Compiler
      *
      * @param string $name
      * @param callable $handler
-     * @return mixed
+     * @param boolean $broken
+     * @throws DirectiveNotAllowException
      */
-    public function pushDirective($name, $handler)
+    public function pushDirective($name, $handler, $broken = false)
     {
         if (in_array($name, $this->directivesProtected)) {
-            throw new \Tintin\Exception\DirectiveNotAllowException('The ' . $name . ' directive is not allow.');
+            throw new DirectiveNotAllowException('The ' . $name . ' directive is not allow.');
         }
 
-        $this->directives[$name] = $handler;
+        $this->directives[$name] = compact('handler', 'broken');
     }
 
     /**
      * Execute custom directory
      *
-     * @param callable $handler
-     * @param array $param
+     * @param string $name
+     * @param array $params
      * @return mixed
      */
     public function _____executeCustomDirectory($name, ...$params)
     {
-        return call_user_func_array($this->directives[$name], [$params]);
+        if (!isset($this->directives[$name])) {
+            return null;
+        }
+
+        $directive = $this->directives[$name];
+
+        return call_user_func_array($directive['handler'], [$params]);
     }
 }
