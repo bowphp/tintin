@@ -26,7 +26,7 @@ class Filesystem implements LoaderInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getFileResolvedPath($filename)
     {
@@ -36,7 +36,7 @@ class Filesystem implements LoaderInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getCacheFileResolvedPath($filename)
     {
@@ -52,7 +52,7 @@ class Filesystem implements LoaderInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getCachePath()
     {
@@ -60,7 +60,7 @@ class Filesystem implements LoaderInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getExtension()
     {
@@ -68,7 +68,7 @@ class Filesystem implements LoaderInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getFileContent($filename)
     {
@@ -76,7 +76,7 @@ class Filesystem implements LoaderInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function isExpirated($filename)
     {
@@ -96,7 +96,7 @@ class Filesystem implements LoaderInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function isCached($filename)
     {
@@ -106,7 +106,7 @@ class Filesystem implements LoaderInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function exists($filename)
     {
@@ -116,7 +116,7 @@ class Filesystem implements LoaderInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function cache($filename, $config)
     {
@@ -134,7 +134,7 @@ class Filesystem implements LoaderInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function failLoading($message)
     {

@@ -8,12 +8,12 @@ trait CompileCustomDirective
      * Compile the custom statement
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileCustomDirective($expression)
     {
-        $output = preg_replace_callback($this->getCustomDirectivePartern(), function ($match) 
-        {
+        $output = preg_replace_callback($this->getCustomDirectivePartern(), function ($match) {
             $name = $match[1];
 
             if (!isset($this->directives[$name])) {

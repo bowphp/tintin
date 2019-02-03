@@ -8,6 +8,7 @@ trait CompileIf
      * Compile the if statement stack
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileIfStack($expression)
@@ -31,11 +32,12 @@ trait CompileIf
      * @param string $expression
      * @param string $lexic
      * @param string $o_lexic
+     *
      * @return string
      */
     private function compileIfStatement($expression, $lexic, $o_lexic)
     {
-        $regex = sprintf($this->conditionPatern, $lexic);
+        $regex = sprintf($this->condition_patern, $lexic);
 
         $output = preg_replace_callback($regex, function ($match) use ($o_lexic, $lexic) {
             array_shift($match);
@@ -54,6 +56,7 @@ trait CompileIf
      * Compile the #if statement
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileIf($expression)
@@ -65,6 +68,7 @@ trait CompileIf
      * Compile the #unless statement
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileUnLess($expression)
@@ -76,6 +80,7 @@ trait CompileIf
      * Compile the #else statement
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileElse($expression)
@@ -91,6 +96,7 @@ trait CompileIf
      * Compile the #elseif statement
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileElseIf($expression)
@@ -102,6 +108,7 @@ trait CompileIf
      * Compile the #elseif statement
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileElseIfAlias($expression)
@@ -113,6 +120,7 @@ trait CompileIf
      * Compile the #endif statement
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileEndIf($expression)

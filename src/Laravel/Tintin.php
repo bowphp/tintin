@@ -11,6 +11,7 @@ class Tintin extends \Tintin\Tintin
      *
      * @param string $namespaces
      * @param string $app_path
+     *
      * @return mixed
      */
     public function addNamespace($namespace, $app_path)
@@ -23,6 +24,8 @@ class Tintin extends \Tintin\Tintin
      *
      * @param string $filename
      * @param array $params
+     *
+     * @return void
      */
     public function make($filename, array $params = [])
     {

@@ -8,6 +8,7 @@ trait CompileComments
      * Compile the {# commentes #} statement
      *
      * @param  string  $value
+     *
      * @return string
      */
     protected function compileComments($value)

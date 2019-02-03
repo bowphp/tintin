@@ -15,14 +15,18 @@ class Compiler
         Lexique\CompileExtends;
 
     /**
+     * The echo tags
+     *
      * @var array
      */
-    protected $echoTags = ['{{', '}}'];
+    protected $echo_tags = ['{{', '}}'];
 
     /**
+     * The raw echo tags
+     *
      * @var array
      */
-    protected $rawEchoTags = ['{{{', '}}}'];
+    protected $raw_echo_tags = ['{{{', '}}}'];
 
     /**
      * @var array
@@ -30,6 +34,8 @@ class Compiler
     protected $comments = ['{#', '#}'];
 
     /**
+     * The valide token list
+     *
      * @var array
      */
     protected $tokens = [
@@ -43,16 +49,22 @@ class Compiler
     ];
 
     /**
+     * The compile result
+     *
      * @var string
      */
     protected $result = '';
 
     /**
+     * The expression parten
+     *
      * @var string
      */
-    protected $conditionPatern = '/(%s\s*\((.+?)?\)$)+/sm';
+    protected $condition_patern = '/(%s\s*\((.+?)?\)$)+/sm';
 
     /**
+     * The reverse inclusion using for #extends
+     *
      * @var array
      */
     protected $footer = [];
@@ -95,6 +107,7 @@ class Compiler
      * Launch the compilation
      *
      * @param array|string $data
+     *
      * @return string
      */
     public function compile($data)
@@ -116,6 +129,7 @@ class Compiler
      * Compile All define token
      *
      * @param string $value
+     *
      * @return string
      */
     private function compileToken($value)
@@ -159,6 +173,8 @@ class Compiler
      * @param string $name
      * @param callable $handler
      * @param boolean $broken
+     *
+     * @return void
      * @throws DirectiveNotAllowException
      */
     public function pushDirective($name, $handler, $broken = false)
@@ -175,6 +191,7 @@ class Compiler
      *
      * @param string $name
      * @param array $params
+     *
      * @return mixed
      */
     public function _____executeCustomDirectory($name, ...$params)

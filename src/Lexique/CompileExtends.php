@@ -8,6 +8,7 @@ trait CompileExtends
      * Compile the inherit concept statement
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileExtendsStack($expression)
@@ -27,25 +28,30 @@ trait CompileExtends
      * Compile the #block statement
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileBlock($expression)
     {
-        $output = preg_replace_callback("/\n*\#block\s*\((.+?)(?:,(.+?))?\)\n*/m", function ($match) {
-            array_shift($match);
+        $output = preg_replace_callback(
+            "/\n*\#block\s*\((.+?)(?:,(.+?))?\)\n*/m",
+            function ($match) {
+                array_shift($match);
 
-            $content = null;
+                $content = null;
 
-            if (count($match) == 2) {
-                $content = $match[1];
-            }
+                if (count($match) == 2) {
+                    $content = $match[1];
+                }
 
-            if (is_null($content)) {
-                return "<?php \$__tintin->getStackManager()->startStack({$match[0]}); ?>";
-            } else {
-                return "<?php \$__tintin->getStackManager()->startStack({$match[0]}, $content); ?>";
-            }
-        }, $expression);
+                if (is_null($content)) {
+                    return "<?php \$__tintin->getStackManager()->startStack({$match[0]}); ?>";
+                } else {
+                    return "<?php \$__tintin->getStackManager()->startStack({$match[0]}, $content); ?>";
+                }
+            },
+            $expression
+        );
 
         return $output == $expression ? '' : $output;
     }
@@ -53,7 +59,8 @@ trait CompileExtends
     /**
      * Compile the #endblock statement
      *
-     * @param $expression
+     * @param string $expression
+     *
      * @return string
      */
     protected function compileEndBlock($expression)
@@ -69,6 +76,7 @@ trait CompileExtends
      * Compile the #include statement
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileInclude($expression)
@@ -86,6 +94,7 @@ trait CompileExtends
      * Compile the #extends statement
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileExtends($expression)
@@ -105,6 +114,7 @@ trait CompileExtends
      * Compile the #inject statement
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileInject($expression)

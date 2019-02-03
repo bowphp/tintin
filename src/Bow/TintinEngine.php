@@ -10,11 +10,15 @@ use Tintin\Tintin;
 class TintinEngine extends EngineAbstract
 {
     /**
+     * The template instance
+     *
      * @var Tintin
      */
     private $template;
 
     /**
+     * The template name
+     *
      * @var string
      */
     protected $name = 'tintin';
@@ -23,6 +27,8 @@ class TintinEngine extends EngineAbstract
      * BladeEngine constructor.
      *
      * @param Loader $config
+     *
+     * @return void
      */
     public function __construct(Loader $config)
     {
@@ -38,7 +44,7 @@ class TintinEngine extends EngineAbstract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      * @throws
      */
     public function render($filename, array $data = [])

@@ -7,7 +7,8 @@ trait CompileEchos
     /**
      * Compile the echo statement concept
      *
-     * @param $expression
+     * @param string $expression
+     *
      * @return mixed
      */
     protected function compileEchoStack($expression)
@@ -26,12 +27,17 @@ trait CompileEchos
     /**
      * Compile the {{ $name }} statement
      *
-     * @param $expression
+     * @param string $expression
+     *
      * @return string
      */
     protected function compileEcho($expression)
     {
-        $regex = sprintf('/((?:%s\s*(.+?)\s*%s))+/', $this->echoTags[0], $this->echoTags[1]);
+        $regex = sprintf(
+            '/((?:%s\s*(.+?)\s*%s))+/',
+            $this->echo_tags[0],
+            $this->echo_tags[1]
+        );
 
         $output = preg_replace_callback($regex, function ($match) {
             array_shift($match);
@@ -46,11 +52,16 @@ trait CompileEchos
      * Compile the {{{ $name }}} statement
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileRawEcho($expression)
     {
-        $regex = sprintf('/((?:%s\s*(.+?)\s*%s))+/', $this->rawEchoTags[0], $this->rawEchoTags[1]);
+        $regex = sprintf(
+            '/((?:%s\s*(.+?)\s*%s))+/',
+            $this->raw_echo_tags[0],
+            $this->raw_echo_tags[1]
+        );
 
         $output = preg_replace_callback($regex, function ($match) {
             array_shift($match);

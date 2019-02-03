@@ -27,6 +27,7 @@ trait CompileLoop
      * Compile the loop statement stack
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileLoopStack($expression)
@@ -48,11 +49,12 @@ trait CompileLoop
      * @param string $expression
      * @param string $lexic
      * @param string $o_lexic
+     *
      * @return string
      */
     private function compileLoop($expression, $lexic, $o_lexic)
     {
-        $regex = sprintf($this->conditionPatern, $lexic);
+        $regex = sprintf($this->condition_patern, $lexic);
 
         $output = preg_replace_callback($regex, function ($match) use ($o_lexic) {
             array_shift($match);
@@ -69,6 +71,7 @@ trait CompileLoop
      * @param string $expression
      * @param string $lexic
      * @param string $o_lexic
+     *
      * @return string
      */
     private function compileEndLoop($expression, $lexic, $o_lexic)
@@ -86,19 +89,24 @@ trait CompileLoop
      * @param string $expression
      * @param string $lexic
      * @param string $o_lexic
+     *
      * @return string
      */
     private function compileBreaker($expression, $lexic, $o_lexic)
     {
-        $output = preg_replace_callback("/($lexic *(\(.+?\))|$lexic)/s", function ($match) use ($lexic, $o_lexic) {
-            array_shift($match);
+        $output = preg_replace_callback(
+            "/($lexic *(\(.+?\))|$lexic)/s",
+            function ($match) use ($lexic, $o_lexic) {
+                array_shift($match);
 
-            if (trim($match[0]) == $lexic) {
-                return "<?php $o_lexic; ?>";
-            }
+                if (trim($match[0]) == $lexic) {
+                    return "<?php $o_lexic; ?>";
+                }
 
-            return "<?php if {$match[1]}: $o_lexic; endif; ?>";
-        }, $expression);
+                return "<?php if {$match[1]}: $o_lexic; endif; ?>";
+            },
+            $expression
+        );
 
         return $output == $expression ? '' : $output;
     }
@@ -107,6 +115,7 @@ trait CompileLoop
      * Compile the #loop statement
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileForeach($expression)
