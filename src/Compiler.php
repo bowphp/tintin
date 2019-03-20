@@ -2,6 +2,8 @@
 
 namespace Tintin;
 
+use Tintin\Exception\DirectiveNotAllowException;
+
 class Compiler
 {
     use Lexique\CompileIf,
@@ -13,14 +15,18 @@ class Compiler
         Lexique\CompileExtends;
 
     /**
+     * The echo tags
+     *
      * @var array
      */
-    protected $echoTags = ['{{', '}}'];
+    protected $echo_tags = ['{{', '}}'];
 
     /**
+     * The raw echo tags
+     *
      * @var array
      */
-    protected $rawEchoTags = ['{{{', '}}}'];
+    protected $raw_echo_tags = ['{{{', '}}}'];
 
     /**
      * @var array
@@ -28,6 +34,8 @@ class Compiler
     protected $comments = ['{#', '#}'];
 
     /**
+     * The valide token list
+     *
      * @var array
      */
     protected $tokens = [
@@ -41,16 +49,22 @@ class Compiler
     ];
 
     /**
+     * The compile result
+     *
      * @var string
      */
     protected $result = '';
 
     /**
+     * The expression parten
+     *
      * @var string
      */
-    protected $conditionPatern = '/(%s\s*\((.+?)?\)$)+/sm';
+    protected $condition_patern = '/(%s\s*\((.+?)?\)$)+/sm';
 
     /**
+     * The reverse inclusion using for #extends
+     *
      * @var array
      */
     protected $footer = [];
@@ -93,9 +107,10 @@ class Compiler
      * Launch the compilation
      *
      * @param array|string $data
+     *
      * @return string
      */
-    public function complie($data)
+    public function compile($data)
     {
         $data = preg_split('/\n|\r\n/', $data);
 
@@ -114,12 +129,19 @@ class Compiler
      * Compile All define token
      *
      * @param string $value
+     *
      * @return string
      */
     private function compileToken($value)
     {
         foreach ($this->tokens as $token) {
             $out = $this->{'compile'.$token}($value);
+
+            if ($token == 'Comments') {
+                if (strlen($out) == 0) {
+                    return "";
+                }
+            }
 
             if (strlen($out) !== 0) {
                 $value = $out;
@@ -150,26 +172,36 @@ class Compiler
      *
      * @param string $name
      * @param callable $handler
-     * @return mixed
+     * @param boolean $broken
+     *
+     * @return void
+     * @throws DirectiveNotAllowException
      */
-    public function pushDirective($name, $handler)
+    public function pushDirective($name, $handler, $broken = false)
     {
         if (in_array($name, $this->directivesProtected)) {
-            throw new \Tintin\Exception\DirectiveNotAllowException('The ' . $name . ' directive is not allow.');
+            throw new DirectiveNotAllowException('The ' . $name . ' directive is not allow.');
         }
 
-        $this->directives[$name] = $handler;
+        $this->directives[$name] = compact('handler', 'broken');
     }
 
     /**
      * Execute custom directory
      *
-     * @param callable $handler
-     * @param array $param
+     * @param string $name
+     * @param array $params
+     *
      * @return mixed
      */
     public function _____executeCustomDirectory($name, ...$params)
     {
-        return call_user_func_array($this->directives[$name], [$params]);
+        if (!isset($this->directives[$name])) {
+            return null;
+        }
+
+        $directive = $this->directives[$name];
+
+        return call_user_func_array($directive['handler'], [$params]);
     }
 }

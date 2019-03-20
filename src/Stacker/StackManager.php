@@ -7,23 +7,32 @@ use Tintin\Tintin;
 class StackManager
 {
     /**
+     * The stack collector
+     *
      * @var array
      */
     private $stacks = [];
 
     /**
+     * The stack rendered collector
+     *
      * @var array
      */
     private $pushes = [];
 
     /**
+     * The Tintin instance
+     *
      * @var Tintin
      */
     private $tintin;
 
     /**
      * StackManager constructor.
+     *
      * @param Tintin $tintin
+     *
+     * @return void
      */
     public function __construct(Tintin $tintin)
     {
@@ -36,13 +45,16 @@ class StackManager
      * @param string $filename
      * @param array $data
      * @param array $context
+     *
      * @return string
      */
     public function includeFile($filename, $data = [], $context = [])
     {
-        $context = array_merge($context, $data);
+        $this->tintin->pushSharedData(array_merge($context, $data));
 
-        return $this->tintin->render($filename, $context);
+        $data = $this->tintin->getSharedData();
+
+        return $this->tintin->render($filename, $data);
     }
 
     /**
@@ -50,6 +62,8 @@ class StackManager
      *
      * @param string $name
      * @param string $content
+     *
+     * @return void
      */
     public function startStack($name, $content = null)
     {
@@ -64,6 +78,8 @@ class StackManager
 
     /**
      * Closes the current flow
+     *
+     * @return void
      */
     public function endStack()
     {
@@ -75,7 +91,7 @@ class StackManager
             $content = $this->pushes[$block];
 
             if (is_null($content)) {
-                $content = $this->tintin->getCompiler()->complie(ob_get_clean());
+                $content = $this->tintin->getCompiler()->compile(ob_get_clean());
             }
 
             $this->pushes[$block] = trim($content, "\n");
@@ -86,9 +102,11 @@ class StackManager
      * Allows you to retrieve the contents of a stack
      *
      * @param string $name
+     * @param string $default
+     *
      * @return mixed|null
      */
-    public function getStack($name)
+    public function getStack($name, $default = null)
     {
         if (array_key_exists($name, $this->pushes)) {
             return $this->tintin->renderString(
@@ -97,7 +115,7 @@ class StackManager
             );
         }
 
-        return null;
+        return $default;
     }
 
     /**

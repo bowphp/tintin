@@ -2,6 +2,7 @@
 
 namespace Tintin;
 
+use Tintin\Exception\DirectiveNotAllowException;
 use Tintin\Loader\LoaderInterface;
 
 class Tintin
@@ -28,15 +29,22 @@ class Tintin
     private $stackManager;
 
     /**
+     * The shared data
+     *
+     * @var array
+     */
+    private $__data = [];
+
+    /**
      * Tintin constructor.
      *
      * @param LoaderInterface $loader
      */
     public function __construct(LoaderInterface $loader = null)
     {
-        $this->compiler = new Compiler;
-
         $this->loader = $loader;
+        
+        $this->compiler = new Compiler;
 
         $this->stackManager = new Stacker\StackManager($this);
     }
@@ -62,35 +70,57 @@ class Tintin
     }
 
     /**
+     * Push shared data
+     *
+     * @param array $data
+     */
+    public function pushSharedData(array $data)
+    {
+        $this->__data = array_merge($data, $this->__data);
+    }
+
+    /**
+     * Get define shared data
+     *
+     * @return array
+     */
+    public function getSharedData()
+    {
+        return $this->__data;
+    }
+
+    /**
      * Make template rendering
      *
-     * @param $filename
-     * @param array $params
-     * @return string
+     * @param string $template
+     * @param array $data
      *
+     * @return string
      * @throws
      */
-    public function render($filename, array $params = [])
+    public function render($template, array $data = [])
     {
         if (is_null($this->loader)) {
-            return $this->renderString($filename, $params);
+            return $this->renderString($template, $data);
         }
 
-        if (! $this->loader->fileExists($filename)) {
-            $this->loader->failLoading($filename .' not found');
+        if (! $this->loader->exists($template)) {
+            $this->loader->failLoading($template .' not found');
         }
+
+        $this->pushSharedData($data);
 
         $__tintin = $this;
 
-        extract($params);
+        extract($this->getSharedData());
 
         /**
          * Load template when is not a cached file
          */
-        if (! $this->loader->isExpirated($filename)) {
+        if (! $this->loader->isExpirated($template)) {
             $this->obFlushAndStar();
 
-            require $this->loader->getCacheFileResolvedPath($filename);
+            require $this->loader->getCacheFileResolvedPath($template);
             
             return $this->obGetContent();
         }
@@ -98,16 +128,16 @@ class Tintin
         /**
          * Put the template into cache
          */
-        $content = $this->loader->getFileContent($filename);
+        $content = $this->loader->getFileContent($template);
 
         $this->loader->cache(
-            $filename,
-            $this->compiler->complie($content)
+            $template,
+            $this->compiler->compile($content)
         );
 
         $this->obFlushAndStar();
 
-        require $this->loader->getCacheFileResolvedPath($filename);
+        require $this->loader->getCacheFileResolvedPath($template);
 
         return $this->obGetContent();
     }
@@ -115,15 +145,16 @@ class Tintin
     /**
      * Compile simple template code
      *
-     * @param string $data
-     * @param array $params
+     * @param string $template
+     * @param array $data
+     *
      * @return string
      */
-    public function renderString($data, array $params = [])
+    public function renderString($template, array $data = [])
     {
         return $this->executePlainRendering(
-            trim($this->compiler->complie($data)),
-            array_merge($params, ['__tintin' => $this])
+            trim($this->compiler->compile($template)),
+            array_merge($data, ['__tintin' => $this])
         );
     }
 
@@ -131,14 +162,15 @@ class Tintin
      * Execute plain rendering code
      *
      * @param string $content
-     * @param array $params
+     * @param array $data
+     *
      * @return string
      */
-    private function executePlainRendering($content, $params)
+    private function executePlainRendering($content, $data)
     {
         $this->obFlushAndStar();
 
-        extract($params);
+        extract($data);
 
         $filename = $this->createTmpFile($content);
 
@@ -163,6 +195,8 @@ class Tintin
 
     /**
      * Flush OB buffer and start new OB buffering
+     *
+     * @return void
      */
     private function obFlushAndStar()
     {
@@ -173,6 +207,7 @@ class Tintin
      * Create tmp compile file
      *
      * @param string $content
+     *
      * @return string
      */
     private function createTmpFile($content)
@@ -205,10 +240,13 @@ class Tintin
      *
      * @param string $name
      * @param callable $handler
+     * @param boolean $broken
+     *
      * @return mixed
+     * @throws DirectiveNotAllowException
      */
-    public function directive($name, $handler)
+    public function directive($name, $handler, $broken = false)
     {
-        $this->compiler->pushDirective($name, $handler);
+        $this->compiler->pushDirective($name, $handler, $broken);
     }
 }

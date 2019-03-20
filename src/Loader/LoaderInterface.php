@@ -14,15 +14,17 @@ interface LoaderInterface
     /**
      * Get the absolute cache file path
      *
-     * @param $filebane
+     * @param string $filename
+     *
      * @return mixed
      */
-    public function getCacheFileResolvedPath($filebane);
+    public function getCacheFileResolvedPath($filename);
 
     /**
      * Get file content
      *
      * @param string $filename
+     *
      * @return mixed
      */
     public function getFileContent($filename);
@@ -30,15 +32,17 @@ interface LoaderInterface
     /**
      * Check if file exists
      *
-     * @param $filename
+     * @param string $filename
+     *
      * @return bool
      */
-    public function fileExists($filename);
+    public function exists($filename);
 
     /**
      * Check if file is expirate
      *
      * @param string $filename
+     *
      * @return mixed
      */
     public function isExpirated($filename);
@@ -47,6 +51,7 @@ interface LoaderInterface
      * Check if file is cached
      *
      * @param string $filename
+     *
      * @return mixed
      */
     public function isCached($filename);
@@ -56,6 +61,7 @@ interface LoaderInterface
      *
      * @param string $filename
      * @param string $data
+     *
      * @return mixed
      */
     public function cache($filename, $data);
@@ -64,6 +70,8 @@ interface LoaderInterface
      * Throw load error
      *
      * @param string $message
+     *
+     * @return void
      * @throws \Exception
      */
     public function failLoading($message);

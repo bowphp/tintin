@@ -2,9 +2,10 @@
     "name": "bowphp/tintin",
     "description": "The very small php Template",
     "license": "MIT",
+    "keywords": ["Tintin", "View Engine", "Php Template", "Franck DAKIA", "common mark", "Bow Markdown", "bow-Markdown", "FranckDakia", "Papac"],
     "authors": [
         {
-            "name": "Franck Dakia",
+            "name": "Franck DAKIA",
             "email": "dakiafranck@gmail.com"
         }
     ],
@@ -13,8 +14,18 @@
             "Tintin\\": "src"
         }
     },
-    "require": {
-        "phpunit/phpunit": "^4"
+    "require-dev": {
+        "phpunit/phpunit": "^7"
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Tintin\\Laravel\\TintinServiceProvider"
+            ],
+            "aliases": {
+                "Tintin": "Tintin\\Laravel\\Facade\\Tintin"
+            }
+        }
+    }
 }

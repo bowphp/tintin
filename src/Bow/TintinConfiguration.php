@@ -10,7 +10,7 @@ use Tintin\Tintin;
 class TintinConfiguration extends Configuration
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      * @throws
      */
     public function create(Loader $config)
@@ -25,7 +25,7 @@ class TintinConfiguration extends Configuration
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      * @throws
      */
     public function run()
