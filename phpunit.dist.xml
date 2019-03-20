@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <phpunit colors="true" bootstrap="vendor/autoload.php" stopOnFailure="false">
-    <testsuite>
+    <testsuite name="Tintin Testsuite">
         <directory>tests/</directory>
     </testsuite>
 </phpunit>
