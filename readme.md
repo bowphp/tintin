@@ -1,9 +1,5 @@
 <h1 align="center">
-<<<<<<< HEAD
-    <img src="https://github.com/bowphp/arts/raw/master/tintin.jpeg" width="100px" style="border-radius: 50px">
-=======
     <img src="https://github.com/bowphp/arts/raw/master/tintin.png" width="100px" style="border-radius: 50px">
->>>>>>> update readme
     <br/><strong>Tintin</strong>
 </h1>
 
