@@ -84,7 +84,7 @@ class Filesystem implements LoaderInterface
             return true;
         }
 
-        $fileatime = fileatime(
+        $fileatime = filemtime(
             $this->getFileResolvedPath($filename)
         );
 

@@ -4,6 +4,6 @@
 	<title>Test</title>
 </head>
 <body>
-	{{ $name }}
+	Hello {{ $name }}
 </body>
 </html>
