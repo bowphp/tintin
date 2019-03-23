@@ -108,7 +108,7 @@ return [
   'engine' => 'tintin',
 
   // Extension de fichier
-  'extension' => '.tintin.php'
+  'extension' => 'tintin.php'
 ];
 ```
 
@@ -177,7 +177,7 @@ This clause does exactly the `foreach` action.
 
 ```c
 #loop ($names as $name)
-  Bonjour {{ $name }}
+  Hello {{ $name }}
 #endloop
 ```
 
@@ -187,7 +187,7 @@ A quick example.
 ```c
 #loop ($names as $name)
   #if ($name == 'tintin')
-    Bonjour {{ $name }}
+    Hello {{ $name }}
     #stop
   #endif
 #endloop
@@ -203,7 +203,7 @@ Often the developer is made to make stop conditions of the `#loop` like this:
 #loop ($names as $name)
   #if ($name == 'tintin')
     #stop
-    // Ou
+    // Or
     #jump
   #endif
 #endloop
@@ -214,7 +214,7 @@ With syntactic sugars, we can reduce the code like this:
 ```c
 #loop ($names as $name)
   #stop($name == 'tintin')
-  // Ou
+  // Or
   #jump($name == 'tintin')
 #endloop
 ```
@@ -270,7 +270,7 @@ Like any good template system **tintin** supports code sharing between files. Th
 
 Consider the following **tintin** code:
 
-```c
+```html
 // The `layout.tintin.php` file
 <!DOCTYPE html>
 <html>
@@ -302,7 +302,7 @@ And also, we have another file that inherits the code of the file `layout.tintin
 
 The `content.tintin.php` file will inherit the code from` layout.tintin.php` and if you mark it well, in the file `layout.tintin.php` we have the clause `#inject` which has as parameter the name of `content.tintin.php` `block` which is `content`. Which means that the content of `# block` `content` will be replaced by `#inject`. Which will give in the end this:
 
-```c
+```htnl
 <!DOCTYPE html>
 <html>
 <head>
