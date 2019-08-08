@@ -14,10 +14,11 @@ trait CompileCustomDirective
     protected function compileCustomDirective($expression)
     {
         $output = preg_replace_callback($this->getCustomDirectivePartern(), function ($match) {
+            $value = $match[0];
             $name = $match[1];
 
             if (!isset($this->directives[$name])) {
-                return null;
+                return $value;
             }
 
             $directive = $this->directives[$name];
