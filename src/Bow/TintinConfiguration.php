@@ -32,7 +32,7 @@ class TintinConfiguration extends Configuration
     {
         $view = $this->container->make('view');
 
-        $this->customizer($view->getTemplate()->getTemplate());
+        $this->directives($view->getTemplate()->getTemplate());
     }
 
     /**
@@ -41,7 +41,7 @@ class TintinConfiguration extends Configuration
      * @param Tintin $tintin
      * @return mixed
      */
-    private function customizer(Tintin $tintin)
+    public function directives(Tintin $tintin)
     {
         //
     }

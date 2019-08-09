@@ -16,9 +16,9 @@
     },
     "require-dev": {
         "symfony/css-selector": "^4.3@dev",
-        "phpunit/phpunit": "^4"
+        "phpunit/phpunit": "^7"
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "extra": {
         "laravel": {
             "providers": [
@@ -28,7 +28,5 @@
                 "Tintin": "Tintin\\Laravel\\Facade\\Tintin"
             }
         }
-    },
-    "require": {
     }
 }
