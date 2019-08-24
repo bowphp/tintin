@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+#### [1.2.9] - 2019-08-11
+
+- [Fix] The template bug on custom tag compliation #14
+
 #### [1.2.8] - 2018-12-25
 
 - [fix] Many bug fixed about Laravel Packaging
