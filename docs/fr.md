@@ -418,7 +418,7 @@ class CustomTintinConfiguration extends \Tintin\Bow\TintinConfiguration
    *
    * @param Tintin $tintin
    */
-  public function customizer(Tintin $tintin)
+  public function onRunning(Tintin $tintin)
   {
     $tintin->directive('super', function (array $attributes = []) {
       return "Super !";

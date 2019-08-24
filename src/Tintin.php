@@ -2,6 +2,7 @@
 
 namespace Tintin;
 
+use Closure;
 use Tintin\Exception\DirectiveNotAllowException;
 use Tintin\Loader\LoaderInterface;
 
