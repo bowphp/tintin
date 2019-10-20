@@ -1,8 +1,10 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
-- [Configuration](#configuration)
+  - [Configuration](#configuration)
 - [Usage](#usage)
   - [Configuration for Bow](#configuration-for-bow)
+  - [Data display](#data-display)
+    - [Affichage des données non échappées](#affichage-des-donn%c3%a9es-non-%c3%a9chapp%c3%a9es)
   - [Add a comment](#add-a-comment)
   - [#if / #elseif or #elif / #else](#if--elseif-or-elif--else)
   - [#unless](#unless)
@@ -406,7 +408,7 @@ echo $tintin->render('form');
 
 In case you use the Tintin configuration for Bow Framework.
 
-You can create a class in the `app` folder, for example, with the name `CustomTintinConfiguration` which will extend Tintin's default configuration that is `\Tintin\Bow\TintinConfiguration::class` and then modify the `customizer` method.
+You can create a class in the `app` folder, for example, with the name `CustomTintinConfiguration` which will extend Tintin's default configuration that is `\Tintin\Bow\TintinConfiguration::class` and then modify the `onRunning` method.
 
 ```php
 use Tintin\Tintin;

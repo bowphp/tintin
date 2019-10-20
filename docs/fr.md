@@ -1,8 +1,10 @@
 - [Introduction](#introduction)
 - [Installation](#installation)
-- [Configuration](#configuration)
+  - [Configuration](#configuration)
 - [Utilisation](#utilisation)
   - [Configuration pour Bow](#configuration-pour-bow)
+  - [Affichage des données](#affichage-des-donn%c3%a9es)
+    - [Affichage des données non échappées](#affichage-des-donn%c3%a9es-non-%c3%a9chapp%c3%a9es)
   - [Ajouter un commentaire](#ajouter-un-commentaire)
   - [#if / #elseif ou #elif / #else](#if--elseif-ou-elif--else)
   - [#unless](#unless)
@@ -13,13 +15,13 @@
     - [L'utilisation de #while](#lutilisation-de-while)
   - [Inclusion de fichier](#inclusion-de-fichier)
     - [Exemple d'inclusion](#exemple-dinclusion)
-- [Héritage avec #extends, #block et #inject](#h%C3%A9ritage-avec-extends-block-et-inject)
+- [Héritage avec #extends, #block et #inject](#h%c3%a9ritage-avec-extends-block-et-inject)
   - [Explication](#explication)
-- [Directive personnelisée](#directive-personnelis%C3%A9e)
+- [Directive personnelisée](#directive-personnelis%c3%a9e)
   - [Exemple](#exemple)
   - [Utilisation des directives](#utilisation-des-directives)
   - [Compilation du template](#compilation-du-template)
-  - [Sortie après compilation](#sortie-apr%C3%A8s-compilation)
+  - [Sortie après compilation](#sortie-apr%c3%a8s-compilation)
   - [Ajouter vos directive de la configuration](#ajouter-vos-directive-de-la-configuration)
 - [Contribution](#contribution)
 - [Auteur](#auteur)
@@ -406,7 +408,7 @@ echo $tintin->render('form');
 
 Dans le cas ou vous utilisez la configuration Tintin pour Bow Framework.
 
-Vous pouvez créer une classe dans le dossier `app`, par exemple, avec le nom `CustomTintinConfiguration` qui va étendre la configuration par défaut de Tintin qui est `\Tintin\Bow\TintinConfiguration::class` et ensuite modifier la méthode `customizer`.
+Vous pouvez créer une classe dans le dossier `app`, par exemple, avec le nom `CustomTintinConfiguration` qui va étendre la configuration par défaut de Tintin qui est `\Tintin\Bow\TintinConfiguration::class` et ensuite modifier la méthode `onRunning`.
 
 ```php
 use Tintin\Tintin;
