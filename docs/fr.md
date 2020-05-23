@@ -23,8 +23,6 @@
   - [Compilation du template](#compilation-du-template)
   - [Sortie après compilation](#sortie-apr%c3%a8s-compilation)
   - [Ajouter vos directive de la configuration](#ajouter-vos-directive-de-la-configuration)
-- [Contribution](#contribution)
-- [Auteur](#auteur)
 
 ## Introduction
 
@@ -124,7 +122,7 @@ Vous pouvez afficher le contenu de la variable name de la manière suivante:
 Hello, {{ $name }}.
 ```
 
-Bien entendu, vous n'êtes pas limité à afficher le contenu des variables transmises à la vue. Vous pouvez également faire écho aux résultats de toute fonction PHP. En fait, vous pouvez insérer n'importe quel code PHP dans une instruction echo Blade:
+Bien entendu, vous n'êtes pas limité à afficher le contenu des variables transmises à la vue. Vous pouvez également faire écho aux résultats de toute fonction PHP. En fait, vous pouvez insérer n'importe quel code PHP dans une instruction echo Tintin:
 
 ```html
 Hello, {{ strtoupper($name) }}.
@@ -435,23 +433,3 @@ Maintenant la directive `#super` est disponible et vous pouvez l'utiliser.
   return $tintin->render('#super');
   // => Super !
 ```
-
-## Contribution
-
-Pour participer au projet il faut:
-
-- Fork le projet afin qu'il soit parmi les répertoires de votre compte github ex :`https://github.com/votre-compte/app`
-- Cloner le projet depuis votre compte github `git clone https://github.com/votre-crompte/tintin`
-- Créer un branche qui aura pour nom le résumé de votre modification `git branch branche-de-vos-traveaux`
-- Faire une publication sur votre dépot `git push origin branche-de-vos-traveaux`
-- Enfin faire un [pull-request](https://www.thinkful.com/learn/github-pull-request-tutorial/Keep-Tabs-on-the-Project#Time-to-Submit-Your-First-PR)
-
-Ou bien allez dans la page des [issues](https://github.com/bowphp/tintin/issues), faites vos corrections et enfin suivez [publier](#contribution).
-
-## Auteur
-
-**Franck DAKIA** est un développeur Full Stack basé actuellement en Afrique, Côte d'ivoire, Abidjan. Passioné de code, et développement collaboratif, Speaker, Formateur et Membre de plusieurs communautés de développeurs.
-
-Contact: [dakiafranck@gmail.com](mailto:dakiafranck@gmail.com) - [@franck_dakia](https://twitter.com/franck_dakia)
-
-**SVP s'il y a un bogue sur le projet veuillez me contacter par email ou laissez moi un message sur le [slack](https://bowphp.slack.com).**

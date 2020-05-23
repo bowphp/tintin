@@ -4,7 +4,7 @@
 - [Usage](#usage)
   - [Configuration for Bow](#configuration-for-bow)
   - [Data display](#data-display)
-    - [Affichage des données non échappées](#affichage-des-donn%c3%a9es-non-%c3%a9chapp%c3%a9es)
+    - [Display of non-escaped data](#display-of-non-escaped-data)
   - [Add a comment](#add-a-comment)
   - [#if / #elseif or #elif / #else](#if--elseif-or-elif--else)
   - [#unless](#unless)
@@ -23,12 +23,10 @@
   - [Compilation du template](#compilation-du-template)
   - [Output after compilation](#output-after-compilation)
   - [Add your configuration guidelines](#add-your-configuration-guidelines)
-- [Contribution](#contribution)
-- [Author](#author)
 
 ## Introduction
 
-Tintin est un template PHP qui se veut très simple et extensible. Il peut être utilisable dans n'importe quel projet PHP.
+Tintin is a PHP template that wants to be very simple and extensible. It can be used in any PHP project.
 
 ## Installation
 
@@ -118,23 +116,23 @@ And that's it, now your default template engine is `tintin`: +1:
 
 ### Data display
 
-Vous pouvez afficher le contenu de la variable name de la manière suivante:
+You can display the contents of the name variable as follows:
 
 ```c
 Hello, {{ $name }}.
 ```
 
-Bien entendu, vous n'êtes pas limité à afficher le contenu des variables transmises à la vue. Vous pouvez également faire écho aux résultats de toute fonction PHP. En fait, vous pouvez insérer n'importe quel code PHP dans une instruction echo Blade:
+Of course, you are not limited to displaying the content of the variables passed to the view. You can also echo the results of any PHP function. In fact, you can insert any PHP code into an echo statement:
 
 ```html
 Hello, {{ strtoupper($name) }}.
 ```
 
-> Les instructions Tintin `{{}}` sont automatiquement envoyées via la fonction PHP `htmlspecialchars` pour empêcher les attaques XSS.
+> Tintin instructions `{{}}` are automatically sent via the PHP function `htmlspecialchars` to prevent XSS attacks.
 
-#### Affichage des données non échappées
+#### Display of non-escaped data
 
-Par défaut, les instructions Tintin `{{}}` sont automatiquement envoyées via la fonction PHP `htmlspecialchars` pour empêcher les attaques XSS. Si vous ne souhaitez pas que vos données soient protégées, vous pouvez utiliser la syntaxe suivante:
+By default, Tintin `{{}}` instructions are automatically sent via the PHP function `htmlspecialchars` to prevent XSS attacks. If you do not want your data to be protected, you can use the following syntax:
 
 ```html
 Hello, {{{ $name }}}.
@@ -146,7 +144,7 @@ This `{# comments #}` clause adds a comment to your `tintin` code.
 
 ### #if / #elseif or #elif / #else
 
-Ce sont les clauses qui permettent d'établir des branchements conditionnels comme dans la plupart des langages de programmation.
+These are the clauses which make it possible to establish conditional branches as in most programming languages.
 
 ```c
 #if ($name == 'tintin')
@@ -183,8 +181,7 @@ This clause does exactly the `foreach` action.
 #endloop
 ```
 
-This clause can also be paired with any other clause such as `#if`.
-A quick example.
+This clause can also be paired with any other clause such as `#if`. A quick example.
 
 ```c
 #loop ($names as $name)
@@ -304,7 +301,7 @@ And also, we have another file that inherits the code of the file `layout.tintin
 
 The `content.tintin.php` file will inherit the code from` layout.tintin.php` and if you mark it well, in the file `layout.tintin.php` we have the clause `#inject` which has as parameter the name of `content.tintin.php` `block` which is `content`. Which means that the content of `# block` `content` will be replaced by `#inject`. Which will give in the end this:
 
-```htnl
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -435,23 +432,3 @@ Now the `#super` directive is available and you can use it.
   return $tintin->render('#super');
   // => Super !
 ```
-
-## Contribution
-
-To participate in the project you must:
-
-- Fork the project so that it is among the directories of your github ex account: `https://github.com/your-account/app`
-- Clone the project from your github `git clone account https://github.com/your-account/tintin`
-- Create a branch whose name will be the summary of your change `git branch branch-of-your-works`
-- Make a publication on your depot `git push origin branch-of-your-works`
-- Finally make a [pull-request](https://www.thinkful.com/learn/github-pull-request-tutorial/Keep-Tabs-on-the-Project#Time-to-Submit-Your-First-PR)
-
-Or go to the [issues](https://github.com/bowphp/tintin/issues) page, make your corrections and finally follow [publish](#contribution).
-
-## Author
-
-**Franck DAKIA** is a Full Stack developer currently based in Africa, Ivory Coast, Abidjan. Passionate about code, and collaborative development, Speaker, Trainer and Member of several communities of developers.
-
-Contact: [dakiafranck@gmail.com](mailto:dakiafranck@gmail.com) - [@franck_dakia](https://twitter.com/franck_dakia)
-
-**Please, if there is a bug on the project please contact me by email or leave me a message on the [slack](https://bowphp.slack.com).**
