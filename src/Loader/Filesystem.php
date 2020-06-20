@@ -32,7 +32,7 @@ class Filesystem implements LoaderInterface
     {
         $filename = str_replace('.', '/', $filename);
 
-        return $this->config['path'].'/'.$filename.'.'.$this->getExtension();
+        return realpath($this->config['path'].'/'.$filename.'.'.$this->getExtension());
     }
 
     /**
@@ -48,7 +48,7 @@ class Filesystem implements LoaderInterface
 
         $dirname = substr($md5, 0, 2);
 
-        return $this->getCachePath().'/'.$dirname.'/'.$md5.'.php';
+        return realpath($this->getCachePath().'/'.$dirname.'/'.$md5.'.php');
     }
 
     /**

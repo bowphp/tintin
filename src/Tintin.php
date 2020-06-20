@@ -77,7 +77,10 @@ class Tintin
      */
     public function pushSharedData(array $data)
     {
-        $this->__data = array_merge($data, $this->__data);
+        // The arrangement of values is very important
+        // To refresh the old variables which are
+        // a name with the new comer
+        $this->__data = array_merge($this->__data, $data);
     }
 
     /**

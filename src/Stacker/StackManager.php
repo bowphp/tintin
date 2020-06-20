@@ -40,7 +40,8 @@ class StackManager
     }
 
     /**
-     * Include a file to compile
+     * Include a file to compile.
+     * The all logic is base on data structure algorithm call stack
      *
      * @param string $filename
      * @param array $data
