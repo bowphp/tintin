@@ -16,7 +16,7 @@ It's a very simplest php template for small project. For install it, you must us
 composer require bowphp/tintin
 ```
 
-Documentation is available in [english](./docs/en.md) and [frensh](./docs/fr.md).
+Documentation is available in [english](./docs/en.md) and [french](./docs/fr.md).
 
 #### Sublime Text Support
 
@@ -28,7 +28,7 @@ How to install Sublime Package Control
 
 #### VSCode Support
 
-How to install VSCode extensin
+How to install VSCode extension
 
 - Search for **Bow Tintin** and install it
 - Reopen any `.tintin` or `.tintin.php` files.
