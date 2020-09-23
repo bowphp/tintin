@@ -99,7 +99,7 @@ trait CompileExtends
      */
     protected function compileExtends($expression)
     {
-        $regex = "/\#extends\s*\(((?:\n|\s|\t)*(?:.+?)(?:\n|\s|\t)*)\)/sm";
+        $regex = "/\#extends\s*\(((?:\n|\s|\t)*(?:.+?)(?:\n|\s|\t)*\)?)\)/sm";
 
         if (preg_match($regex, $expression, $match)) {
             $this->footer[] = "<?php echo \$__tintin->getStackManager()->includeFile({$match[1]}, ['__tintin' => \$__tintin]); ?>";
