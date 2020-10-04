@@ -34,7 +34,7 @@ class Compiler
     protected $comments = ['{#', '#}'];
 
     /**
-     * The valide token list
+     * The valid token list
      *
      * @var array
      */
@@ -56,18 +56,18 @@ class Compiler
     protected $result = '';
 
     /**
-     * The expression parten
+     * The expression pattern
      *
      * @var string
      */
-    protected $condition_patern = '/(%s\s*\((.+?)?\)$)+/sm';
+    protected $condition_pattern = '/(%s\s*\((.+?)?\)$)+/sm';
 
     /**
      * The reverse inclusion using for #extends
      *
      * @var array
      */
-    protected $footer = [];
+    protected $extends_render = [];
 
     /**
      * The custom directive collector
@@ -77,7 +77,7 @@ class Compiler
     private $directives = [];
 
     /**
-     * Liste of default directive
+     * List of default directive
      *
      * @var array
      */
@@ -122,7 +122,7 @@ class Compiler
             }
         }
 
-        return $this->resetCompilatorAccumulator();
+        return $this->resetCompilationAccumulator();
     }
 
     /**
@@ -152,17 +152,17 @@ class Compiler
     }
 
     /**
-     * Reset Compilation accumulatior
+     * Reset Compilation accumulator
      *
      * @return string
      */
-    private function resetCompilatorAccumulator()
+    private function resetCompilationAccumulator()
     {
-        $result = $this->result.implode("\n", $this->footer);
+        $result = $this->result.implode("\n", $this->extends_render);
 
         $this->result = '';
 
-        $this->footer = [];
+        $this->extends_render = [];
 
         return $result;
     }

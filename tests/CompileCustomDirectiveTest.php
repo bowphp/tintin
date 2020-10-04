@@ -48,13 +48,14 @@ class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
      */
     public function testSimpleDirective()
     {
-        $this->tintin->directive('now', function (array $attributes = []) {
-            return time();
+        $now = time();
+        $this->tintin->directive('now', function (array $attributes = []) use ($now) {
+            return $now;
         });
 
         $r = $this->tintin->render('#now');
 
-        $this->assertTrue(is_numeric($r));
+        $this->assertEquals($now, $r);
     }
 
     /**
@@ -88,8 +89,8 @@ class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
             return '<?php endif; ?>';
         }, true);
 
-        $r = $tintin->render('custom', ['name' => 'Tintin access allowed']);
+        $render = $tintin->render('custom', ['name' => 'Tintin access allowed']);
 
-        $this->assertEquals(trim($r), 'Tintin access allowed');
+        $this->assertEquals(trim($render), 'Tintin access allowed');
     }
 }

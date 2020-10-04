@@ -4,6 +4,8 @@ use Tintin\Compiler;
 
 class CompileLoopTest extends \PHPUnit\Framework\TestCase
 {
+    use CompileClassReflection;
+
     /**
      * @var Compiler
      */
@@ -12,20 +14,6 @@ class CompileLoopTest extends \PHPUnit\Framework\TestCase
     public function setUp()
     {
         $this->compiler = new Compiler;
-    }
-
-    /**
-     * Reflection maker
-     *
-     * @param string $method
-     */
-    public function makeReflectionFor($method)
-    {
-        $reflection = new \ReflectionMethod('\Tintin\Compiler', $method);
-    
-        $reflection->setAccessible(true);
-
-        return $reflection;
     }
 
     /**
@@ -87,13 +75,13 @@ class CompileLoopTest extends \PHPUnit\Framework\TestCase
      */
     public function testCompileBreaker()
     {
-        $compile_countinue = $this->makeReflectionFor('compileContinue');
+        $compile_continue = $this->makeReflectionFor('compileContinue');
 
-        $render = $compile_countinue->invoke(new Compiler, '#jump');
+        $render = $compile_continue->invoke(new Compiler, '#jump');
 
         $this->assertEquals($render, '<?php continue; ?>');
 
-        $render = $compile_countinue->invoke(new Compiler, '#jump ($name == "Tintin")');
+        $render = $compile_continue->invoke(new Compiler, '#jump ($name == "Tintin")');
 
         $this->assertEquals($render, '<?php if ($name == "Tintin"): continue; endif; ?>');
     }

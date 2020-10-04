@@ -78,7 +78,7 @@ class Filesystem implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function isExpirated($filename)
+    public function isExpired($filename)
     {
         if (!$this->isCached($filename)) {
             return true;
@@ -88,11 +88,11 @@ class Filesystem implements LoaderInterface
             $this->getFileResolvedPath($filename)
         );
 
-        $cache_filetime = fileatime(
+        $cache_fileatime = fileatime(
             $this->getCacheFileResolvedPath($filename)
         );
 
-        return $fileatime > $cache_filetime;
+        return $fileatime > $cache_fileatime;
     }
 
     /**

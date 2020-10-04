@@ -37,9 +37,9 @@ class TintinTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Test simplate rendering 1
+     * Test simple rendering 1
      */
-    public function testRenderSimpeData()
+    public function testRenderSimpleData()
     {
         $tintin = new Tintin;
 
@@ -49,24 +49,16 @@ class TintinTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Test simplate rendering 1
+     * Test simple rendering 1
+     * @depends getComputeData
      */
-    public function testRenderSimpeDataCalcule()
+    public function testRenderSimpleDataCompute($data)
     {
         $tintin = new Tintin;
 
-        $render1 = $tintin->render('{{{ $num + $num }}}', ['num' => 5]);
+        $render1 = $tintin->render('{{{ $num + $num }}}', ['num' => $data['value'], 'sign' => $data['sign']]);
 
-        $render2 = $tintin->render('{{{ $num - $num }}}', ['num' => 5]);
-
-        $render3 = $tintin->render('{{{ $num * $num }}}', ['num' => 5]);
-
-        $render4 = $tintin->render('{{{ $num / $num }}}', ['num' => 5]);
-
-        $this->assertEquals($render1, "10");
-        $this->assertEquals($render2, "0");
-        $this->assertEquals($render3, "25");
-        $this->assertEquals($render4, "1");
+        $this->assertEquals($render1, $data['result']);
     }
     
     /**
@@ -79,5 +71,20 @@ class TintinTest extends \PHPUnit\Framework\TestCase
         $render = $tintin->render('#falseDirective <href="#link">');
 
         $this->assertEquals($render, '#falseDirective <href="#link">');
+    }
+
+    /**
+     * The compute dataset
+     *
+     * @return array
+     */
+    public function getComputeData()
+    {
+        return [
+            ['value' => 5, 'sign' => '+', 'result' => 10],
+            ['value' => 5, 'sign' => '-', 'result' => 0],
+            ['value' => 5, 'sign' => '*', 'result' => 25],
+            ['value' => 5, 'sign' => '/', 'result' => 1],
+        ];
     }
 }

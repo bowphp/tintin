@@ -54,7 +54,7 @@ trait CompileLoop
      */
     private function compileLoop($expression, $lexic, $o_lexic)
     {
-        $regex = sprintf($this->condition_patern, $lexic);
+        $regex = sprintf($this->condition_pattern, $lexic);
 
         $output = preg_replace_callback($regex, function ($match) use ($o_lexic) {
             array_shift($match);

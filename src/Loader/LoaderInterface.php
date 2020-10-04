@@ -5,7 +5,7 @@ namespace Tintin\Loader;
 interface LoaderInterface
 {
     /**
-     * Get the cache reporitory path
+     * Get the cache repository path
      *
      * @return mixed
      */
@@ -39,13 +39,13 @@ interface LoaderInterface
     public function exists($filename);
 
     /**
-     * Check if file is expirate
+     * Check if file is expire
      *
      * @param string $filename
      *
      * @return mixed
      */
-    public function isExpirated($filename);
+    public function isExpired($filename);
 
     /**
      * Check if file is cached

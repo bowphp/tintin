@@ -4,6 +4,8 @@ use Tintin\Compiler;
 
 class CompileIfTest extends \PHPUnit\Framework\TestCase
 {
+    use CompileClassReflection;
+
     /**
      * @var Compiler
      */
@@ -12,20 +14,6 @@ class CompileIfTest extends \PHPUnit\Framework\TestCase
     public function setUp()
     {
         $this->compiler = new Compiler;
-    }
-
-    /**
-     * Reflection maker
-     *
-     * @param string $method
-     */
-    public function makeReflectionFor($method)
-    {
-        $reflection = new \ReflectionMethod('\Tintin\Compiler', $method);
-    
-        $reflection->setAccessible(true);
-
-        return $reflection;
     }
 
     public function testCompileIfStatement()
@@ -63,7 +51,7 @@ class CompileIfTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($render, '<?php elseif ($name > 0): ?>');
     }
 
-    public function testcompileUnLessStatement()
+    public function testCompileUnLessStatement()
     {
         $compile_else = $this->makeReflectionFor('compileUnLess');
         
@@ -94,5 +82,7 @@ class CompileIfTest extends \PHPUnit\Framework\TestCase
         $html = file_get_contents(__DIR__.'/view/sample.tintin.php');
 
         $render = $this->compiler->compile($html);
+
+        $this->assertContains('<?php if ($age > 16): ?>', $render);
     }
 }

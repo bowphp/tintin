@@ -121,7 +121,7 @@ class Tintin
         /**
          * Load template when is not a cached file
          */
-        if (! $this->loader->isExpirated($template)) {
+        if (! $this->loader->isExpired($template)) {
             $this->obFlushAndStar();
 
             require $this->loader->getCacheFileResolvedPath($template);

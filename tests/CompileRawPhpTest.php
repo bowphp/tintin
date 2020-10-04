@@ -4,6 +4,8 @@ use Tintin\Compiler;
 
 class CompileRawPhpTest extends \PHPUnit\Framework\TestCase
 {
+    use CompileClassReflection;
+
     /**
      * @var Compiler
      */
@@ -12,20 +14,6 @@ class CompileRawPhpTest extends \PHPUnit\Framework\TestCase
     public function setUp()
     {
         $this->compiler = new Compiler;
-    }
-
-    /**
-     * Reflection maker
-     *
-     * @param string $method
-     */
-    public function makeReflectionFor($method)
-    {
-        $reflection = new \ReflectionMethod('\Tintin\Compiler', $method);
-    
-        $reflection->setAccessible(true);
-
-        return $reflection;
     }
 
     public function testCompileRawPhp()

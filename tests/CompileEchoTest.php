@@ -4,6 +4,8 @@ use Tintin\Compiler;
 
 class CompilerEchoTest extends \PHPUnit\Framework\TestCase
 {
+    use CompileClassReflection;
+    
     /**
      * @var Compiler
      */
@@ -12,22 +14,6 @@ class CompilerEchoTest extends \PHPUnit\Framework\TestCase
     public function setUp()
     {
         $this->compiler = new Compiler;
-    }
-
-    /**
-     * Reflection maker
-     *
-     * @param string $method
-     * @throws ReflectionException
-     * @return ReflectionMethod
-     */
-    public function makeReflectionFor($method)
-    {
-        $reflection = new \ReflectionMethod('\Tintin\Compiler', $method);
-    
-        $reflection->setAccessible(true);
-
-        return $reflection;
     }
 
     /**

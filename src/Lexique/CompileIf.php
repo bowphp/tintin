@@ -37,7 +37,7 @@ trait CompileIf
      */
     private function compileIfStatement($expression, $lexic, $o_lexic)
     {
-        $regex = sprintf($this->condition_patern, $lexic);
+        $regex = sprintf($this->condition_pattern, $lexic);
 
         $output = preg_replace_callback($regex, function ($match) use ($o_lexic, $lexic) {
             array_shift($match);
