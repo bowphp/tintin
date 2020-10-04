@@ -42,7 +42,6 @@ interface LoaderInterface
      * Check if file is expire
      *
      * @param string $filename
-     *
      * @return mixed
      */
     public function isExpired($filename);
@@ -51,7 +50,6 @@ interface LoaderInterface
      * Check if file is cached
      *
      * @param string $filename
-     *
      * @return mixed
      */
     public function isCached($filename);
@@ -61,7 +59,6 @@ interface LoaderInterface
      *
      * @param string $filename
      * @param string $data
-     *
      * @return mixed
      */
     public function cache($filename, $data);
@@ -70,8 +67,8 @@ interface LoaderInterface
      * Throw load error
      *
      * @param string $message
-     *
      * @return void
+     * 
      * @throws \Exception
      */
     public function failLoading($message);

@@ -8,7 +8,6 @@ trait CompileCustomDirective
      * Compile the custom statement
      *
      * @param string $expression
-     *
      * @return string
      */
     protected function compileCustomDirective($expression)
@@ -40,7 +39,6 @@ trait CompileCustomDirective
 
     /**
      * Get partern
-     *
      * @return string
      */
     private function getCustomDirectivePartern()

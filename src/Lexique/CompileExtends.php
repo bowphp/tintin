@@ -8,7 +8,6 @@ trait CompileExtends
      * Compile the inherit concept statement
      *
      * @param string $expression
-     *
      * @return string
      */
     protected function compileExtendsStack($expression)
@@ -28,7 +27,6 @@ trait CompileExtends
      * Compile the #block statement
      *
      * @param string $expression
-     *
      * @return string
      */
     protected function compileBlock($expression)
@@ -60,7 +58,6 @@ trait CompileExtends
      * Compile the #endblock statement
      *
      * @param string $expression
-     *
      * @return string
      */
     protected function compileEndBlock($expression)
@@ -76,7 +73,6 @@ trait CompileExtends
      * Compile the #include statement
      *
      * @param string $expression
-     *
      * @return string
      */
     protected function compileInclude($expression)
@@ -94,7 +90,6 @@ trait CompileExtends
      * Compile the #extends statement
      *
      * @param string $expression
-     *
      * @return string
      */
     protected function compileExtends($expression)
@@ -114,7 +109,6 @@ trait CompileExtends
      * Compile the #inject statement
      *
      * @param string $expression
-     *
      * @return string
      */
     protected function compileInject($expression)

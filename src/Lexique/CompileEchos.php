@@ -8,7 +8,6 @@ trait CompileEchos
      * Compile the echo statement concept
      *
      * @param string $expression
-     *
      * @return mixed
      */
     protected function compileEchoStack($expression)
@@ -28,7 +27,6 @@ trait CompileEchos
      * Compile the {{ $name }} statement
      *
      * @param string $expression
-     *
      * @return string
      */
     protected function compileEcho($expression)
@@ -52,7 +50,6 @@ trait CompileEchos
      * Compile the {{{ $name }}} statement
      *
      * @param string $expression
-     *
      * @return string
      */
     protected function compileRawEcho($expression)

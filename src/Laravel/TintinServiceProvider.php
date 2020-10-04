@@ -19,7 +19,6 @@ class TintinServiceProvider extends ServiceProvider
 
     /**
      * Register the view finder implementation.
-     *
      * @return void
      */
     public function registerViewFinder()
@@ -35,7 +34,6 @@ class TintinServiceProvider extends ServiceProvider
 
     /**
      * Register the view load implementation.
-     *
      * @return void
      */
     public function registerViewLoader()
@@ -47,7 +45,6 @@ class TintinServiceProvider extends ServiceProvider
 
     /**
      * Load the configuration files and allow them to be published.
-     *
      * @return void
      */
     protected function loadConfiguration()
@@ -65,7 +62,6 @@ class TintinServiceProvider extends ServiceProvider
 
     /**
      * Check if we are running Lumen or not.
-     *
      * @return bool
      */
     protected function isLumen()
@@ -75,7 +71,6 @@ class TintinServiceProvider extends ServiceProvider
 
     /**
      * Get the services provided by the provider.
-     *
      * @return array
      */
     public function provides()

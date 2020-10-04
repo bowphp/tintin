@@ -98,8 +98,8 @@ class Tintin
      *
      * @param string $template
      * @param array $data
-     *
      * @return string
+     * 
      * @throws
      */
     public function render($template, array $data = [])
@@ -151,7 +151,6 @@ class Tintin
      *
      * @param string $template
      * @param array $data
-     *
      * @return string
      */
     public function renderString($template, array $data = [])
@@ -167,7 +166,6 @@ class Tintin
      *
      * @param string $content
      * @param array $data
-     *
      * @return string
      */
     private function executePlainRendering($content, $data)
@@ -211,7 +209,6 @@ class Tintin
      * Create tmp compile file
      *
      * @param string $content
-     *
      * @return string
      */
     private function createTmpFile($content)
@@ -245,8 +242,8 @@ class Tintin
      * @param string $name
      * @param callable $handler
      * @param boolean $broken
-     *
      * @return mixed
+     * 
      * @throws DirectiveNotAllowException
      */
     public function directive($name, $handler, $broken = false)

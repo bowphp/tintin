@@ -6,7 +6,6 @@ trait CompileLoop
 {
     /**
      * Definition of all available stack
-     *
      * @return array
      */
     private function getLoopStack()
@@ -27,7 +26,6 @@ trait CompileLoop
      * Compile the loop statement stack
      *
      * @param string $expression
-     *
      * @return string
      */
     protected function compileLoopStack($expression)
@@ -49,7 +47,6 @@ trait CompileLoop
      * @param string $expression
      * @param string $lexic
      * @param string $o_lexic
-     *
      * @return string
      */
     private function compileLoop($expression, $lexic, $o_lexic)
@@ -71,7 +68,6 @@ trait CompileLoop
      * @param string $expression
      * @param string $lexic
      * @param string $o_lexic
-     *
      * @return string
      */
     private function compileEndLoop($expression, $lexic, $o_lexic)
@@ -89,7 +85,6 @@ trait CompileLoop
      * @param string $expression
      * @param string $lexic
      * @param string $o_lexic
-     *
      * @return string
      */
     private function compileBreaker($expression, $lexic, $o_lexic)
@@ -115,7 +110,6 @@ trait CompileLoop
      * Compile the #loop statement
      *
      * @param string $expression
-     *
      * @return string
      */
     protected function compileForeach($expression)

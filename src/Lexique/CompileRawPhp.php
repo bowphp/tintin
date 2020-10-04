@@ -8,7 +8,6 @@ trait CompileRawPhp
      * Compile the #raw...#endraw statement
      *
      * @param string $expression
-     *
      * @return string
      */
     protected function compileRawPhp($expression)

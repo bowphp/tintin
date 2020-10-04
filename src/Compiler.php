@@ -107,7 +107,6 @@ class Compiler
      * Launch the compilation
      *
      * @param array|string $data
-     *
      * @return string
      */
     public function compile($data)
@@ -129,7 +128,6 @@ class Compiler
      * Compile All define token
      *
      * @param string $value
-     *
      * @return string
      */
     private function compileToken($value)
@@ -153,7 +151,6 @@ class Compiler
 
     /**
      * Reset Compilation accumulator
-     *
      * @return string
      */
     private function resetCompilationAccumulator()
@@ -173,7 +170,6 @@ class Compiler
      * @param string $name
      * @param callable $handler
      * @param boolean $broken
-     *
      * @return void
      * @throws DirectiveNotAllowException
      */
@@ -191,7 +187,6 @@ class Compiler
      *
      * @param string $name
      * @param array $params
-     *
      * @return mixed
      */
     public function _____executeCustomDirectory($name, ...$params)

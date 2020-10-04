@@ -46,7 +46,6 @@ class StackManager
      * @param string $filename
      * @param array $data
      * @param array $context
-     *
      * @return string
      */
     public function includeFile($filename, $data = [], $context = [])
@@ -63,7 +62,6 @@ class StackManager
      *
      * @param string $name
      * @param string $content
-     *
      * @return void
      */
     public function startStack($name, $content = null)
@@ -104,8 +102,7 @@ class StackManager
      *
      * @param string $name
      * @param string $default
-     *
-     * @return mixed|null
+     * @return mixed
      */
     public function getStack($name, $default = null)
     {

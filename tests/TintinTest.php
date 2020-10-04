@@ -75,7 +75,6 @@ class TintinTest extends \PHPUnit\Framework\TestCase
 
     /**
      * The compute dataset
-     *
      * @return array
      */
     public function getComputeData()

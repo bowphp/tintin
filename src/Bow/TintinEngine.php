@@ -27,7 +27,6 @@ class TintinEngine extends EngineAbstract
      * BladeEngine constructor.
      *
      * @param Loader $config
-     *
      * @return void
      */
     public function __construct(Loader $config)

@@ -8,7 +8,6 @@ trait CompileIf
      * Compile the if statement stack
      *
      * @param string $expression
-     *
      * @return string
      */
     protected function compileIfStack($expression)
@@ -56,7 +55,6 @@ trait CompileIf
      * Compile the #if statement
      *
      * @param string $expression
-     *
      * @return string
      */
     protected function compileIf($expression)
@@ -68,7 +66,6 @@ trait CompileIf
      * Compile the #unless statement
      *
      * @param string $expression
-     *
      * @return string
      */
     protected function compileUnLess($expression)
@@ -80,7 +77,6 @@ trait CompileIf
      * Compile the #else statement
      *
      * @param string $expression
-     *
      * @return string
      */
     protected function compileElse($expression)
@@ -96,7 +92,6 @@ trait CompileIf
      * Compile the #elseif statement
      *
      * @param string $expression
-     *
      * @return string
      */
     protected function compileElseIf($expression)
@@ -108,7 +103,6 @@ trait CompileIf
      * Compile the #elseif statement
      *
      * @param string $expression
-     *
      * @return string
      */
     protected function compileElseIfAlias($expression)
@@ -120,7 +114,6 @@ trait CompileIf
      * Compile the #endif statement
      *
      * @param string $expression
-     *
      * @return string
      */
     protected function compileEndIf($expression)

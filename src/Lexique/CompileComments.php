@@ -5,10 +5,9 @@ namespace Tintin\Lexique;
 trait CompileComments
 {
     /**
-     * Compile the {# commentes #} statement
+     * Compile the {# comments #} statement
      *
      * @param  string  $value
-     *
      * @return string
      */
     protected function compileComments($value)
