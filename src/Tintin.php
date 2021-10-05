@@ -104,12 +104,14 @@ class Tintin
      */
     public function render($template, array $data = [])
     {
+        $__template = $template;
+
         if (is_null($this->loader)) {
-            return $this->renderString($template, $data);
+            return $this->renderString($__template, $data);
         }
 
-        if (! $this->loader->exists($template)) {
-            $this->loader->failLoading($template .' not found');
+        if (! $this->loader->exists($__template)) {
+            $this->loader->failLoading($__template .' not found');
         }
 
         $this->pushSharedData($data);
@@ -121,10 +123,10 @@ class Tintin
         /**
          * Load template when is not a cached file
          */
-        if (! $this->loader->isExpired($template)) {
+        if (! $this->loader->isExpired($__template)) {
             $this->obFlushAndStar();
 
-            require $this->loader->getCacheFileResolvedPath($template);
+            require $this->loader->getCacheFileResolvedPath($__template);
             
             return $this->obGetContent();
         }
@@ -132,16 +134,16 @@ class Tintin
         /**
          * Put the template into cache
          */
-        $content = $this->loader->getFileContent($template);
+        $content = $this->loader->getFileContent($__template);
 
         $this->loader->cache(
-            $template,
+            $__template,
             $this->compiler->compile($content)
         );
 
         $this->obFlushAndStar();
 
-        require $this->loader->getCacheFileResolvedPath($template);
+        require $this->loader->getCacheFileResolvedPath($__template);
 
         return $this->obGetContent();
     }
@@ -155,8 +157,9 @@ class Tintin
      */
     public function renderString($template, array $data = [])
     {
+        $__template = $template;
         return $this->executePlainRendering(
-            trim($this->compiler->compile($template)),
+            trim($this->compiler->compile($__template)),
             array_merge($data, ['__tintin' => $this])
         );
     }
