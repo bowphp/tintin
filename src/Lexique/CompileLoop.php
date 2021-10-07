@@ -90,10 +90,10 @@ trait CompileLoop
     private function compileBreaker($expression, $lexic, $o_lexic)
     {
         $output = preg_replace_callback(
-            "/($lexic *(\(.+?\))|$lexic)/s",
+            "/($lexic\s*(\(.+\)\s*)|$lexic)/s",
             function ($match) use ($lexic, $o_lexic) {
                 array_shift($match);
-
+            
                 if (trim($match[0]) == $lexic) {
                     return "<?php $o_lexic; ?>";
                 }

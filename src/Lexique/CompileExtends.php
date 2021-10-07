@@ -77,7 +77,7 @@ trait CompileExtends
      */
     protected function compileInclude($expression)
     {
-        $regex = "/\#include\s*\(((?:\n|\s|\t)*(?:.+?)(?:\n|\s|\t)*\)?)\)/sm";
+        $regex = "/\#include\s*\(((?:\n|\s|\t)*(?:.+)(?:\n|\s|\t)*\)?)\)/sm";
 
         $output = preg_replace_callback($regex, function ($match) {
             return "<?php echo \$__tintin->getStackManager()->includeFile({$match[1]}, ['__tintin' => \$__tintin]); ?>";
