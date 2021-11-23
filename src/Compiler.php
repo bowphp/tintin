@@ -45,7 +45,8 @@ class Compiler
         'IfStack',
         'LoopStack',
         'ExtendsStack',
-        'CustomDirective'
+        'CustomStack',
+        'CustomDirective',
     ];
 
     /**

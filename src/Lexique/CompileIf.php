@@ -45,6 +45,10 @@ trait CompileIf
                 return "<?php $o_lexic (! ({$match[1]})): ?>";
             }
 
+            if ($lexic == '#isset') {
+                return "<?php $o_lexic (isset({$match[1]})): ?>";
+            }
+
             return "<?php $o_lexic ({$match[1]}): ?>";
         }, $expression);
 
@@ -118,7 +122,7 @@ trait CompileIf
      */
     protected function compileEndIf($expression)
     {
-        $output = preg_replace_callback('/\n*(#endif|#endunless)\n*/', function ($match) {
+        $output = preg_replace_callback('/\n*(#endif|#endisset|#endunless)\n*/', function ($match) {
             array_shift($match);
 
             return "<?php endif; ?>";

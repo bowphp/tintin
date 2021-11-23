@@ -2,6 +2,7 @@
 
 use Tintin\Tintin;
 use Tintin\Loader\Filesystem;
+use Tintin\Loader\LoaderInterface;
 
 class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
 {
@@ -11,7 +12,7 @@ class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
     private $tintin;
 
     /**
-     * @var Filesystem;
+     * @var LoaderInterface;
      */
     private $loader;
 
