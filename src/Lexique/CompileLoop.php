@@ -31,7 +31,7 @@ trait CompileLoop
     protected function compileLoopStack($expression)
     {
         foreach ($this->getLoopStack() as $token) {
-            $out = $this->{'compile'.$token}($expression);
+            $out = $this->{'compile' . $token}($expression);
 
             if (strlen($out) !== 0) {
                 $expression = $out;
@@ -93,7 +93,7 @@ trait CompileLoop
             "/($lexic\s*(\(.+\)\s*)|$lexic)/s",
             function ($match) use ($lexic, $o_lexic) {
                 array_shift($match);
-            
+
                 if (trim($match[0]) == $lexic) {
                     return "<?php $o_lexic; ?>";
                 }

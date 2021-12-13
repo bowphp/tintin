@@ -19,7 +19,7 @@ trait CompileRawPhp
             function ($match) {
                 array_shift($match);
 
-                return "<?php ".trim($match[0])." ?>";
+                return "<?php " . trim($match[0]) . " ?>";
             },
             $expression
         );

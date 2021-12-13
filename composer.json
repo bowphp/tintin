@@ -16,7 +16,7 @@
     },
     "require-dev": {
         "symfony/css-selector": "^4.3@dev",
-        "phpunit/phpunit": "^7"
+        "phpunit/phpunit": "^8"
     },
     "minimum-stability": "stable",
     "extra": {

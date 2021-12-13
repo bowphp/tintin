@@ -49,7 +49,7 @@ class TintinServiceProvider extends ServiceProvider
      */
     protected function loadConfiguration()
     {
-        $config_path = __DIR__.'/../../config/tintin.php';
+        $config_path = __DIR__ . '/../../config/tintin.php';
 
         if (!$this->isLumen()) {
             $this->publishes([

@@ -13,7 +13,7 @@ trait CompileExtends
     protected function compileExtendsStack($expression)
     {
         foreach (['Block', 'EndBlock', 'Include', 'Inject', 'Extends'] as $token) {
-            $out = $this->{'compile'.$token}($expression);
+            $out = $this->{'compile' . $token}($expression);
 
             if (strlen($out) !== 0) {
                 $expression = $out;

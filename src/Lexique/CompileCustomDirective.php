@@ -69,7 +69,7 @@ trait CompileCustomDirective
 
             return "<?php echo \$__tintin->getCompiler()->_____executeCustomDirectory(\"$name\", $params);";
         }, $expression);
-        
+
         return is_null($output) ? $expression : $output;
     }
 
