@@ -13,7 +13,7 @@ trait CompileEchos
     protected function compileEchoStack($expression)
     {
         foreach (['RawEcho', 'Echo'] as $token) {
-            $out = $this->{'compile'.$token}($expression);
+            $out = $this->{'compile' . $token}($expression);
 
             if (strlen($out) !== 0) {
                 $expression = $out;
@@ -32,7 +32,7 @@ trait CompileEchos
     protected function compileEcho($expression)
     {
         $regex = sprintf(
-            '/((?:%s\s*(.+?)\s*%s))+/',
+            '/((?:%s\s*\$(.+?)\s*%s))+/',
             $this->echo_tags[0],
             $this->echo_tags[1]
         );
@@ -41,12 +41,11 @@ trait CompileEchos
             array_shift($match);
             $value = $match[0];
 
-            if (preg_match("/{{\s*([a-z_#\/\^@]+[a-z0-9_]+)\s*}}/", $value)) {
+            if (preg_match("/{{\s*([a-z_#\/\^@\s]+[a-z0-9_]+)\s*}}/", $value)) {
                 return $value;
             }
-            
-            return '<?php echo htmlspecialchars('.$match[1].', ENT_QUOTES); ?>';
 
+            return '<?php echo htmlspecialchars(' . $match[1] . ', ENT_QUOTES); ?>';
         }, $expression);
 
         return $output == $expression ? '' : $output;
@@ -61,7 +60,7 @@ trait CompileEchos
     protected function compileRawEcho($expression)
     {
         $regex = sprintf(
-            '/((?:%s\s*(.+?)\s*%s))+/',
+            '/((?:%s\s*\$(.+?)\s*%s))+/',
             $this->raw_echo_tags[0],
             $this->raw_echo_tags[1]
         );
@@ -70,11 +69,11 @@ trait CompileEchos
             array_shift($match);
             $value = $match[0];
 
-            if (preg_match("/{{{\s*([a-z_#\/\^@]+[a-z0-9_]+)\s*}}}/", $value)) {
+            if (preg_match("/{{{\s*([a-z_#\/\^@\s]+[a-z0-9_]+)\s*}}}/", $value)) {
                 return $value;
             }
 
-            return '<?php echo '.$match[1].'; ?>';
+            return '<?php echo ' . $match[1] . '; ?>';
         }, $expression);
 
         return $output == $expression ? '' : $output;
