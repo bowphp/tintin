@@ -32,7 +32,7 @@ trait CompileEchos
     protected function compileEcho($expression)
     {
         $regex = sprintf(
-            '/((?:%s\s*\$(.+?)\s*%s))+/',
+            '/((?:%s\s*\$?(.+?)\s*%s))+/',
             $this->echo_tags[0],
             $this->echo_tags[1]
         );
@@ -60,7 +60,7 @@ trait CompileEchos
     protected function compileRawEcho($expression)
     {
         $regex = sprintf(
-            '/((?:%s\s*\$(.+?)\s*%s))+/',
+            '/((?:%s\s*\$?(.+?)\s*%s))+/',
             $this->raw_echo_tags[0],
             $this->raw_echo_tags[1]
         );
