@@ -19,7 +19,7 @@ class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
     /**
      * On setup
      */
-    public function setUp()
+    protected function setUp():void
     {
         $this->tintin = new Tintin;
 
