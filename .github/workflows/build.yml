@@ -1,0 +1,29 @@
+name: build
+
+on: [push, pull_request]
+
+jobs:
+  run:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest]
+        php-versions: ["7.2", "7.3", "7.4"]
+    name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, pdo, pdo_mysql, intl, zip, xml, json, pdo_sqlite, openssl
+          coverage: none
+
+      - name: Install dependencies for PHP
+        run: composer update --prefer-dist --no-progress
+
+      - name: Run test suite
+        run: cp phpunit.dist.xml phpunit.xml && vendor/bin/phpunit
