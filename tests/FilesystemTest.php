@@ -9,7 +9,7 @@ class FilesystemTest extends \PHPUnit\Framework\TestCase
      */
     private $loader;
 
-    public function setUp()
+    protected function setUp():void
     {
         $this->filesystem = new Filesystem([
           'path' => __DIR__.'/view',

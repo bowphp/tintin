@@ -11,7 +11,7 @@ class CompileIfTest extends \PHPUnit\Framework\TestCase
      */
     private $compiler;
 
-    public function setUp()
+    protected function setUp():void
     {
         $this->compiler = new Compiler;
     }

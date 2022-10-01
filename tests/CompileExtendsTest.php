@@ -16,7 +16,7 @@ class CompileExtendsTest extends \PHPUnit\Framework\TestCase
     /**
      * On setup
      */
-    public function setUp()
+    protected function setUp():void
     {
         $this->loader = new Filesystem([
           'path' => __DIR__.'/view',

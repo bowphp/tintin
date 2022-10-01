@@ -15,7 +15,7 @@ class TintinWithFilesystemLoaderTest extends \PHPUnit\Framework\TestCase
      */
     private $instance;
 
-    public function setUp()
+    protected function setUp():void
     {
         $this->loader = new Filesystem([
           'path' => __DIR__.'/view',
