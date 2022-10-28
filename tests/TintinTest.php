@@ -6,16 +6,16 @@ use Tintin\Loader\Filesystem;
 class TintinTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var
+     * @var Filesystem
      */
-    private $loader;
+    private Filesystem $loader;
 
     /**
      * @var Tintin
      */
-    private $instance;
+    private Tintin $instance;
 
-    protected function setUp():void
+    public function setUp(): void
     {
         $this->loader = new Filesystem([
           'path' => __DIR__.'/view',
@@ -29,7 +29,7 @@ class TintinTest extends \PHPUnit\Framework\TestCase
      */
     public function testConfiguration()
     {
-        $this->assertInstanceOf(\Tintin\Loader\Filesystem::class, $this->loader);
+        $this->assertInstanceOf(Filesystem::class, $this->loader);
         
         $instance = new Tintin($this->loader);
 
@@ -49,16 +49,17 @@ class TintinTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Test simple rendering 1
-     * @depends getComputeData
+     * Test simple rendering
+     * 
+     * @dataProvider getComputeData
      */
-    public function testRenderSimpleDataCompute($data)
+    public function testRenderSimpleDataCompute(int $value, string $sign, int $result)
     {
         $tintin = new Tintin;
 
-        $render1 = $tintin->render('{{{ $num + $num }}}', ['num' => $data['value'], 'sign' => $data['sign']]);
+        $render = $tintin->render('{{{ $value ' . $sign . ' $value }}}', compact('value'));
 
-        $this->assertEquals($render1, $data['result']);
+        $this->assertEquals($render, $result);
     }
     
     /**
@@ -75,6 +76,7 @@ class TintinTest extends \PHPUnit\Framework\TestCase
 
     /**
      * The compute dataset
+     * 
      * @return array
      */
     public function getComputeData()

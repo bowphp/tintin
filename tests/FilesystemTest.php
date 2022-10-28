@@ -5,11 +5,11 @@ use Tintin\Loader\Filesystem;
 class FilesystemTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var
+     * @var Filesystem
      */
-    private $loader;
+    private Filesystem $loader;
 
-    protected function setUp():void
+    public function setUp(): void
     {
         $this->filesystem = new Filesystem([
           'path' => __DIR__.'/view',

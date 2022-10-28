@@ -10,7 +10,7 @@ trait CompileIf
      * @param string $expression
      * @return string
      */
-    protected function compileIfStack($expression)
+    protected function compileIfStack(string $expression): string
     {
         foreach (['UnLess', 'If', 'ElseIf', 'ElseIfAlias', 'Else', 'EndIf'] as $token) {
             $out = $this->{'compile' . $token}($expression);
@@ -34,7 +34,7 @@ trait CompileIf
      *
      * @return string
      */
-    private function compileIfStatement($expression, $lexic, $o_lexic)
+    private function compileIfStatement(string $expression, string $lexic, string $o_lexic): string
     {
         $regex = sprintf($this->condition_pattern, $lexic);
 
@@ -61,7 +61,7 @@ trait CompileIf
      * @param string $expression
      * @return string
      */
-    protected function compileIf($expression)
+    protected function compileIf(string $expression): string
     {
         return $this->compileIfStatement($expression, '#if', 'if');
     }
@@ -72,7 +72,7 @@ trait CompileIf
      * @param string $expression
      * @return string
      */
-    protected function compileUnLess($expression)
+    protected function compileUnLess(string $expression): string
     {
         return $this->compileIfStatement($expression, '#unless', 'if');
     }
@@ -83,7 +83,7 @@ trait CompileIf
      * @param string $expression
      * @return string
      */
-    protected function compileElse($expression)
+    protected function compileElse(string $expression): string
     {
         $output = preg_replace_callback('/\n*#else\n*/', function () {
             return "<?php else: ?>";
@@ -98,7 +98,7 @@ trait CompileIf
      * @param string $expression
      * @return string
      */
-    protected function compileElseIf($expression)
+    protected function compileElseIf(string $expression): string
     {
         return $this->compileIfStatement($expression, '#elseif', 'elseif');
     }
@@ -109,7 +109,7 @@ trait CompileIf
      * @param string $expression
      * @return string
      */
-    protected function compileElseIfAlias($expression)
+    protected function compileElseIfAlias(string $expression): string
     {
         return $this->compileIfStatement($expression, '#elif', 'elseif');
     }
@@ -120,7 +120,7 @@ trait CompileIf
      * @param string $expression
      * @return string
      */
-    protected function compileEndIf($expression)
+    protected function compileEndIf(string $expression): string
     {
         $output = preg_replace_callback('/\n*(#endif|#endisset|#endunless)\n*/', function ($match) {
             array_shift($match);

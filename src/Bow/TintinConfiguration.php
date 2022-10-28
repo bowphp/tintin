@@ -13,12 +13,12 @@ class TintinConfiguration extends Configuration
      * {@inheritdoc}
      * @throws
      */
-    public function create(Loader $config)
+    public function create(Loader $config): void
     {
         $this->container->bind('view', function () use ($config) {
             View::pushEngine('tintin', TintinEngine::class);
 
-            View::configure($config);
+            View::configure($config['view']);
 
             return View::getInstance();
         });
@@ -28,7 +28,7 @@ class TintinConfiguration extends Configuration
      * {@inheritdoc}
      * @throws
      */
-    public function run()
+    public function run(): void
     {
         $view = $this->container->make('view');
 
@@ -41,7 +41,7 @@ class TintinConfiguration extends Configuration
      * @param Tintin $tintin
      * @return mixed
      */
-    public function onRunning(Tintin $tintin)
+    public function onRunning(Tintin $tintin): void
     {
         //
     }

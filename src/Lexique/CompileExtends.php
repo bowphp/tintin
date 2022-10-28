@@ -10,7 +10,7 @@ trait CompileExtends
      * @param string $expression
      * @return string
      */
-    protected function compileExtendsStack($expression)
+    protected function compileExtendsStack(string $expression): string
     {
         foreach (['Block', 'EndBlock', 'Include', 'Inject', 'Extends'] as $token) {
             $out = $this->{'compile' . $token}($expression);
@@ -29,7 +29,7 @@ trait CompileExtends
      * @param string $expression
      * @return string
      */
-    protected function compileBlock($expression)
+    protected function compileBlock($expression): string
     {
         $output = preg_replace_callback(
             "/\n*\#block\s*\((.+?)(?:,(.+?))?\)\n*/m",
@@ -60,7 +60,7 @@ trait CompileExtends
      * @param string $expression
      * @return string
      */
-    protected function compileEndBlock($expression)
+    protected function compileEndBlock(string $expression): string
     {
         $output = preg_replace_callback("/\n*#endblock\n*/m", function () {
             return "<?php \$__tintin->getStackManager()->endStack(); ?>";
@@ -75,7 +75,7 @@ trait CompileExtends
      * @param string $expression
      * @return string
      */
-    protected function compileInclude($expression)
+    protected function compileInclude(string $expression): string
     {
         $regex = "/\#include\s*\(((?:\n|\s|\t)*(?:.+)(?:\n|\s|\t)*\)?)\)/sm";
 
@@ -92,7 +92,7 @@ trait CompileExtends
      * @param string $expression
      * @return string
      */
-    protected function compileExtends($expression)
+    protected function compileExtends(string $expression): string
     {
         $regex = "/^\#extends\s*\(((?:\n|\s|\t)*(?:.+?)(?:\n|\s|\t)*\)?)\)$/sm";
 
@@ -111,7 +111,7 @@ trait CompileExtends
      * @param string $expression
      * @return string
      */
-    protected function compileInject($expression)
+    protected function compileInject(string $expression): string
     {
         $regex = "/\#inject\s*\(((?:\n|\s|\t)*(?:.+?)(?:\n|\s|\t)*)\)/sm";
 

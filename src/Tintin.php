@@ -41,7 +41,7 @@ class Tintin
      *
      * @param LoaderInterface $loader
      */
-    public function __construct(LoaderInterface $loader = null)
+    public function __construct(?LoaderInterface $loader = null)
     {
         $this->loader = $loader;
         

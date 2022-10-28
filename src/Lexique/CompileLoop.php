@@ -8,7 +8,7 @@ trait CompileLoop
      * Definition of all available stack
      * @return array
      */
-    private function getLoopStack()
+    private function getLoopStack(): array
     {
         return [
             'Foreach',
@@ -28,7 +28,7 @@ trait CompileLoop
      * @param string $expression
      * @return string
      */
-    protected function compileLoopStack($expression)
+    protected function compileLoopStack(string $expression): string
     {
         foreach ($this->getLoopStack() as $token) {
             $out = $this->{'compile' . $token}($expression);
@@ -49,7 +49,7 @@ trait CompileLoop
      * @param string $o_lexic
      * @return string
      */
-    private function compileLoop($expression, $lexic, $o_lexic)
+    private function compileLoop(string $expression, string $lexic, string $o_lexic): string
     {
         $regex = sprintf($this->condition_pattern, $lexic);
 
@@ -70,7 +70,7 @@ trait CompileLoop
      * @param string $o_lexic
      * @return string
      */
-    private function compileEndLoop($expression, $lexic, $o_lexic)
+    private function compileEndLoop($expression, $lexic, $o_lexic): string
     {
         $output = preg_replace_callback("/\n*$lexic\n*/", function () use ($o_lexic) {
             return "<?php $o_lexic; ?>";
@@ -87,7 +87,7 @@ trait CompileLoop
      * @param string $o_lexic
      * @return string
      */
-    private function compileBreaker($expression, $lexic, $o_lexic)
+    private function compileBreaker($expression, $lexic, $o_lexic): string
     {
         $output = preg_replace_callback(
             "/($lexic\s*(\(.+\)\s*)|$lexic)/s",
@@ -112,7 +112,7 @@ trait CompileLoop
      * @param string $expression
      * @return string
      */
-    protected function compileForeach($expression)
+    protected function compileForeach(string $expression): string
     {
         return $this->compileLoop($expression, '#loop', 'foreach');
     }
@@ -123,7 +123,7 @@ trait CompileLoop
      * @param $expression
      * @return string
      */
-    protected function compileWhile($expression)
+    protected function compileWhile(string $expression): string
     {
         return $this->compileLoop($expression, '#while', 'while');
     }
@@ -134,7 +134,7 @@ trait CompileLoop
      * @param string $expression
      * @return string
      */
-    protected function compileFor($expression)
+    protected function compileFor(string $expression): string
     {
         return $this->compileLoop($expression, '#for', 'for');
     }
@@ -145,7 +145,7 @@ trait CompileLoop
      * @param $expression
      * @return string
      */
-    protected function compileEndForeach($expression)
+    protected function compileEndForeach(string $expression): string
     {
         return $this->compileEndLoop($expression, '#endloop', 'endforeach');
     }
@@ -156,7 +156,7 @@ trait CompileLoop
      * @param string $expression
      * @return string
      */
-    protected function compileEndWhile($expression)
+    protected function compileEndWhile(string $expression): string
     {
         return $this->compileEndLoop($expression, '#endwhile', 'endwhile');
     }
@@ -167,7 +167,7 @@ trait CompileLoop
      * @param string $expression
      * @return string
      */
-    protected function compileEndFor($expression)
+    protected function compileEndFor(string $expression): string
     {
         return $this->compileEndLoop($expression, '#endfor', 'endfor');
     }
@@ -178,7 +178,7 @@ trait CompileLoop
      * @param string $expression
      * @return string
      */
-    protected function compileContinue($expression)
+    protected function compileContinue(string $expression): string
     {
         return $this->compileBreaker($expression, '#jump', 'continue');
     }
@@ -189,7 +189,7 @@ trait CompileLoop
      * @param string $expression
      * @return string
      */
-    protected function compileBreak($expression)
+    protected function compileBreak(string $expression): string
     {
         return $this->compileBreaker($expression, '#stop', 'break');
     }
