@@ -12,9 +12,9 @@ class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
     private Tintin $tintin;
 
     /**
-     * @var LoaderInterface;
+     * @var ?LoaderInterface;
      */
-    private LoaderInterface $loader;
+    private ?LoaderInterface $loader = null;
 
     /**
      * On setup

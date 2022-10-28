@@ -46,7 +46,7 @@ class TintinEngine extends EngineAbstract
      * {@inheritdoc}
      * @throws
      */
-    public function render($filename, array $data = []): string
+    public function render(string $filename, array $data = []): string
     {
         $filename = $this->checkParseFile($filename, false);
 
