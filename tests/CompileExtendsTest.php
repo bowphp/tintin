@@ -9,14 +9,14 @@ class CompileExtendsTest extends \PHPUnit\Framework\TestCase
     use CompileClassReflection;
 
     /**
-     * @var
+     * @var Filesystem
      */
-    private $loader;
+    private Filesystem $loader;
 
     /**
      * On setup
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->loader = new Filesystem([
           'path' => __DIR__.'/view',
@@ -30,7 +30,7 @@ class CompileExtendsTest extends \PHPUnit\Framework\TestCase
      */
     public function testConfiguration()
     {
-        $this->assertInstanceOf(\Tintin\Loader\Filesystem::class, $this->loader);
+        $this->assertInstanceOf(Filesystem::class, $this->loader);
         
         $instance = new Tintin($this->loader);
 

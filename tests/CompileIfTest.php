@@ -9,9 +9,9 @@ class CompileIfTest extends \PHPUnit\Framework\TestCase
     /**
      * @var Compiler
      */
-    private $compiler;
+    private Compiler $compiler;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->compiler = new Compiler;
     }
@@ -83,6 +83,6 @@ class CompileIfTest extends \PHPUnit\Framework\TestCase
 
         $render = $this->compiler->compile($html);
 
-        $this->assertContains('<?php if ($age > 16): ?>', $render);
+        $this->assertStringContainsString('<?php if ($age > 16): ?>', $render);
     }
 }

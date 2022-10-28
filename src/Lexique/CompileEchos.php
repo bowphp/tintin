@@ -8,9 +8,9 @@ trait CompileEchos
      * Compile the echo statement concept
      *
      * @param string $expression
-     * @return mixed
+     * @return string
      */
-    protected function compileEchoStack($expression)
+    protected function compileEchoStack(string $expression): string
     {
         foreach (['RawEcho', 'Echo'] as $token) {
             $out = $this->{'compile' . $token}($expression);
@@ -29,7 +29,7 @@ trait CompileEchos
      * @param string $expression
      * @return string
      */
-    protected function compileEcho($expression)
+    protected function compileEcho(string $expression): string
     {
         $regex = sprintf(
             '/((?:%s\s*(\$?.+?)\s*%s))+/',
@@ -57,7 +57,7 @@ trait CompileEchos
      * @param string $expression
      * @return string
      */
-    protected function compileRawEcho($expression)
+    protected function compileRawEcho(string $expression): string
     {
         $regex = sprintf(
             '/((?:%s\s*(\$?.+?)\s*%s))+/',

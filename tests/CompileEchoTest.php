@@ -9,9 +9,9 @@ class CompilerEchoTest extends \PHPUnit\Framework\TestCase
     /**
      * @var Compiler
      */
-    private $compiler;
+    private Compiler $compiler;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->compiler = new Compiler;
     }

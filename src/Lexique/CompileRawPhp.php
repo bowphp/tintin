@@ -10,7 +10,7 @@ trait CompileRawPhp
      * @param string $expression
      * @return string
      */
-    protected function compileRawPhp($expression)
+    protected function compileRawPhp(string $expression): string
     {
         $expression = trim($expression);
 

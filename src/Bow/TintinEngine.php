@@ -14,14 +14,14 @@ class TintinEngine extends EngineAbstract
      *
      * @var Tintin
      */
-    private $template;
+    private Tintin $template;
 
     /**
      * The template name
      *
      * @var string
      */
-    protected $name = 'tintin';
+    protected string $name = 'tintin';
 
     /**
      * BladeEngine constructor.
@@ -29,13 +29,13 @@ class TintinEngine extends EngineAbstract
      * @param Loader $config
      * @return void
      */
-    public function __construct(Loader $config)
+    public function __construct(array $config)
     {
         $this->config = $config;
 
         $loader = new TintinFilesystem([
-            'path' => $config['view.path'],
-            'cache' => $config['view.cache'],
+            'path' => $config['path'],
+            'cache' => $config['cache'],
             'extension' => $this->getExtension()
         ]);
 
@@ -46,7 +46,7 @@ class TintinEngine extends EngineAbstract
      * {@inheritdoc}
      * @throws
      */
-    public function render($filename, array $data = [])
+    public function render($filename, array $data = []): string
     {
         $filename = $this->checkParseFile($filename, false);
 
@@ -58,7 +58,7 @@ class TintinEngine extends EngineAbstract
      *
      * @return Tintin
      */
-    public function getTemplate()
+    public function getTemplate(): Tintin
     {
         return $this->template;
     }
@@ -68,10 +68,8 @@ class TintinEngine extends EngineAbstract
      *
      * @return string
      */
-    private function getExtension()
+    private function getExtension(): string
     {
-        return is_null($this->config['view.extension'])
-            ? $this->config['view.extension']
-            : 'tintin.php';
+        return $this->config['extension'] ?? 'tintin.php';
     }
 }

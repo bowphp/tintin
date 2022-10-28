@@ -9,17 +9,17 @@ class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
     /**
      * @var Tintin
      */
-    private $tintin;
+    private Tintin $tintin;
 
     /**
      * @var LoaderInterface;
      */
-    private $loader;
+    private LoaderInterface $loader;
 
     /**
      * On setup
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->tintin = new Tintin;
 
@@ -82,11 +82,11 @@ class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
     {
         $tintin = new Tintin($this->loader);
 
-        $tintin->directive('admin', function ($expression) {
+        $tintin->directive('admin', function (array $expression) {
             return '<?php if (true): ?>';
         }, true);
 
-        $tintin->directive('endadmin', function ($expression) {
+        $tintin->directive('endadmin', function (array $expression) {
             return '<?php endif; ?>';
         }, true);
 

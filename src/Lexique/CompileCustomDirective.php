@@ -8,9 +8,9 @@ trait CompileCustomDirective
      * Compile custom token stack
      * 
      * @param string $expression
-     * @return mixed
+     * @return string
      */
-    protected function compileCustomStack(string $expression)
+    protected function compileCustomStack(string $expression): string
     {
         foreach (['Csrf'] as $token) {
             $out = $this->{'compile' . $token}($expression);
@@ -29,7 +29,7 @@ trait CompileCustomDirective
      * @param string $expression
      * @return string
      */
-    protected function compileCsrf(string $expression)
+    protected function compileCsrf(string $expression): string
     {
         $output = preg_replace_callback('/\n*(#csrf)\n*/', function ($match) {
             array_shift($match);
@@ -46,7 +46,7 @@ trait CompileCustomDirective
      * @param string $expression
      * @return string
      */
-    protected function compileCustomDirective(string $expression)
+    protected function compileCustomDirective(string $expression): string
     {
         $output = preg_replace_callback($this->getCustomDirectivePartern(), function ($match) {
             $value = $match[0];
