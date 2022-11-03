@@ -17,7 +17,6 @@ class TintinConfiguration extends Configuration
     {
         $this->container->bind('view', function () use ($config) {
             View::pushEngine('tintin', TintinEngine::class);
-
             View::configure($config['view']);
 
             return View::getInstance();
