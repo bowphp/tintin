@@ -12,9 +12,9 @@ class Tintin
     /**
      * The tintin parse instance
      *
-     * @var Compiler;
+     * @var Compiler
      */
-    private $compiler;
+    private Compiler $compiler;
 
     /**
      * The loader interface instance
@@ -35,12 +35,12 @@ class Tintin
      *
      * @var array
      */
-    private $__data = [];
+    private array $__data = [];
 
     /**
      * Tintin constructor.
      *
-     * @param LoaderInterface $loader
+     * @param ?LoaderInterface $loader
      */
     public function __construct(?LoaderInterface $loader = null)
     {
@@ -54,7 +54,7 @@ class Tintin
      *
      * @return StackManager
      */
-    public function getStackManager()
+    public function getStackManager(): StackManager
     {
         return $this->stackManager;
     }
@@ -64,7 +64,7 @@ class Tintin
      *
      * @return LoaderInterface
      */
-    public function getLoader()
+    public function getLoader(): LoaderInterface
     {
         return $this->loader;
     }
@@ -87,7 +87,7 @@ class Tintin
      *
      * @return array
      */
-    public function getSharedData()
+    public function getSharedData(): array
     {
         return $this->__data;
     }
@@ -100,7 +100,7 @@ class Tintin
      * @return string
      * @throws
      */
-    public function render($template, array $data = [])
+    public function render($template, array $data = []): string
     {
         $__template = $template;
 
@@ -153,7 +153,7 @@ class Tintin
      * @param array $data
      * @return string
      */
-    public function renderString($template, array $data = [])
+    public function renderString($template, array $data = []): string
     {
         $__template = $template;
         return $this->executePlainRendering(
@@ -169,7 +169,7 @@ class Tintin
      * @param array $data
      * @return string
      */
-    private function executePlainRendering($content, $data)
+    private function executePlainRendering($content, $data): string
     {
         $this->obFlushAndStar();
 
@@ -189,11 +189,11 @@ class Tintin
      *
      * @return string
      */
-    private function obGetContent()
+    private function obGetContent(): string
     {
         $data = ob_get_clean();
 
-        return $data;
+        return (string) $data;
     }
 
     /**
@@ -212,7 +212,7 @@ class Tintin
      * @param string $content
      * @return string
      */
-    private function createTmpFile($content)
+    private function createTmpFile(string $content)
     {
         $tmp_dir = sys_get_temp_dir().'/__tintin';
 
@@ -232,7 +232,7 @@ class Tintin
      *
      * @return Compiler
      */
-    public function getCompiler()
+    public function getCompiler(): Compiler
     {
         return $this->compiler;
     }
@@ -247,7 +247,7 @@ class Tintin
      * 
      * @throws DirectiveNotAllowException
      */
-    public function directive($name, $handler, $broken = false)
+    public function directive(string $name, callable $handler, bool $broken = false)
     {
         $this->compiler->pushDirective($name, $handler, $broken);
     }
