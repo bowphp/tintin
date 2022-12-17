@@ -3,8 +3,9 @@
 namespace Tintin;
 
 use Closure;
-use Tintin\Exception\DirectiveNotAllowException;
+use Stacker\StackManager;
 use Tintin\Loader\LoaderInterface;
+use Tintin\Exception\DirectiveNotAllowException;
 
 class Tintin
 {
@@ -20,14 +21,14 @@ class Tintin
      *
      * @var LoaderInterface
      */
-    private $loader;
+    private LoaderInterface $loader;
 
     /**
      * The stack manager instance
      *
-     * @var Stacker\StackManager
+     * @var StackManager
      */
-    private $stackManager;
+    private StackManager $stackManager;
 
     /**
      * The shared data
@@ -44,16 +45,14 @@ class Tintin
     public function __construct(?LoaderInterface $loader = null)
     {
         $this->loader = $loader;
-        
         $this->compiler = new Compiler;
-
-        $this->stackManager = new Stacker\StackManager($this);
+        $this->stackManager = new StackManager($this);
     }
 
     /**
      * Get stack manager
      *
-     * @return Stacker\StackManager
+     * @return StackManager
      */
     public function getStackManager()
     {
@@ -99,7 +98,6 @@ class Tintin
      * @param string $template
      * @param array $data
      * @return string
-     * 
      * @throws
      */
     public function render($template, array $data = [])

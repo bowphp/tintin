@@ -22,7 +22,6 @@
         "phpunit/phpunit": "^8",
         "bowphp/framework": "5.0.x-dev"
     },
-    "minimum-stability": "stable",
     "extra": {
         "laravel": {
             "providers": [
