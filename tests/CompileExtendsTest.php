@@ -88,7 +88,7 @@ class CompileExtendsTest extends \PHPUnit\Framework\TestCase
 
         $stack_manager = $tintin->getStackManager();
 
-        $this->assertInstanceOf(\Tintin\Stacker\StackManager::class, $stack_manager);
+        $this->assertInstanceOf(\Tintin\StackManager::class, $stack_manager);
     }
 
     public function testShouldRendStack()

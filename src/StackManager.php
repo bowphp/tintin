@@ -1,6 +1,6 @@
 <?php
 
-namespace Tintin\Stacker;
+namespace Tintin;
 
 use Tintin\Tintin;
 
