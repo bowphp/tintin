@@ -88,7 +88,7 @@ $tt->render('dossier.filename', ['name' => 'data']);
 
 To allow Bow to use Tintin as default template engine, he will need to make some small configuration.
 
-Add this configuration to the file `app/Kernel/Loader.php`:
+Add this configuration to the file `app/Kernel.php`:
 
 ```php
 public function configurations() {
@@ -101,6 +101,8 @@ public function configurations() {
 ```
 
 And again in the configuration file views located in `config/view.php`.
+
+> Bow framework use tintin as default view engine
 
 ```php
 return [
