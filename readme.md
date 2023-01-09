@@ -1,5 +1,5 @@
 <h1 align="center">
-    <img src="https://github.com/bowphp/arts/raw/master/tintin.png" style="border-radius: 50px">
+    <img src="https://github.com/bowphp/arts/raw/master/tintin.png" style="border-radius: 50px; width: 250px">
 </h1>
 
 <p align="center">THE VERY SMALL PHP TEMPLATE</p>
