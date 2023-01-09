@@ -3,7 +3,7 @@
 namespace Tintin;
 
 use Closure;
-use Stacker\StackManager;
+use Tintin\StackManager;
 use Tintin\Loader\LoaderInterface;
 use Tintin\Exception\DirectiveNotAllowException;
 
@@ -21,7 +21,7 @@ class Tintin
      *
      * @var LoaderInterface
      */
-    private LoaderInterface $loader;
+    private ?LoaderInterface $loader;
 
     /**
      * The stack manager instance
