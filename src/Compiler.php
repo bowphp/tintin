@@ -31,7 +31,7 @@ class Compiler
     /**
      * @var array
      */
-    protected $comments = ['{#', '#}'];
+    protected $comments = ['{{%', '%}}'];
 
     /**
      * The valid token list
@@ -64,7 +64,7 @@ class Compiler
     protected $condition_pattern = '/(%s\s*\((.+?)?\)$)+/sm';
 
     /**
-     * The reverse inclusion using for #extends
+     * The reverse inclusion using for %extends
      *
      * @var array
      */

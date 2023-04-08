@@ -5,7 +5,7 @@ namespace Tintin\Lexique;
 trait CompileRawPhp
 {
     /**
-     * Compile the #raw...#endraw statement
+     * Compile the %raw...%endraw statement
      *
      * @param string $expression
      * @return string
@@ -15,7 +15,7 @@ trait CompileRawPhp
         $expression = trim($expression);
 
         $output = preg_replace_callback(
-            '/\n*\#raw\s*(\n*(?:.+?)\n*)\#endraw\n*/m',
+            '/\n*\%raw\s*(\n*(?:.+?)\n*)\%endraw\n*/m',
             function ($match) {
                 array_shift($match);
 

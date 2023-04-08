@@ -31,7 +31,7 @@ trait CompileCustomDirective
      */
     protected function compileCsrf(string $expression): string
     {
-        $output = preg_replace_callback('/\n*(#csrf)\n*/', function ($match) {
+        $output = preg_replace_callback('/\n*(%csrf)\n*/', function ($match) {
             array_shift($match);
 
             return "<?= csrf_field(); ?>";
@@ -79,6 +79,6 @@ trait CompileCustomDirective
      */
     private function getCustomDirectivePartern()
     {
-        return "/\n*\#([a-zA-Z_]+)\s*(\((.+?)?\)\n?)?/";
+        return "/\n*\%([a-zA-Z_]+)\s*(\((.+?)?\)\n?)?/";
     }
 }

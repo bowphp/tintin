@@ -24,7 +24,7 @@ trait CompileIf
     }
 
     /**
-     * Compile the #if statement
+     * Compile the %if statement
      *
      * Note: $o_lexic is the original PHP lexique
      *
@@ -41,11 +41,11 @@ trait CompileIf
         $output = preg_replace_callback($regex, function ($match) use ($o_lexic, $lexic) {
             array_shift($match);
 
-            if ($lexic == '#unless') {
+            if ($lexic == '%unless') {
                 return "<?php $o_lexic (! ({$match[1]})): ?>";
             }
 
-            if ($lexic == '#isset') {
+            if ($lexic == '%isset') {
                 return "<?php $o_lexic (isset({$match[1]})): ?>";
             }
 
@@ -56,36 +56,36 @@ trait CompileIf
     }
 
     /**
-     * Compile the #if statement
+     * Compile the %if statement
      *
      * @param string $expression
      * @return string
      */
     protected function compileIf(string $expression): string
     {
-        return $this->compileIfStatement($expression, '#if', 'if');
+        return $this->compileIfStatement($expression, '%if', 'if');
     }
 
     /**
-     * Compile the #unless statement
+     * Compile the %unless statement
      *
      * @param string $expression
      * @return string
      */
     protected function compileUnLess(string $expression): string
     {
-        return $this->compileIfStatement($expression, '#unless', 'if');
+        return $this->compileIfStatement($expression, '%unless', 'if');
     }
 
     /**
-     * Compile the #else statement
+     * Compile the %else statement
      *
      * @param string $expression
      * @return string
      */
     protected function compileElse(string $expression): string
     {
-        $output = preg_replace_callback('/\n*#else\n*/', function () {
+        $output = preg_replace_callback('/\n*%else\n*/', function () {
             return "<?php else: ?>";
         }, $expression);
 
@@ -93,36 +93,36 @@ trait CompileIf
     }
 
     /**
-     * Compile the #elseif statement
+     * Compile the %elseif statement
      *
      * @param string $expression
      * @return string
      */
     protected function compileElseIf(string $expression): string
     {
-        return $this->compileIfStatement($expression, '#elseif', 'elseif');
+        return $this->compileIfStatement($expression, '%elseif', 'elseif');
     }
 
     /**
-     * Compile the #elseif statement
+     * Compile the %elseif statement
      *
      * @param string $expression
      * @return string
      */
     protected function compileElseIfAlias(string $expression): string
     {
-        return $this->compileIfStatement($expression, '#elif', 'elseif');
+        return $this->compileIfStatement($expression, '%elif', 'elseif');
     }
 
     /**
-     * Compile the #endif statement
+     * Compile the %endif statement
      *
      * @param string $expression
      * @return string
      */
     protected function compileEndIf(string $expression): string
     {
-        $output = preg_replace_callback('/\n*(#endif|#endisset|#endunless)\n*/', function ($match) {
+        $output = preg_replace_callback('/\n*(%endif|%endisset|%endunless)\n*/', function ($match) {
             array_shift($match);
 
             return "<?php endif; ?>";

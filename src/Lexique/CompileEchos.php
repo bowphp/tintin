@@ -41,7 +41,7 @@ trait CompileEchos
             array_shift($match);
             $value = $match[0];
 
-            if (preg_match("/{{\s*([a-z_#\/\^@\s]+[a-z0-9_]+)\s*}}/", $value)) {
+            if (preg_match("/{{\s*([a-z_%\/\^@\s]+[a-z0-9_]+)\s*}}/", $value)) {
                 return $value;
             }
 
@@ -69,7 +69,7 @@ trait CompileEchos
             array_shift($match);
             $value = $match[0];
 
-            if (preg_match("/{{{\s*([a-z_#\/\^@\s]+[a-z0-9_]+)\s*}}}/", $value)) {
+            if (preg_match("/{{{\s*([a-z_%\/\^@\s]+[a-z0-9_]+)\s*}}}/", $value)) {
                 return $value;
             }
 

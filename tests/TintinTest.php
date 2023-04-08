@@ -69,9 +69,9 @@ class TintinTest extends \PHPUnit\Framework\TestCase
     {
         $tintin = new Tintin;
 
-        $render = $tintin->render('#falseDirective <href="#link">');
+        $render = $tintin->render('%falseDirective <href="%link">');
 
-        $this->assertEquals($render, '#falseDirective <href="#link">');
+        $this->assertEquals($render, '%falseDirective <href="%link">');
     }
 
     /**

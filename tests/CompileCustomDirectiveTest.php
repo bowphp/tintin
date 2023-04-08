@@ -39,7 +39,7 @@ class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
             return 'Hello ' . implode(" ", $attributes);
         });
 
-        $r = $this->tintin->render('#hello("Tintin", "Bow")');
+        $r = $this->tintin->render('%hello("Tintin", "Bow")');
 
         $this->assertEquals($r, "Hello Tintin Bow");
     }
@@ -54,7 +54,7 @@ class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
             return $now;
         });
 
-        $r = $this->tintin->render('#now');
+        $r = $this->tintin->render('%now');
 
         $this->assertEquals($now, $r);
     }
@@ -70,7 +70,7 @@ class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
             return '<input type="'.$attribute['type'].'" name="'.$attribute['name'].'" value="'.$attribute['value'].'" />';
         });
 
-        $r = $this->tintin->render('#input(["type" => "text", "value" => null, "name" => "name"])');
+        $r = $this->tintin->render('%input(["type" => "text", "value" => null, "name" => "name"])');
 
         $this->assertEquals($r, '<input type="text" name="name" value="" />');
     }

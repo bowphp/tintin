@@ -42,7 +42,7 @@ trait CompileLoop
     }
 
     /**
-     * Compile the #loop statement
+     * Compile the %loop statement
      *
      * @param string $expression
      * @param string $lexic
@@ -63,7 +63,7 @@ trait CompileLoop
     }
 
     /**
-     * Compile the #endloop statement
+     * Compile the %endloop statement
      *
      * @param string $expression
      * @param string $lexic
@@ -107,90 +107,90 @@ trait CompileLoop
     }
 
     /**
-     * Compile the #loop statement
+     * Compile the %loop statement
      *
      * @param string $expression
      * @return string
      */
     protected function compileForeach(string $expression): string
     {
-        return $this->compileLoop($expression, '#loop', 'foreach');
+        return $this->compileLoop($expression, '%loop', 'foreach');
     }
 
     /**
-     * Compile the #while statement
+     * Compile the %while statement
      *
      * @param $expression
      * @return string
      */
     protected function compileWhile(string $expression): string
     {
-        return $this->compileLoop($expression, '#while', 'while');
+        return $this->compileLoop($expression, '%while', 'while');
     }
 
     /**
-     * Compile the #for statement
+     * Compile the %for statement
      *
      * @param string $expression
      * @return string
      */
     protected function compileFor(string $expression): string
     {
-        return $this->compileLoop($expression, '#for', 'for');
+        return $this->compileLoop($expression, '%for', 'for');
     }
 
     /**
-     * Compile the #endloop statement
+     * Compile the %endloop statement
      *
      * @param $expression
      * @return string
      */
     protected function compileEndForeach(string $expression): string
     {
-        return $this->compileEndLoop($expression, '#endloop', 'endforeach');
+        return $this->compileEndLoop($expression, '%endloop', 'endforeach');
     }
 
     /**
-     * Compile the #endwhile statement
+     * Compile the %endwhile statement
      *
      * @param string $expression
      * @return string
      */
     protected function compileEndWhile(string $expression): string
     {
-        return $this->compileEndLoop($expression, '#endwhile', 'endwhile');
+        return $this->compileEndLoop($expression, '%endwhile', 'endwhile');
     }
 
     /**
-     * Compile the #endfor statement
+     * Compile the %endfor statement
      *
      * @param string $expression
      * @return string
      */
     protected function compileEndFor(string $expression): string
     {
-        return $this->compileEndLoop($expression, '#endfor', 'endfor');
+        return $this->compileEndLoop($expression, '%endfor', 'endfor');
     }
 
     /**
-     * Compile the #jump statement
+     * Compile the %jump statement
      *
      * @param string $expression
      * @return string
      */
     protected function compileContinue(string $expression): string
     {
-        return $this->compileBreaker($expression, '#jump', 'continue');
+        return $this->compileBreaker($expression, '%jump', 'continue');
     }
 
     /**
-     * Compile the #stop statement
+     * Compile the %stop statement
      *
      * @param string $expression
      * @return string
      */
     protected function compileBreak(string $expression): string
     {
-        return $this->compileBreaker($expression, '#stop', 'break');
+        return $this->compileBreaker($expression, '%stop', 'break');
     }
 }

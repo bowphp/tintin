@@ -24,7 +24,7 @@ trait CompileExtends
     }
 
     /**
-     * Compile the #block statement
+     * Compile the %block statement
      *
      * @param string $expression
      * @return string
@@ -32,7 +32,7 @@ trait CompileExtends
     protected function compileBlock($expression): string
     {
         $output = preg_replace_callback(
-            "/\n*\#block\s*\((.+?)(?:,(.+?))?\)\n*/m",
+            "/\n*\%block\s*\((.+?)(?:,(.+?))?\)\n*/m",
             function ($match) {
                 array_shift($match);
 
@@ -55,14 +55,14 @@ trait CompileExtends
     }
 
     /**
-     * Compile the #endblock statement
+     * Compile the %endblock statement
      *
      * @param string $expression
      * @return string
      */
     protected function compileEndBlock(string $expression): string
     {
-        $output = preg_replace_callback("/\n*#endblock\n*/m", function () {
+        $output = preg_replace_callback("/\n*%endblock\n*/m", function () {
             return "<?php \$__tintin->getStackManager()->endStack(); ?>";
         }, $expression);
 
@@ -70,14 +70,14 @@ trait CompileExtends
     }
 
     /**
-     * Compile the #include statement
+     * Compile the %include statement
      *
      * @param string $expression
      * @return string
      */
     protected function compileInclude(string $expression): string
     {
-        $regex = "/\#include\s*\(((?:\n|\s|\t)*(?:.+)(?:\n|\s|\t)*\)?)\)/sm";
+        $regex = "/\%include\s*\(((?:\n|\s|\t)*(?:.+)(?:\n|\s|\t)*\)?)\)/sm";
 
         $output = preg_replace_callback($regex, function ($match) {
             return "<?php echo \$__tintin->getStackManager()->includeFile({$match[1]}, ['__tintin' => \$__tintin]); ?>";
@@ -87,14 +87,14 @@ trait CompileExtends
     }
 
     /**
-     * Compile the #extends statement
+     * Compile the %extends statement
      *
      * @param string $expression
      * @return string
      */
     protected function compileExtends(string $expression): string
     {
-        $regex = "/^\#extends\s*\(((?:\n|\s|\t)*(?:.+?)(?:\n|\s|\t)*\)?)\)$/sm";
+        $regex = "/^\%extends\s*\(((?:\n|\s|\t)*(?:.+?)(?:\n|\s|\t)*\)?)\)$/sm";
 
         if (preg_match($regex, $expression, $match)) {
             $this->extends_render[] = "<?php echo \$__tintin->getStackManager()->includeFile({$match[1]}, ['__tintin' => \$__tintin]); ?>";
@@ -106,14 +106,14 @@ trait CompileExtends
     }
 
     /**
-     * Compile the #inject statement
+     * Compile the %inject statement
      *
      * @param string $expression
      * @return string
      */
     protected function compileInject(string $expression): string
     {
-        $regex = "/\#inject\s*\(((?:\n|\s|\t)*(?:.+?)(?:\n|\s|\t)*)\)/sm";
+        $regex = "/\%inject\s*\(((?:\n|\s|\t)*(?:.+?)(?:\n|\s|\t)*)\)/sm";
 
         $output = preg_replace_callback($regex, function ($match) {
             return "<?php echo \$__tintin->getStackManager()->getStack({$match[1]}); ?>";

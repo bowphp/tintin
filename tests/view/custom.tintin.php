@@ -1,3 +1,3 @@
-#admin
+%admin
     {{ $name }}
-#endadmin
+%endadmin

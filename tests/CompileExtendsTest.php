@@ -41,7 +41,7 @@ class CompileExtendsTest extends \PHPUnit\Framework\TestCase
     {
         $compiler = new Compiler;
         $compileExtends = $this->makeReflectionFor('compileExtends');
-        $render = $compileExtends->invoke($compiler, "#extends('layout')");
+        $render = $compileExtends->invoke($compiler, "%extends('layout')");
 
         $class = $compileExtends->getDeclaringClass();
         $extends_render = $class->getProperty('extends_render');
@@ -56,7 +56,7 @@ class CompileExtendsTest extends \PHPUnit\Framework\TestCase
     {
         $compiler = new Compiler;
         $compileExtends = $this->makeReflectionFor('compileExtends');
-        $render = $compileExtends->invoke($compiler, "#extends('layout', ['name' => 'Bow'])");
+        $render = $compileExtends->invoke($compiler, "%extends('layout', ['name' => 'Bow'])");
 
         $class = $compileExtends->getDeclaringClass();
         $extends_render = $class->getProperty('extends_render');
@@ -71,7 +71,7 @@ class CompileExtendsTest extends \PHPUnit\Framework\TestCase
     {
         $compiler = new Compiler;
         $compileExtends = $this->makeReflectionFor('compileExtends');
-        $render = $compileExtends->invoke($compiler, "#extends('layout', ['name' => 'Bow', 'is_admin' => isset(\$is_admin)])");
+        $render = $compileExtends->invoke($compiler, "%extends('layout', ['name' => 'Bow', 'is_admin' => isset(\$is_admin)])");
 
         $class = $compileExtends->getDeclaringClass();
         $extends_render = $class->getProperty('extends_render');

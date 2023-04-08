@@ -4,6 +4,6 @@
 	<title>Extends</title>
 </head>
 <body>
-	#inject("content")
+	%inject("content")
 </body>
 </html>

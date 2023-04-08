@@ -58,7 +58,7 @@ class StackManager
     }
 
     /**
-     * Open the stream for a #block
+     * Open the stream for a %block
      *
      * @param string $name
      * @param string $content

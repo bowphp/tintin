@@ -20,11 +20,11 @@ class CompileCommentsTest extends \PHPUnit\Framework\TestCase
     {
         $comment = $this->makeReflectionFor('compileComments');
 
-        $render = $comment->invoke(new Compiler, '{ Hello, world #}');
+        $render = $comment->invoke(new Compiler, '{ Hello, world %}');
 
         $this->assertNotEquals($render, "");
 
-        $render = $comment->invoke(new Compiler, '{# Hello, world #}');
+        $render = $comment->invoke(new Compiler, '{% Hello, world %}');
 
         $this->assertEquals($render, "");
     }
