@@ -31,7 +31,7 @@ class Compiler
     /**
      * @var array
      */
-    protected $comments = ['{{%', '%}}'];
+    protected $comments = ['{{#', '#}}'];
 
     /**
      * The valid token list
