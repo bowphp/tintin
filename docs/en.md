@@ -6,12 +6,12 @@
   - [Data display](#data-display)
     - [Display of non-escaped data](#display-of-non-escaped-data)
   - [Add a comment](#add-a-comment)
-  - [#if / #elseif or #elif / #else](#if--elseif-or-elif--else)
+  - [%if / %elseif or %elif / %else](#if--elseif-or-elif--else)
   - [#unless](#unless)
-  - [#loop / #for / #while](#loop--for--while)
-    - [Using #loop](#using-loop)
-    - [Syntax sugars #jump and #stop](#syntax-sugars-jump-and-stop)
-    - [Using #for](#using-for)
+  - [%loop / %for / %while](#loop--for--while)
+    - [Using %loop](#using-loop)
+    - [Syntax sugars %jump and %stop](#syntax-sugars-jump-and-stop)
+    - [Using $for](#using-for)
     - [Using #while](#using-while)
   - [Include of file](#include-of-file)
     - [Example of inclusion](#example-of-inclusion)
@@ -144,100 +144,102 @@ Hello, {{{ $name }}}.
 
 This `{# comments #}` clause adds a comment to your `tintin` code.
 
-### #if / #elseif or #elif / #else
+### %if / %elseif or %elif / %else
 
 These are the clauses which make it possible to establish conditional branches as in most programming languages.
 
 ```c
-#if ($name == 'tintin')
+%if ($name == 'tintin')
   {{ $name }}
-#elseif ($name == 'template')
+%elseif ($name == 'template')
   {{ $name }}
-#else
+%else
   {{ $name }}
-#endif
+%endif
 ```
 
-> You can use `#elif` instead of `#elseif`.
+> You can use `%elif` instead of `%elseif`.
 
 ### #unless
 
 Small specificity, the `#unless` meanwhile, it allows to make a reverse condition of `#if`.
 To put it simply, here is an example:
 
-```c
-#unless ($name == 'tintin') => #if (!($name == 'tintin'))
+```t
+%unless ($name == 'tintin')
+# Equals to
+%if (!($name == 'tintin'))
 ```
 
-### #loop / #for / #while
+### %loop / %for / %while
 
 Often you may have to make lists or repetitions on items. For example, view all users of your platform.
 
-#### Using #loop
+#### Using %loop
 
 This clause does exactly the `foreach` action.
 
-```c
-#loop ($names as $name)
+```t
+%loop ($names as $name)
   Hello {{ $name }}
-#endloop
+%endloop
 ```
 
 This clause can also be paired with any other clause such as `#if`. A quick example.
 
-```c
-#loop ($names as $name)
-  #if ($name == 'tintin')
+```t
+%loop ($names as $name)
+  %if ($name == 'tintin')
     Hello {{ $name }}
-    #stop
-  #endif
-#endloop
+    %stop
+  %endif
+%endloop
 ```
 
-You may have noticed the `#stop` it allows to stop the execution of the loop. There is also his spouse `#jump`, him parcontre allows to stop the execution at his level and launch execution of the next round of the loop.
+You may have noticed the `%stop` it allows to stop the execution of the loop. There is also his spouse `%jump`, him parcontre allows to stop the execution at his level and launch execution of the next round of the loop.
 
-#### Syntax sugars #jump and #stop
+#### Syntax sugars %jump and %stop
 
-Often the developer is made to make stop conditions of the `#loop` like this:
+Often the developer is made to make stop conditions of the `%loop` like this:
 
-```c
-#loop ($names as $name)
-  #if ($name == 'tintin')
-    #stop
+```t
+%loop ($names as $name)
+  %if ($name == 'tintin')
+    %stop
     // Or
-    #jump
-  #endif
-#endloop
+    %jump
+  %endif
+%endloop
 ```
 
 With syntactic sugars, we can reduce the code like this:
 
-```c
-#loop ($names as $name)
-  #stop($name == 'tintin')
+```t
+%loop ($names as $name)
+  %stop($name == 'tintin')
   // Or
-  #jump($name == 'tintin')
-#endloop
+  %jump($name == 'tintin')
+%endloop
 ```
 
-#### Using #for
+#### Using $for
 
 This clause does exactly the `for` action.
 
-```c
-#for ($i = 0; $i < 10; $i++)
+```t
+%for ($i = 0; $i < 10; $i++)
  // ..
-#endfor
+%endfor
 ```
 
 #### Using #while
 
 This clause does exactly the `while` action.
 
-```c
-#while ($name != 'tintin')
+```t
+%while ($name != 'tintin')
  // ..
-#endwhile
+%endwhile
 ```
 
 ### Include of file
@@ -246,22 +248,22 @@ Often when you are developing your code, you have to subdivide the views of your
 
 `#include` allows to include another template file in another.
 
-```c
- #include('filename', data)
+```t
+%include('filename', data)
 ```
 
 #### Example of inclusion
 
 Consider the following `hello.tintin.php` file:
 
-```jinja
+```t
 Hello {{ $name }}
 ```
 
 Use:
 
-```c
-#include('hello', ['name' => 'Tintin'])
+```t
+%include('hello', ['name' => 'Tintin'])
 // => Hello Tintin
 ```
 
@@ -271,8 +273,8 @@ Like any good template system **tintin** supports code sharing between files. Th
 
 Consider the following **tintin** code:
 
-```html
-// The `layout.tintin.php` file
+```t
+# The `layout.tintin.php` file
 <!DOCTYPE html>
 <html>
 <head>
@@ -281,7 +283,7 @@ Consider the following **tintin** code:
 <body>
   <h1>Page header</h1>
   <div id="page-content">
-    #inject('content')
+    %inject('content')
   </div>
   <p>Page footer</p>
 </body>
@@ -290,18 +292,18 @@ Consider the following **tintin** code:
 
 And also, we have another file that inherits the code of the file `layout.tintin.php`
 
-```c
+```t
 // the file is named `content.tintin.php`
-#extends('layout')
+%extends('layout')
 
-#block('content')
+%block('content')
   <p>This is the page content</p>
-#endblock
+%endblock
 ```
 
 ### Explication
 
-The `content.tintin.php` file will inherit the code from` layout.tintin.php` and if you mark it well, in the file `layout.tintin.php` we have the clause `#inject` which has as parameter the name of `content.tintin.php` `block` which is `content`. Which means that the content of `# block` `content` will be replaced by `#inject`. Which will give in the end this:
+The `content.tintin.php` file will inherit the code from` layout.tintin.php` and if you mark it well, in the file `layout.tintin.php` we have the clause `%inject` which has as parameter the name of `content.tintin.php` `block` which is `content`. Which means that the content of `%block` `content` will be replaced by `%inject`. Which will give in the end this:
 
 ```html
 <!DOCTYPE html>
@@ -328,7 +330,7 @@ $tintin->directive('hello', function (array $attributes = []) {
   return 'Hello, '. $attributes[0];
 });
 
-echo $tintin->render('#hello("Tintin")');
+echo $tintin->render('%hello("Tintin")');
 // => Hello, Tintin
 ```
 
@@ -374,15 +376,15 @@ $tintin->directive('endform', function (array $attributes = []) {
 
 ### Use of directives
 
-To use these guidelines, nothing is easier. Write the name of the directive preceded by `#`. Then if this directive takes parameters, launch the directive as you run the functions in your program. The parameters will be grouped in the `$attributes` varibles in the added order.
+To use these guidelines, nothing is easier. Write the name of the directive preceded by `%`. Then if this directive takes parameters, launch the directive as you run the functions in your program. The parameters will be grouped in the `$attributes` varibles in the added order.
 
-```c
+```t
 // File form.tintin.php
-#form(['method' => 'post', "action" => "/posts", "enctype" => "multipart/form-data"])
-  #input(["type" => "text", "value" => null, "name" => "name"])
-  #textarea(["value" => null, "name" => "content"])
-  #button(['type' => 'submit', 'label' => 'Add'])
-#endform
+%form(['method' => 'post', "action" => "/posts", "enctype" => "multipart/form-data"])
+  %input(["type" => "text", "value" => null, "name" => "name"])
+  %textarea(["value" => null, "name" => "content"])
+  %button(['type' => 'submit', 'label' => 'Add'])
+%endform
 ```
 
 ### Compilation du template
@@ -406,21 +408,22 @@ echo $tintin->render('form');
 ### Add your configuration guidelines
 
 In case you use the Tintin configuration for Bow Framework.
-
-You can create a class in the `app` folder, for example, with the name `CustomTintinConfiguration` which will extend Tintin's default configuration that is `\Tintin\Bow\TintinConfiguration::class` and then modify the `onRunning` method.
+Change your configuration in the `ApplicationController::class` in the `app/Configurations` folder.
 
 ```php
 use Tintin\Tintin;
 
-class CustomTintinConfiguration extends \Tintin\Bow\TintinConfiguration
+class ApplicationConfiguration extends Configuration
 {
   /**
-   * Add action in tintin
+   * Launch configuration
    *
-   * @param Tintin $tintin
+   * @param Loader $config
+   * @return void
    */
-  public function onRunning(Tintin $tintin)
+  public function create(Loader $config): void
   {
+    $tintin = Tintin::getInstance();  
     $tintin->directive('super', function (array $attributes = []) {
       return "Super !";
     });
@@ -428,9 +431,9 @@ class CustomTintinConfiguration extends \Tintin\Bow\TintinConfiguration
 }
 ```
 
-Now the `#super` directive is available and you can use it.
+Now the `%super` directive is available and you can use it.
 
 ```php
-  return $tintin->render('#super');
+  return $tintin->render('%super');
   // => Super !
 ```
