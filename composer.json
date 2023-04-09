@@ -20,7 +20,7 @@
     "require-dev": {
         "symfony/css-selector": "^4.3@dev",
         "phpunit/phpunit": "^8",
-        "bowphp/framework": "5.0.x-dev"
+        "bowphp/framework": "5.*"
     },
     "extra": {
         "laravel": {
