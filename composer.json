@@ -36,5 +36,6 @@
         "phpcbf": "phpcbf --standard=psr12 --severity=4 --tab-width=4 src tests",
         "phpcs": "phpcs --standard=psr12 --severity=4 --tab-width=4 src",
         "test": "phpunit --configuration phpunit.dist.xml"
-    }
+    },
+    "minimum-stability": "dev"
 }
