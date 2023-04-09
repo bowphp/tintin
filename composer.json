@@ -18,9 +18,8 @@
         }
     },
     "require-dev": {
-        "symfony/css-selector": "^4.3@dev",
         "phpunit/phpunit": "^8",
-        "bowphp/framework": "5.*"
+        "bowphp/framework": "^5.0"
     },
     "extra": {
         "laravel": {
@@ -37,5 +36,6 @@
         "phpcs": "phpcs --standard=psr12 --severity=4 --tab-width=4 src",
         "test": "phpunit --configuration phpunit.dist.xml"
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }
