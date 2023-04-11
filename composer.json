@@ -19,7 +19,7 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^8",
-        "bowphp/framework": "^5.0"
+        "bowphp/framework": "5.x-dev"
     },
     "extra": {
         "laravel": {
@@ -36,6 +36,6 @@
         "phpcs": "phpcs --standard=psr12 --severity=4 --tab-width=4 src",
         "test": "phpunit --configuration phpunit.dist.xml"
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }

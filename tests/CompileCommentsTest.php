@@ -24,7 +24,7 @@ class CompileCommentsTest extends \PHPUnit\Framework\TestCase
 
         $this->assertNotEquals($render, "");
 
-        $render = $comment->invoke(new Compiler, '{{# Hello, world #}}');
+        $render = $comment->invoke(new Compiler, '{## Hello, world ##}');
 
         $this->assertEquals($render, "");
     }
