@@ -12,7 +12,7 @@ trait CompileHelpers
      */
     protected function compileHelpersStack(string $expression): string
     {
-        foreach (['Auth', 'Guest', 'Lang', 'Env', 'EndHelpers', "Production"] as $token) {
+        foreach (['Auth', 'Guest', 'Lang', 'Env', "Production", 'EndHelpers'] as $token) {
             $out = $this->{'compile' . $token}($expression);
 
             if (strlen($out) !== 0) {
@@ -31,7 +31,7 @@ trait CompileHelpers
      */
     protected function compileAuth(string $expression): string
     {
-        return $this->compileAuthStatement($expression, '%auth');
+        return $this->compileHelpersStatement($expression, '%auth');
     }
 
     /**
@@ -42,7 +42,7 @@ trait CompileHelpers
      */
     protected function compileGuest(string $expression): string
     {
-        return $this->compileAuthStatement($expression, '%guest');
+        return $this->compileHelpersStatement($expression, '%guest');
     }
 
     /**
@@ -53,7 +53,7 @@ trait CompileHelpers
      */
     protected function compileLang(string $expression): string
     {
-        return $this->compileAuthStatement($expression, '%lang');
+        return $this->compileHelpersStatement($expression, '%lang');
     }
 
     /**
@@ -64,7 +64,7 @@ trait CompileHelpers
      */
     protected function compileEnv(string $expression): string
     {
-        return $this->compileAuthStatement($expression, '%env');
+        return $this->compileHelpersStatement($expression, '%env');
     }
 
     /**
@@ -75,7 +75,7 @@ trait CompileHelpers
      */
     protected function compileProduction(string $expression): string
     {
-        return $this->compileAuthStatement($expression, '%production');
+        return $this->compileHelpersStatement($expression, '%production');
     }
 
     /**
@@ -109,7 +109,7 @@ trait CompileHelpers
      *
      * @return string
      */
-    private function compileAuthStatement(string $expression, string $lexic): string
+    private function compileHelpersStatement(string $expression, string $lexic): string
     {
         $regex = sprintf($this->option_condition_pattern, $lexic);
 

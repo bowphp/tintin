@@ -18,94 +18,94 @@ class CompileHelpersTest extends \PHPUnit\Framework\TestCase
 
     public function testCompileAuthStatement()
     {
-        $compile_if = $this->makeReflectionFor('compileAuth');
+        $compileAuth = $this->makeReflectionFor('compileAuth');
 
-        $render = $compile_if->invoke($this->compiler, '%auth');
+        $render = $compileAuth->invoke($this->compiler, '%auth');
         $this->assertEquals($render, '<?php if (auth()->check()): ?>');
 
-        $render = $compile_if->invoke($this->compiler, '%auth ');
+        $render = $compileAuth->invoke($this->compiler, '%auth ');
         $this->assertEquals($render, '<?php if (auth()->check()): ?>');
 
-        $render = $compile_if->invoke($this->compiler, '%auth("admin")');
+        $render = $compileAuth->invoke($this->compiler, '%auth("admin")');
         $this->assertEquals($render, '<?php if (auth("admin")->check()): ?>');
 
-        $render = $compile_if->invoke($this->compiler, '%auth ("admin")');
+        $render = $compileAuth->invoke($this->compiler, '%auth ("admin")');
         $this->assertEquals($render, '<?php if (auth("admin")->check()): ?>');
 
-        $render = $compile_if->invoke($this->compiler, '%auth ("admin") ');
+        $render = $compileAuth->invoke($this->compiler, '%auth ("admin") ');
         $this->assertEquals($render, '<?php if (auth("admin")->check()): ?> ');
     }
 
     public function testCompileGuestStatement()
     {
-        $compile_if = $this->makeReflectionFor('compileGuest');
+        $compileGuest = $this->makeReflectionFor('compileGuest');
 
-        $render = $compile_if->invoke($this->compiler, '%guest');
+        $render = $compileGuest->invoke($this->compiler, '%guest');
         $this->assertEquals($render, '<?php if (!auth()->check()): ?>');
 
-        $render = $compile_if->invoke($this->compiler, '%guest ');
+        $render = $compileGuest->invoke($this->compiler, '%guest ');
         $this->assertEquals($render, '<?php if (!auth()->check()): ?>');
 
-        $render = $compile_if->invoke($this->compiler, '%guest("admin")');
+        $render = $compileGuest->invoke($this->compiler, '%guest("admin")');
         $this->assertEquals($render, '<?php if (!auth("admin")->check()): ?>');
 
-        $render = $compile_if->invoke($this->compiler, '%guest ("admin")');
+        $render = $compileGuest->invoke($this->compiler, '%guest ("admin")');
         $this->assertEquals($render, '<?php if (!auth("admin")->check()): ?>');
 
-        $render = $compile_if->invoke($this->compiler, '%guest ("admin") ');
+        $render = $compileGuest->invoke($this->compiler, '%guest ("admin") ');
         $this->assertEquals($render, '<?php if (!auth("admin")->check()): ?> ');
     }
 
     public function testCompileLangStatement()
     {
-        $compile_if = $this->makeReflectionFor('compileLang');
+        $compileLang = $this->makeReflectionFor('compileLang');
 
-        $render = $compile_if->invoke($this->compiler, '%lang("fr")');
+        $render = $compileLang->invoke($this->compiler, '%lang("fr")');
         $this->assertEquals($render, '<?php if (client_locale() == "fr"): ?>');
 
-        $render = $compile_if->invoke($this->compiler, '%lang("fr") ');
+        $render = $compileLang->invoke($this->compiler, '%lang("fr") ');
         $this->assertEquals($render, '<?php if (client_locale() == "fr"): ?> ');
     }
 
     public function testCompileEnvStatement()
     {
-        $compile_if = $this->makeReflectionFor('compileEnv');
+        $compileEnv = $this->makeReflectionFor('compileEnv');
 
-        $render = $compile_if->invoke($this->compiler, '%env("production")');
+        $render = $compileEnv->invoke($this->compiler, '%env("production")');
         $this->assertEquals($render, '<?php if (app_mode() == "production"): ?>');
 
-        $render = $compile_if->invoke($this->compiler, '%env("production") ');
+        $render = $compileEnv->invoke($this->compiler, '%env("production") ');
         $this->assertEquals($render, '<?php if (app_mode() == "production"): ?> ');
     }
 
     public function testCompileProductionStatement()
     {
-        $compile_if = $this->makeReflectionFor('compileProduction');
+        $compileProduction = $this->makeReflectionFor('compileProduction');
 
-        $render = $compile_if->invoke($this->compiler, '%production');
+        $render = $compileProduction->invoke($this->compiler, '%production');
         $this->assertEquals($render, '<?php if (app_mode() == "production"): ?>');
 
-        $render = $compile_if->invoke($this->compiler, '%production("hello world")');
+        $render = $compileProduction->invoke($this->compiler, '%production("hello world")');
         $this->assertEquals($render, '<?php throw new \ErrorException("The %production cannot take the parameters!") ?>');
     }
 
     public function testcompileEndHelpersStatement()
     {
-        $compile_else = $this->makeReflectionFor('compileEndHelpers');
+        $compileHelper = $this->makeReflectionFor('compileEndHelpers');
 
-        $render = $compile_else->invoke($this->compiler, '%endauth');
+        $render = $compileHelper->invoke($this->compiler, '%endauth');
         $this->assertEquals($render, '<?php endif; ?>');
 
-        $render = $compile_else->invoke($this->compiler, '%endguest');
+        $render = $compileHelper->invoke($this->compiler, '%endguest');
         $this->assertEquals($render, '<?php endif; ?>');
 
-        $render = $compile_else->invoke($this->compiler, '%endlang');
+        $render = $compileHelper->invoke($this->compiler, '%endlang');
         $this->assertEquals($render, '<?php endif; ?>');
 
-        $render = $compile_else->invoke($this->compiler, '%endenv');
+        $render = $compileHelper->invoke($this->compiler, '%endenv');
         $this->assertEquals($render, '<?php endif; ?>');
 
-        $render = $compile_else->invoke($this->compiler, '%endproduction');
+        $render = $compileHelper->invoke($this->compiler, '%endproduction');
         $this->assertEquals($render, '<?php endif; ?>');
     }
 
