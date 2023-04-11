@@ -87,11 +87,14 @@ trait CompileHelpers
     protected function compileEndHelpers(string $expression): string
     {
         $output = preg_replace_callback(
-            '/\n*(%endauth|%endguest|%endlang|%endenv|%endproduction)\n*/', function ($match) {
-            array_shift($match);
+            '/\n*(%endauth|%endguest|%endlang|%endenv|%endproduction)\n*/',
+            function ($match) {
+                array_shift($match);
 
-            return "<?php endif; ?>";
-        }, $expression);
+                return "<?php endif; ?>";
+            },
+            $expression
+        );
 
         return $output == $expression ? '' : $output;
     }
