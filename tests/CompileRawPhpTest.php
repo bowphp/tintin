@@ -20,7 +20,7 @@ class CompileRawPhpTest extends \PHPUnit\Framework\TestCase
     {
         $compile_raw_php = $this->makeReflectionFor('compileRawPhp');
 
-        $render = $compile_raw_php->invoke(new Compiler(), '%raw echo "Hello, world"; %endraw');
+        $render = $compile_raw_php->invoke($this->compiler, '%raw echo "Hello, world"; %endraw');
 
         $this->assertEquals($render, '<?php echo "Hello, world"; ?>');
     }
