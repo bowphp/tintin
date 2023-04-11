@@ -97,6 +97,8 @@ class Compiler
         'elseif',
         'elif',
         'endif',
+        'env',
+        'endenv',
         'unlang',
         'endunlang',
         'unless',

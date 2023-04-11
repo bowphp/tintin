@@ -12,7 +12,7 @@ trait CompileHelpers
      */
     protected function compileHelpersStack(string $expression): string
     {
-        foreach (['Auth', 'Guest', 'EndAuth'] as $token) {
+        foreach (['Auth', 'Guest', 'Lang', 'Env', 'EndHelpers'] as $token) {
             $out = $this->{'compile' . $token}($expression);
 
             if (strlen($out) !== 0) {
@@ -57,14 +57,25 @@ trait CompileHelpers
     }
 
     /**
+     * Compile the %env statement
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileEnv(string $expression): string
+    {
+        return $this->compileAuthStatement($expression, '%env');
+    }
+
+    /**
      * Compile the %endif statement
      *
      * @param string $expression
      * @return string
      */
-    protected function compileEndAuth(string $expression): string
+    protected function compileEndHelpers(string $expression): string
     {
-        $output = preg_replace_callback('/\n*(%endauth|%endguest|%endlang)\n*/', function ($match) {
+        $output = preg_replace_callback('/\n*(%endauth|%endguest|%endlang|%endenv)\n*/', function ($match) {
             array_shift($match);
 
             return "<?php endif; ?>";
@@ -102,6 +113,10 @@ trait CompileHelpers
 
             if ($lexic == '%lang') {
                 return "<?php if (client_locale() == " . $params . "): ?>";
+            }
+
+            if ($lexic == '%env') {
+                return "<?php if (app_mode() == " . $params . "): ?>";
             }
 
             return $expression;
