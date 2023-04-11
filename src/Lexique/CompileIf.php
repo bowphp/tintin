@@ -78,6 +78,17 @@ trait CompileIf
     }
 
     /**
+     * Compile the %isset statement
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileIsset(string $expression): string
+    {
+        return $this->compileIfStatement($expression, '%isset', 'if');
+    }
+
+    /**
      * Compile the %else statement
      *
      * @param string $expression
