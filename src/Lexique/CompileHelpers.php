@@ -46,6 +46,17 @@ trait CompileHelpers
     }
 
     /**
+     * Compile the %lang statement
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileLang(string $expression): string
+    {
+        return $this->compileAuthStatement($expression, '%lang');
+    }
+
+    /**
      * Compile the %endif statement
      *
      * @param string $expression
@@ -53,7 +64,7 @@ trait CompileHelpers
      */
     protected function compileEndAuth(string $expression): string
     {
-        $output = preg_replace_callback('/\n*(%endauth|%endguest)\n*/', function ($match) {
+        $output = preg_replace_callback('/\n*(%endauth|%endguest|%endlang)\n*/', function ($match) {
             array_shift($match);
 
             return "<?php endif; ?>";
@@ -87,6 +98,10 @@ trait CompileHelpers
 
             if ($lexic == '%guest') {
                 return "<?php if (!auth(" . $params . ")->check()): ?>";
+            }
+
+            if ($lexic == '%lang') {
+                return "<?php if (client_locale() == " . $params . "): ?>";
             }
 
             return $expression;

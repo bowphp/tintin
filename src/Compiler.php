@@ -63,14 +63,14 @@ class Compiler
      *
      * @var string
      */
-    protected $condition_pattern = '/(%s\s*\((.+?)?\)$)+/sm';
+    protected $condition_pattern = '/(%s\s*\((.+?)?\))+\s*/sm';
 
     /**
      * The option expression pattern
      *
      * @var string
      */
-    protected $option_condition_pattern = '/(%s\s*(\((.+?)?\))?$)+/sm';
+    protected $option_condition_pattern = '/(%s\s*(\((.+?)?\))?)+/sm';
 
     /**
      * The reverse inclusion using for %extends
@@ -97,6 +97,8 @@ class Compiler
         'elseif',
         'elif',
         'endif',
+        'unlang',
+        'endunlang',
         'unless',
         'endunless',
         'auth',
