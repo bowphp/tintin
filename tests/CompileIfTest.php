@@ -64,6 +64,17 @@ class CompileIfTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($render, '<?php if (! ($name > 0)): ?>');
     }
 
+    public function testCompileIssetStatement()
+    {
+        $compile_else = $this->makeReflectionFor('compileIsset');
+
+        $render = $compile_else->invoke($this->compiler, '%isset ($name)');
+        $this->assertEquals($render, '<?php if (isset($name)): ?>');
+
+        $render = $compile_else->invoke($this->compiler, '%isset($name)');
+        $this->assertEquals($render, '<?php if (isset($name)): ?>');
+    }
+
     public function testcompileEndifStatement()
     {
         $compile_else = $this->makeReflectionFor('compileEndIf');
@@ -72,6 +83,9 @@ class CompileIfTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($render, '<?php endif; ?>');
 
         $render = $compile_else->invoke($this->compiler, '%endunless');
+        $this->assertEquals($render, '<?php endif; ?>');
+
+        $render = $compile_else->invoke($this->compiler, '%endisset');
         $this->assertEquals($render, '<?php endif; ?>');
     }
 
