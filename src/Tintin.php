@@ -45,7 +45,7 @@ class Tintin
     public function __construct(?LoaderInterface $loader = null)
     {
         $this->loader = $loader;
-        $this->compiler = new Compiler;
+        $this->compiler = new Compiler();
         $this->stackManager = new StackManager($this);
     }
 
@@ -109,7 +109,7 @@ class Tintin
         }
 
         if (! $this->loader->exists($__template)) {
-            $this->loader->failLoading($__template .' not found');
+            $this->loader->failLoading($__template . ' not found');
         }
 
         $this->pushSharedData($data);
@@ -125,7 +125,7 @@ class Tintin
             $this->obFlushAndStar();
 
             require $this->loader->getCacheFileResolvedPath($__template);
-            
+
             return $this->obGetContent();
         }
 
@@ -214,13 +214,13 @@ class Tintin
      */
     private function createTmpFile(string $content)
     {
-        $tmp_dir = sys_get_temp_dir().'/__tintin';
+        $tmp_dir = sys_get_temp_dir() . '/__tintin';
 
         if (!is_dir($tmp_dir)) {
             mkdir($tmp_dir, 0777);
         }
 
-        $file = $tmp_dir.'/'.md5(microtime(true)).'.php';
+        $file = $tmp_dir . '/' . md5(microtime(true)) . '.php';
 
         file_put_contents($file, $content);
 
@@ -244,7 +244,7 @@ class Tintin
      * @param callable $handler
      * @param boolean $broken
      * @return mixed
-     * 
+     *
      * @throws DirectiveNotAllowException
      */
     public function directive(string $name, callable $handler, bool $broken = false)

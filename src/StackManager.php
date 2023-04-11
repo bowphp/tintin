@@ -71,7 +71,7 @@ class StackManager
         }
 
         $this->stacks[] = $name;
-        
+
         $this->pushes[$name] = $content;
     }
 

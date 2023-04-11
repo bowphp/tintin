@@ -6,7 +6,7 @@ trait CompileCustomDirective
 {
     /**
      * Compile custom token stack
-     * 
+     *
      * @param string $expression
      * @return string
      */
@@ -25,7 +25,7 @@ trait CompileCustomDirective
 
     /**
      * Compile the csrf token
-     * 
+     *
      * @param string $expression
      * @return string
      */

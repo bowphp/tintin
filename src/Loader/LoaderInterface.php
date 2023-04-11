@@ -68,7 +68,7 @@ interface LoaderInterface
      *
      * @param string $message
      * @return void
-     * 
+     *
      * @throws \Exception
      */
     public function failLoading($message);

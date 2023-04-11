@@ -18,9 +18,9 @@ class TintinTest extends \PHPUnit\Framework\TestCase
     public function setUp(): void
     {
         $this->loader = new Filesystem([
-          'path' => __DIR__.'/view',
+          'path' => __DIR__ . '/view',
           'extension' => 'tintin.php',
-          'cache' => __DIR__.'/cache'
+          'cache' => __DIR__ . '/cache'
         ]);
     }
 
@@ -30,7 +30,7 @@ class TintinTest extends \PHPUnit\Framework\TestCase
     public function testConfiguration()
     {
         $this->assertInstanceOf(Filesystem::class, $this->loader);
-        
+
         $instance = new Tintin($this->loader);
 
         $this->assertInstanceOf(Tintin::class, $instance);
@@ -41,7 +41,7 @@ class TintinTest extends \PHPUnit\Framework\TestCase
      */
     public function testRenderSimpleData()
     {
-        $tintin = new Tintin;
+        $tintin = new Tintin();
 
         $render = $tintin->render('{{ $name }}', ['name' => "Tintin"]);
 
@@ -50,24 +50,24 @@ class TintinTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test simple rendering
-     * 
+     *
      * @dataProvider getComputeData
      */
     public function testRenderSimpleDataCompute(int $value, string $sign, int $result)
     {
-        $tintin = new Tintin;
+        $tintin = new Tintin();
 
         $render = $tintin->render('{{{ $value ' . $sign . ' $value }}}', compact('value'));
 
         $this->assertEquals($render, $result);
     }
-    
+
     /**
      * Test false custom directive rendering
      */
     public function testRenderFalseDirective()
     {
-        $tintin = new Tintin;
+        $tintin = new Tintin();
 
         $render = $tintin->render('%falseDirective <href="%link">');
 
@@ -76,7 +76,7 @@ class TintinTest extends \PHPUnit\Framework\TestCase
 
     /**
      * The compute dataset
-     * 
+     *
      * @return array
      */
     public function getComputeData()
