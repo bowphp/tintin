@@ -19,9 +19,9 @@ class CompileIncludeTest extends \PHPUnit\Framework\TestCase
     public function setUp(): void
     {
         $this->loader = new Filesystem([
-          'path' => __DIR__.'/view',
+          'path' => __DIR__ . '/view',
           'extension' => 'tintin.php',
-          'cache' => __DIR__.'/cache'
+          'cache' => __DIR__ . '/cache'
         ]);
     }
 
@@ -31,7 +31,7 @@ class CompileIncludeTest extends \PHPUnit\Framework\TestCase
     public function testConfiguration()
     {
         $this->assertInstanceOf(Filesystem::class, $this->loader);
-        
+
         $instance = new Tintin($this->loader);
 
         $this->assertInstanceOf(Tintin::class, $instance);
@@ -39,7 +39,7 @@ class CompileIncludeTest extends \PHPUnit\Framework\TestCase
 
     public function testCompileIncludeStatement()
     {
-        $compiler = new Compiler;
+        $compiler = new Compiler();
         $compileInclude = $this->makeReflectionFor('compileInclude');
         $render = $compileInclude->invoke($compiler, "%include('filename')");
 
@@ -48,7 +48,7 @@ class CompileIncludeTest extends \PHPUnit\Framework\TestCase
 
     public function testCompileIncludeStatementWithParam()
     {
-        $compiler = new Compiler;
+        $compiler = new Compiler();
         $compileInclude = $this->makeReflectionFor('compileInclude');
         $render = $compileInclude->invoke($compiler, "%include('filename', ['name' => 'Bow'])");
 
@@ -57,10 +57,33 @@ class CompileIncludeTest extends \PHPUnit\Framework\TestCase
 
     public function testCompileIncludeStatementWithParamComplex()
     {
-        $compiler = new Compiler;
+        $compiler = new Compiler();
         $compileInclude = $this->makeReflectionFor('compileInclude');
         $render = $compileInclude->invoke($compiler, "%include('filename', ['name' => 'Bow', 'is_admin' => isset(\$is_admin)])");
 
         $this->assertEquals($render, "<?php echo \$__tintin->getStackManager()->includeFile('filename', ['name' => 'Bow', 'is_admin' => isset(\$is_admin)], ['__tintin' => \$__tintin]); ?>");
+    }
+
+    public function testCompileIncludeStatementWithParamComplexUsage()
+    {
+        $template = <<<TEMPLATE
+%include('filename', [
+    'name' => 'Bow',
+    'is_admin' => isset(\$is_admin)
+])
+TEMPLATE;
+
+        $render_out = <<<TEMPLATE
+<?php echo \$__tintin->getStackManager()->includeFile('filename', [
+    'name' => 'Bow',
+    'is_admin' => isset(\$is_admin)
+], ['__tintin' => \$__tintin]); ?>
+TEMPLATE;
+
+        $compiler = new Compiler();
+        $compileInclude = $this->makeReflectionFor('compileInclude');
+        $render = $compileInclude->invoke($compiler, $template);
+
+        $this->assertEquals($render, $render_out);
     }
 }

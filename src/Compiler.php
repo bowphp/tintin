@@ -6,13 +6,13 @@ use Tintin\Exception\DirectiveNotAllowException;
 
 class Compiler
 {
-    use Lexique\CompileIf,
-        Lexique\CompileLoop,
-        Lexique\CompileEchos,
-        Lexique\CompileRawPhp,
-        Lexique\CompileComments,
-        Lexique\CompileCustomDirective,
-        Lexique\CompileExtends;
+    use Lexique\CompileIf;
+    use Lexique\CompileLoop;
+    use Lexique\CompileEchos;
+    use Lexique\CompileRawPhp;
+    use Lexique\CompileComments;
+    use Lexique\CompileCustomDirective;
+    use Lexique\CompileExtends;
 
     /**
      * The echo tags
@@ -121,7 +121,7 @@ class Compiler
             if (strlen($value) > 0) {
                 $value = $this->compileToken($value);
 
-                $this->result .= strlen($value) == 0 || $value == ' ' ? trim($value) : $value."\n";
+                $this->result .= strlen($value) == 0 || $value == ' ' ? trim($value) : $value . "\n";
             }
         }
 
@@ -137,7 +137,7 @@ class Compiler
     private function compileToken($value)
     {
         foreach ($this->tokens as $token) {
-            $out = $this->{'compile'.$token}($value);
+            $out = $this->{'compile' . $token}($value);
 
             if ($token == 'Comments') {
                 if (strlen($out) == 0) {
@@ -159,7 +159,7 @@ class Compiler
      */
     private function resetCompilationAccumulator()
     {
-        $result = $this->result.implode("\n", $this->extends_render);
+        $result = $this->result . implode("\n", $this->extends_render);
 
         $this->result = '';
 

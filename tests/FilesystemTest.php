@@ -12,9 +12,9 @@ class FilesystemTest extends \PHPUnit\Framework\TestCase
     public function setUp(): void
     {
         $this->filesystem = new Filesystem([
-          'path' => __DIR__.'/view',
+          'path' => __DIR__ . '/view',
           'extension' => 'tintin.php',
-          'cache' => __DIR__.'/cache'
+          'cache' => __DIR__ . '/cache'
         ]);
     }
 
@@ -38,7 +38,7 @@ class FilesystemTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(
             $this->filesystem->getFileResolvedPath('app'),
-            __DIR__.'/view/app.tintin.php'
+            __DIR__ . '/view/app.tintin.php'
         );
     }
 
@@ -49,7 +49,7 @@ class FilesystemTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals(
             $this->filesystem->getCachePath(),
-            __DIR__.'/cache'
+            __DIR__ . '/cache'
         );
     }
 

@@ -19,9 +19,9 @@ class CompileExtendsTest extends \PHPUnit\Framework\TestCase
     public function setUp(): void
     {
         $this->loader = new Filesystem([
-          'path' => __DIR__.'/view',
+          'path' => __DIR__ . '/view',
           'extension' => 'tintin.php',
-          'cache' => __DIR__.'/cache'
+          'cache' => __DIR__ . '/cache'
         ]);
     }
 
@@ -31,7 +31,7 @@ class CompileExtendsTest extends \PHPUnit\Framework\TestCase
     public function testConfiguration()
     {
         $this->assertInstanceOf(Filesystem::class, $this->loader);
-        
+
         $instance = new Tintin($this->loader);
 
         $this->assertInstanceOf(Tintin::class, $instance);
@@ -39,7 +39,7 @@ class CompileExtendsTest extends \PHPUnit\Framework\TestCase
 
     public function testCompileExtendsStatement()
     {
-        $compiler = new Compiler;
+        $compiler = new Compiler();
         $compileExtends = $this->makeReflectionFor('compileExtends');
         $render = $compileExtends->invoke($compiler, "%extends('layout')");
 
@@ -54,7 +54,7 @@ class CompileExtendsTest extends \PHPUnit\Framework\TestCase
 
     public function testCompileExtendsStatementWithParam()
     {
-        $compiler = new Compiler;
+        $compiler = new Compiler();
         $compileExtends = $this->makeReflectionFor('compileExtends');
         $render = $compileExtends->invoke($compiler, "%extends('layout', ['name' => 'Bow'])");
 
@@ -69,7 +69,7 @@ class CompileExtendsTest extends \PHPUnit\Framework\TestCase
 
     public function testCompileExtendsStatementWithParamComplex()
     {
-        $compiler = new Compiler;
+        $compiler = new Compiler();
         $compileExtends = $this->makeReflectionFor('compileExtends');
         $render = $compileExtends->invoke($compiler, "%extends('layout', ['name' => 'Bow', 'is_admin' => isset(\$is_admin)])");
 

@@ -21,12 +21,12 @@ class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
      */
     public function setUp(): void
     {
-        $this->tintin = new Tintin;
+        $this->tintin = new Tintin();
 
         $this->loader = new Filesystem([
-            'path' => __DIR__.'/view',
+            'path' => __DIR__ . '/view',
             'extension' => 'tintin.php',
-            'cache' => __DIR__.'/cache'
+            'cache' => __DIR__ . '/cache'
         ]);
     }
 
@@ -67,7 +67,7 @@ class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
         $this->tintin->directive('input', function (array $attributes = []) {
             $attribute = $attributes[0];
 
-            return '<input type="'.$attribute['type'].'" name="'.$attribute['name'].'" value="'.$attribute['value'].'" />';
+            return '<input type="' . $attribute['type'] . '" name="' . $attribute['name'] . '" value="' . $attribute['value'] . '" />';
         });
 
         $r = $this->tintin->render('%input(["type" => "text", "value" => null, "name" => "name"])');

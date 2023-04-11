@@ -5,7 +5,7 @@ use Tintin\Compiler;
 class CompilerEchoTest extends \PHPUnit\Framework\TestCase
 {
     use CompileClassReflection;
-    
+
     /**
      * @var Compiler
      */
@@ -13,7 +13,7 @@ class CompilerEchoTest extends \PHPUnit\Framework\TestCase
 
     public function setUp(): void
     {
-        $this->compiler = new Compiler;
+        $this->compiler = new Compiler();
     }
 
     /**
@@ -24,8 +24,8 @@ class CompilerEchoTest extends \PHPUnit\Framework\TestCase
     public function testCompileEcho()
     {
         $compileEcho = $this->makeReflectionFor('compileEcho');
-        
-        $render = $compileEcho->invoke(new Compiler, '{{ "hello world" }}');
+
+        $render = $compileEcho->invoke(new Compiler(), '{{ "hello world" }}');
 
         $this->assertEquals($render, '<?php echo htmlspecialchars("hello world", ENT_QUOTES); ?>');
     }
@@ -38,8 +38,8 @@ class CompilerEchoTest extends \PHPUnit\Framework\TestCase
     public function testCompileRawEcho()
     {
         $compileRawEcho = $this->makeReflectionFor('compileRawEcho');
-        
-        $render = $compileRawEcho->invoke(new Compiler, '{{{ "hello world" }}}');
+
+        $render = $compileRawEcho->invoke(new Compiler(), '{{{ "hello world" }}}');
 
         $this->assertEquals($render, '<?php echo "hello world"; ?>');
     }

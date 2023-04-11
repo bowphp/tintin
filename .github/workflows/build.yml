@@ -25,5 +25,8 @@ jobs:
       - name: Install dependencies for PHP
         run: composer update --prefer-dist --no-progress
 
+      - name: Code standard checking
+        run: composer phpcbf
+
       - name: Run test suite
         run: cp phpunit.dist.xml phpunit.xml && vendor/bin/phpunit
