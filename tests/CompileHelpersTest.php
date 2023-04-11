@@ -78,6 +78,17 @@ class CompileHelpersTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($render, '<?php if (app_mode() == "production"): ?> ');
     }
 
+    public function testCompileProductionStatement()
+    {
+        $compile_if = $this->makeReflectionFor('compileProduction');
+
+        $render = $compile_if->invoke($this->compiler, '%production');
+        $this->assertEquals($render, '<?php if (app_mode() == "production"): ?>');
+
+        $render = $compile_if->invoke($this->compiler, '%production("hello world")');
+        $this->assertEquals($render, '<?php throw new \ErrorException("The %production cannot take the parameters!") ?>');
+    }
+
     public function testcompileEndHelpersStatement()
     {
         $compile_else = $this->makeReflectionFor('compileEndHelpers');
@@ -92,6 +103,9 @@ class CompileHelpersTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($render, '<?php endif; ?>');
 
         $render = $compile_else->invoke($this->compiler, '%endenv');
+        $this->assertEquals($render, '<?php endif; ?>');
+
+        $render = $compile_else->invoke($this->compiler, '%endproduction');
         $this->assertEquals($render, '<?php endif; ?>');
     }
 

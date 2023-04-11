@@ -99,6 +99,8 @@ class Compiler
         'endif',
         'env',
         'endenv',
+        'production',
+        'endproduction',
         'unlang',
         'endunlang',
         'unless',

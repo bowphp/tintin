@@ -12,7 +12,7 @@ trait CompileHelpers
      */
     protected function compileHelpersStack(string $expression): string
     {
-        foreach (['Auth', 'Guest', 'Lang', 'Env', 'EndHelpers'] as $token) {
+        foreach (['Auth', 'Guest', 'Lang', 'Env', 'EndHelpers', "Production"] as $token) {
             $out = $this->{'compile' . $token}($expression);
 
             if (strlen($out) !== 0) {
@@ -68,6 +68,17 @@ trait CompileHelpers
     }
 
     /**
+     * Compile the %production statement
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileProduction(string $expression): string
+    {
+        return $this->compileAuthStatement($expression, '%production');
+    }
+
+    /**
      * Compile the %endif statement
      *
      * @param string $expression
@@ -75,7 +86,8 @@ trait CompileHelpers
      */
     protected function compileEndHelpers(string $expression): string
     {
-        $output = preg_replace_callback('/\n*(%endauth|%endguest|%endlang|%endenv)\n*/', function ($match) {
+        $output = preg_replace_callback(
+            '/\n*(%endauth|%endguest|%endlang|%endenv|%endproduction)\n*/', function ($match) {
             array_shift($match);
 
             return "<?php endif; ?>";
@@ -117,6 +129,13 @@ trait CompileHelpers
 
             if ($lexic == '%env') {
                 return "<?php if (app_mode() == " . $params . "): ?>";
+            }
+
+            if ($lexic == '%production') {
+                if (strlen(trim($params)) > 0) {
+                    return '<?php throw new \ErrorException("The %production cannot take the parameters!") ?>';
+                }
+                return "<?php if (app_mode() == \"production\"): ?>";
             }
 
             return $expression;
