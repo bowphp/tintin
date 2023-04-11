@@ -12,7 +12,7 @@ trait CompileHelpers
      */
     protected function compileHelpersStack(string $expression): string
     {
-        foreach (['Auth', 'EndAuth'] as $token) {
+        foreach (['Auth', 'Guest', 'EndAuth'] as $token) {
             $out = $this->{'compile' . $token}($expression);
 
             if (strlen($out) !== 0) {
@@ -35,6 +35,17 @@ trait CompileHelpers
     }
 
     /**
+     * Compile the %guest statement
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileGuest(string $expression): string
+    {
+        return $this->compileAuthStatement($expression, '%guest');
+    }
+
+    /**
      * Compile the %endif statement
      *
      * @param string $expression
@@ -42,7 +53,7 @@ trait CompileHelpers
      */
     protected function compileEndAuth(string $expression): string
     {
-        $output = preg_replace_callback('/\n*(%endauth)\n*/', function ($match) {
+        $output = preg_replace_callback('/\n*(%endauth|%endguest)\n*/', function ($match) {
             array_shift($match);
 
             return "<?php endif; ?>";
@@ -72,6 +83,10 @@ trait CompileHelpers
 
             if ($lexic == '%auth') {
                 return "<?php if (auth(" . $params . ")->check()): ?>";
+            }
+
+            if ($lexic == '%guest') {
+                return "<?php if (!auth(" . $params . ")->check()): ?>";
             }
 
             return $expression;

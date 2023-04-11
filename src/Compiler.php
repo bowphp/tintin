@@ -101,6 +101,8 @@ class Compiler
         'endunless',
         'auth',
         'endauth',
+        'guest',
+        'endguest',
         'isset',
         'endisset',
         'extends',
