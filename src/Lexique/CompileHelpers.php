@@ -64,14 +64,14 @@ trait CompileHelpers
     private function compileAuthStatement(string $expression, string $lexic): string
     {
         $regex = sprintf($this->option_condition_pattern, $lexic);
-        
+
         $output = preg_replace_callback($regex, function ($match) use ($lexic, $expression) {
             array_shift($match);
 
             $params = count($match) > 2 ? end($match) : '';
 
             if ($lexic == '%auth') {
-                return "<?php if (auth(". $params .")->check()): ?>";
+                return "<?php if (auth(" . $params . ")->check()): ?>";
             }
 
             return $expression;
