@@ -20,11 +20,11 @@ class CompileIfTest extends \PHPUnit\Framework\TestCase
     {
         $compile_if = $this->makeReflectionFor('compileIf');
 
-        $render = $compile_if->invoke(new Compiler(), '%if ($name > 0)');
+        $render = $compile_if->invoke($this->compiler, '%if ($name > 0)');
 
         $this->assertEquals($render, '<?php if ($name > 0): ?>');
 
-        $render = $compile_if->invoke(new Compiler(), '%if($name > 0)');
+        $render = $compile_if->invoke($this->compiler, '%if($name > 0)');
 
         $this->assertEquals($render, '<?php if ($name > 0): ?>');
     }
@@ -33,7 +33,7 @@ class CompileIfTest extends \PHPUnit\Framework\TestCase
     {
         $compile_else = $this->makeReflectionFor('compileElse');
 
-        $render = $compile_else->invoke(new Compiler(), '%else');
+        $render = $compile_else->invoke($this->compiler, '%else');
 
         $this->assertEquals($render, '<?php else: ?>');
     }
@@ -42,14 +42,14 @@ class CompileIfTest extends \PHPUnit\Framework\TestCase
     {
         $compile_else = $this->makeReflectionFor('compileElseIf');
 
-        $render = $compile_else->invoke(new Compiler(), '%elseif ($name > 0)');
+        $render = $compile_else->invoke($this->compiler, '%elseif ($name > 0)');
         $this->assertEquals($render, '<?php elseif ($name > 0): ?>');
 
-        $render = $compile_else->invoke(new Compiler(), '%elseif($name > 0)');
+        $render = $compile_else->invoke($this->compiler, '%elseif($name > 0)');
         $this->assertEquals($render, '<?php elseif ($name > 0): ?>');
 
         $compile_elif = $this->makeReflectionFor('compileElseIfAlias');
-        $render = $compile_elif->invoke(new Compiler(), '%elif ($name > 0)');
+        $render = $compile_elif->invoke($this->compiler, '%elif ($name > 0)');
         $this->assertEquals($render, '<?php elseif ($name > 0): ?>');
     }
 
@@ -57,10 +57,10 @@ class CompileIfTest extends \PHPUnit\Framework\TestCase
     {
         $compile_else = $this->makeReflectionFor('compileUnLess');
 
-        $render = $compile_else->invoke(new Compiler(), '%unless ($name > 0)');
+        $render = $compile_else->invoke($this->compiler, '%unless ($name > 0)');
         $this->assertEquals($render, '<?php if (! ($name > 0)): ?>');
 
-        $render = $compile_else->invoke(new Compiler(), '%unless($name > 0)');
+        $render = $compile_else->invoke($this->compiler, '%unless($name > 0)');
         $this->assertEquals($render, '<?php if (! ($name > 0)): ?>');
     }
 
@@ -68,10 +68,10 @@ class CompileIfTest extends \PHPUnit\Framework\TestCase
     {
         $compile_else = $this->makeReflectionFor('compileEndIf');
 
-        $render = $compile_else->invoke(new Compiler(), '%endif');
+        $render = $compile_else->invoke($this->compiler, '%endif');
         $this->assertEquals($render, '<?php endif; ?>');
 
-        $render = $compile_else->invoke(new Compiler(), '%endunless');
+        $render = $compile_else->invoke($this->compiler, '%endunless');
         $this->assertEquals($render, '<?php endif; ?>');
     }
 

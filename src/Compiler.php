@@ -13,6 +13,7 @@ class Compiler
     use Lexique\CompileComments;
     use Lexique\CompileCustomDirective;
     use Lexique\CompileExtends;
+    use Lexique\CompileHelpers;
 
     /**
      * The echo tags
@@ -45,8 +46,9 @@ class Compiler
         'IfStack',
         'LoopStack',
         'ExtendsStack',
+        'HelpersStack',
         'CustomStack',
-        'CustomDirective',
+        'CustomDirective'
     ];
 
     /**
@@ -62,6 +64,13 @@ class Compiler
      * @var string
      */
     protected $condition_pattern = '/(%s\s*\((.+?)?\)$)+/sm';
+
+    /**
+     * The option expression pattern
+     *
+     * @var string
+     */
+    protected $option_condition_pattern = '/(%s\s*(\((.+?)?\))?$)+/sm';
 
     /**
      * The reverse inclusion using for %extends
@@ -90,6 +99,8 @@ class Compiler
         'endif',
         'unless',
         'endunless',
+        'auth',
+        'endauth',
         'isset',
         'endisset',
         'extends',
@@ -110,10 +121,10 @@ class Compiler
     /**
      * Launch the compilation
      *
-     * @param array|string $data
+     * @param string $data
      * @return string
      */
-    public function compile($data)
+    public function compile(string $data): string
     {
         $data = preg_split('/\n|\r\n/', $data);
 
@@ -134,7 +145,7 @@ class Compiler
      * @param string $value
      * @return string
      */
-    private function compileToken($value)
+    private function compileToken(string $value): string
     {
         foreach ($this->tokens as $token) {
             $out = $this->{'compile' . $token}($value);
@@ -157,7 +168,7 @@ class Compiler
      * Reset Compilation accumulator
      * @return string
      */
-    private function resetCompilationAccumulator()
+    private function resetCompilationAccumulator(): string
     {
         $result = $this->result . implode("\n", $this->extends_render);
 
@@ -193,7 +204,7 @@ class Compiler
      * @param array $params
      * @return mixed
      */
-    public function _____executeCustomDirectory($name, ...$params)
+    public function _____executeCustomDirectory($name, ...$params): mixed
     {
         if (!isset($this->directives[$name])) {
             return null;

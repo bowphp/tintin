@@ -11,3 +11,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Remove the default configuration
 - Code formatting
 - Refactoring of the code base
+- Add the %auth and %endauth tags

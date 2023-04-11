@@ -25,7 +25,7 @@ class CompilerEchoTest extends \PHPUnit\Framework\TestCase
     {
         $compileEcho = $this->makeReflectionFor('compileEcho');
 
-        $render = $compileEcho->invoke(new Compiler(), '{{ "hello world" }}');
+        $render = $compileEcho->invoke($this->compiler, '{{ "hello world" }}');
 
         $this->assertEquals($render, '<?php echo htmlspecialchars("hello world", ENT_QUOTES); ?>');
     }
@@ -39,7 +39,7 @@ class CompilerEchoTest extends \PHPUnit\Framework\TestCase
     {
         $compileRawEcho = $this->makeReflectionFor('compileRawEcho');
 
-        $render = $compileRawEcho->invoke(new Compiler(), '{{{ "hello world" }}}');
+        $render = $compileRawEcho->invoke($this->compiler, '{{{ "hello world" }}}');
 
         $this->assertEquals($render, '<?php echo "hello world"; ?>');
     }
