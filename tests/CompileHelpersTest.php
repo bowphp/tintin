@@ -67,17 +67,45 @@ class CompileHelpersTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($render, '<?php if (client_locale() == "fr"): ?> ');
     }
 
-    public function testcompileEndAuthStatement()
+    public function testCompileEnvStatement()
     {
-        $compile_else = $this->makeReflectionFor('compileEndAuth');
+        $compile_if = $this->makeReflectionFor('compileEnv');
 
-        $render = $compile_else->invoke(new Compiler(), '%endauth');
+        $render = $compile_if->invoke($this->compiler, '%env("production")');
+        $this->assertEquals($render, '<?php if (app_mode() == "production"): ?>');
+
+        $render = $compile_if->invoke($this->compiler, '%env("production") ');
+        $this->assertEquals($render, '<?php if (app_mode() == "production"): ?> ');
+    }
+
+    public function testCompileProductionStatement()
+    {
+        $compile_if = $this->makeReflectionFor('compileProduction');
+
+        $render = $compile_if->invoke($this->compiler, '%production');
+        $this->assertEquals($render, '<?php if (app_mode() == "production"): ?>');
+
+        $render = $compile_if->invoke($this->compiler, '%production("hello world")');
+        $this->assertEquals($render, '<?php throw new \ErrorException("The %production cannot take the parameters!") ?>');
+    }
+
+    public function testcompileEndHelpersStatement()
+    {
+        $compile_else = $this->makeReflectionFor('compileEndHelpers');
+
+        $render = $compile_else->invoke($this->compiler, '%endauth');
         $this->assertEquals($render, '<?php endif; ?>');
 
-        $render = $compile_else->invoke(new Compiler(), '%endguest');
+        $render = $compile_else->invoke($this->compiler, '%endguest');
         $this->assertEquals($render, '<?php endif; ?>');
 
-        $render = $compile_else->invoke(new Compiler(), '%endlang');
+        $render = $compile_else->invoke($this->compiler, '%endlang');
+        $this->assertEquals($render, '<?php endif; ?>');
+
+        $render = $compile_else->invoke($this->compiler, '%endenv');
+        $this->assertEquals($render, '<?php endif; ?>');
+
+        $render = $compile_else->invoke($this->compiler, '%endproduction');
         $this->assertEquals($render, '<?php endif; ?>');
     }
 

@@ -12,7 +12,7 @@ trait CompileHelpers
      */
     protected function compileHelpersStack(string $expression): string
     {
-        foreach (['Auth', 'Guest', 'EndAuth'] as $token) {
+        foreach (['Auth', 'Guest', 'Lang', 'Env', 'EndHelpers', "Production"] as $token) {
             $out = $this->{'compile' . $token}($expression);
 
             if (strlen($out) !== 0) {
@@ -57,18 +57,44 @@ trait CompileHelpers
     }
 
     /**
+     * Compile the %env statement
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileEnv(string $expression): string
+    {
+        return $this->compileAuthStatement($expression, '%env');
+    }
+
+    /**
+     * Compile the %production statement
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileProduction(string $expression): string
+    {
+        return $this->compileAuthStatement($expression, '%production');
+    }
+
+    /**
      * Compile the %endif statement
      *
      * @param string $expression
      * @return string
      */
-    protected function compileEndAuth(string $expression): string
+    protected function compileEndHelpers(string $expression): string
     {
-        $output = preg_replace_callback('/\n*(%endauth|%endguest|%endlang)\n*/', function ($match) {
-            array_shift($match);
+        $output = preg_replace_callback(
+            '/\n*(%endauth|%endguest|%endlang|%endenv|%endproduction)\n*/',
+            function ($match) {
+                array_shift($match);
 
-            return "<?php endif; ?>";
-        }, $expression);
+                return "<?php endif; ?>";
+            },
+            $expression
+        );
 
         return $output == $expression ? '' : $output;
     }
@@ -102,6 +128,17 @@ trait CompileHelpers
 
             if ($lexic == '%lang') {
                 return "<?php if (client_locale() == " . $params . "): ?>";
+            }
+
+            if ($lexic == '%env') {
+                return "<?php if (app_mode() == " . $params . "): ?>";
+            }
+
+            if ($lexic == '%production') {
+                if (strlen(trim($params)) > 0) {
+                    return '<?php throw new \ErrorException("The %production cannot take the parameters!") ?>';
+                }
+                return "<?php if (app_mode() == \"production\"): ?>";
             }
 
             return $expression;
