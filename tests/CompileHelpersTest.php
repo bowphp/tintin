@@ -31,6 +31,9 @@ class CompileHelpersTest extends \PHPUnit\Framework\TestCase
 
         $render = $compile_if->invoke($this->compiler, '%auth ("admin")');
         $this->assertEquals($render, '<?php if (auth("admin")->check()): ?>');
+
+        $render = $compile_if->invoke($this->compiler, '%auth ("admin") ');
+        $this->assertEquals($render, '<?php if (auth("admin")->check()): ?> ');
     }
 
     public function testCompileGuestStatement()
@@ -48,6 +51,20 @@ class CompileHelpersTest extends \PHPUnit\Framework\TestCase
 
         $render = $compile_if->invoke($this->compiler, '%guest ("admin")');
         $this->assertEquals($render, '<?php if (!auth("admin")->check()): ?>');
+
+        $render = $compile_if->invoke($this->compiler, '%guest ("admin") ');
+        $this->assertEquals($render, '<?php if (!auth("admin")->check()): ?> ');
+    }
+
+    public function testCompileLangStatement()
+    {
+        $compile_if = $this->makeReflectionFor('compileLang');
+
+        $render = $compile_if->invoke($this->compiler, '%lang("fr")');
+        $this->assertEquals($render, '<?php if (client_locale() == "fr"): ?>');
+
+        $render = $compile_if->invoke($this->compiler, '%lang("fr") ');
+        $this->assertEquals($render, '<?php if (client_locale() == "fr"): ?> ');
     }
 
     public function testcompileEndAuthStatement()
@@ -58,6 +75,9 @@ class CompileHelpersTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($render, '<?php endif; ?>');
 
         $render = $compile_else->invoke(new Compiler(), '%endguest');
+        $this->assertEquals($render, '<?php endif; ?>');
+
+        $render = $compile_else->invoke(new Compiler(), '%endlang');
         $this->assertEquals($render, '<?php endif; ?>');
     }
 
