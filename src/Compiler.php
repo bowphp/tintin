@@ -115,6 +115,8 @@ class Compiler
         'block',
         'inject',
         'include',
+        'includeif',
+        'includewhen',
         'endblock',
         'while',
         'endwhile',

@@ -64,6 +64,24 @@ class CompileIncludeTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($render, "<?php echo \$__tintin->getStackManager()->includeFile('filename', ['name' => 'Bow', 'is_admin' => isset(\$is_admin)], ['__tintin' => \$__tintin]); ?>");
     }
 
+    public function testCompileIncludeIfStatementWithParamComplex()
+    {
+        $compiler = new Compiler();
+        $compileInclude = $this->makeReflectionFor('compileConditionalInclude');
+        $render = $compileInclude->invoke($compiler, "%includeif(',' == 'f', 'filename', ['name' => 'Bow', 'is_admin' => isset(\$is_admin)])");
+
+        $this->assertEquals($render, "<?php echo \$__tintin->getStackManager()->includeFileIf(',' == 'f', 'filename', ['name' => 'Bow', 'is_admin' => isset(\$is_admin)], ['__tintin' => \$__tintin]); ?>");
+    }
+
+    public function testCompileIncludeWhenStatementWithParamComplex()
+    {
+        $compiler = new Compiler();
+        $compileInclude = $this->makeReflectionFor('compileConditionalInclude');
+        $render = $compileInclude->invoke($compiler, "%includewhen(',' == 'f', 'filename', ['name' => 'Bow', 'is_admin' => isset(\$is_admin)])");
+
+        $this->assertEquals($render, "<?php echo \$__tintin->getStackManager()->includeFileIf(',' == 'f', 'filename', ['name' => 'Bow', 'is_admin' => isset(\$is_admin)], ['__tintin' => \$__tintin]); ?>");
+    }
+
     public function testCompileIncludeStatementWithParamComplexUsage()
     {
         $template = <<<TEMPLATE

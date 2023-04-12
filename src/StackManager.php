@@ -48,13 +48,35 @@ class StackManager
      * @param array $context
      * @return string
      */
-    public function includeFile($filename, $data = [], $context = [])
+    public function includeFile(string $filename, array $data = [], array $context = [])
     {
         $this->tintin->pushSharedData(array_merge($context, $data));
 
         $data = $this->tintin->getSharedData();
 
         return $this->tintin->render($filename, $data);
+    }
+
+    /**
+     * Include a file to compile if the condition match.
+     * The all logic is base on data structure algorithm call stack
+     *
+     * @param string $filename
+     * @param array $data
+     * @param array $context
+     * @return string
+     */
+    public function includeFileIf(
+        bool $condition, string
+        $filename,
+        array $data = [],
+        array $context = []
+    ) {
+        if ($condition) {
+            return $this->includeFile($filename, $data, $context);
+        }
+
+        return "";
     }
 
     /**
@@ -104,7 +126,7 @@ class StackManager
      * @param string $default
      * @return mixed
      */
-    public function getStack($name, $default = null)
+    public function getStack(string $name, ?string $default = null)
     {
         if (array_key_exists($name, $this->pushes)) {
             return $this->tintin->renderString(
