@@ -5,7 +5,6 @@ namespace Tintin\Bow;
 use Bow\View\View;
 use Bow\Configuration\Loader;
 use Bow\Configuration\Configuration;
-use Tintin\Tintin;
 
 class TintinConfiguration extends Configuration
 {
@@ -29,19 +28,6 @@ class TintinConfiguration extends Configuration
      */
     public function run(): void
     {
-        $view = $this->container->make('view');
-
-        $this->onRunning($view->getTemplate()->getTemplate());
-    }
-
-    /**
-     * Customize tintin action
-     *
-     * @param Tintin $tintin
-     * @return mixed
-     */
-    public function onRunning(Tintin $tintin): void
-    {
-        //
+        $this->container->make('view');
     }
 }

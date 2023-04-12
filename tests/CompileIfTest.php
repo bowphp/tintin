@@ -18,74 +18,74 @@ class CompileIfTest extends \PHPUnit\Framework\TestCase
 
     public function testCompileIfStatement()
     {
-        $compile_if = $this->makeReflectionFor('compileIf');
+        $compileIf = $this->makeReflectionFor('compileIf');
 
-        $render = $compile_if->invoke($this->compiler, '%if ($name > 0)');
+        $render = $compileIf->invoke($this->compiler, '%if ($name > 0)');
 
         $this->assertEquals($render, '<?php if ($name > 0): ?>');
 
-        $render = $compile_if->invoke($this->compiler, '%if($name > 0)');
+        $render = $compileIf->invoke($this->compiler, '%if($name > 0)');
 
         $this->assertEquals($render, '<?php if ($name > 0): ?>');
     }
 
     public function testCompileElseStatement()
     {
-        $compile_else = $this->makeReflectionFor('compileElse');
+        $compileElse = $this->makeReflectionFor('compileElse');
 
-        $render = $compile_else->invoke($this->compiler, '%else');
+        $render = $compileElse->invoke($this->compiler, '%else');
 
         $this->assertEquals($render, '<?php else: ?>');
     }
 
     public function testCompileElseIfStatement()
     {
-        $compile_else = $this->makeReflectionFor('compileElseIf');
+        $compileElse = $this->makeReflectionFor('compileElseIf');
 
-        $render = $compile_else->invoke($this->compiler, '%elseif ($name > 0)');
+        $render = $compileElse->invoke($this->compiler, '%elseif ($name > 0)');
         $this->assertEquals($render, '<?php elseif ($name > 0): ?>');
 
-        $render = $compile_else->invoke($this->compiler, '%elseif($name > 0)');
+        $render = $compileElse->invoke($this->compiler, '%elseif($name > 0)');
         $this->assertEquals($render, '<?php elseif ($name > 0): ?>');
 
-        $compile_elif = $this->makeReflectionFor('compileElseIfAlias');
-        $render = $compile_elif->invoke($this->compiler, '%elif ($name > 0)');
+        $compileelIf = $this->makeReflectionFor('compileElseIfAlias');
+        $render = $compileelIf->invoke($this->compiler, '%elif ($name > 0)');
         $this->assertEquals($render, '<?php elseif ($name > 0): ?>');
     }
 
     public function testCompileUnLessStatement()
     {
-        $compile_else = $this->makeReflectionFor('compileUnLess');
+        $compileUnless = $this->makeReflectionFor('compileUnLess');
 
-        $render = $compile_else->invoke($this->compiler, '%unless ($name > 0)');
+        $render = $compileUnless->invoke($this->compiler, '%unless ($name > 0)');
         $this->assertEquals($render, '<?php if (! ($name > 0)): ?>');
 
-        $render = $compile_else->invoke($this->compiler, '%unless($name > 0)');
+        $render = $compileUnless->invoke($this->compiler, '%unless($name > 0)');
         $this->assertEquals($render, '<?php if (! ($name > 0)): ?>');
     }
 
     public function testCompileIssetStatement()
     {
-        $compile_else = $this->makeReflectionFor('compileIsset');
+        $compileIsset = $this->makeReflectionFor('compileIsset');
 
-        $render = $compile_else->invoke($this->compiler, '%isset ($name)');
+        $render = $compileIsset->invoke($this->compiler, '%isset ($name)');
         $this->assertEquals($render, '<?php if (isset($name)): ?>');
 
-        $render = $compile_else->invoke($this->compiler, '%isset($name)');
+        $render = $compileIsset->invoke($this->compiler, '%isset($name)');
         $this->assertEquals($render, '<?php if (isset($name)): ?>');
     }
 
     public function testcompileEndifStatement()
     {
-        $compile_else = $this->makeReflectionFor('compileEndIf');
+        $compileEndIf = $this->makeReflectionFor('compileEndIf');
 
-        $render = $compile_else->invoke($this->compiler, '%endif');
+        $render = $compileEndIf->invoke($this->compiler, '%endif');
         $this->assertEquals($render, '<?php endif; ?>');
 
-        $render = $compile_else->invoke($this->compiler, '%endunless');
+        $render = $compileEndIf->invoke($this->compiler, '%endunless');
         $this->assertEquals($render, '<?php endif; ?>');
 
-        $render = $compile_else->invoke($this->compiler, '%endisset');
+        $render = $compileEndIf->invoke($this->compiler, '%endisset');
         $this->assertEquals($render, '<?php endif; ?>');
     }
 
