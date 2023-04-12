@@ -12,7 +12,7 @@ trait CompileExtends
      */
     protected function compileExtendsStack(string $expression): string
     {
-        foreach (['Block', 'EndBlock', 'Include', 'Inject', 'Extends'] as $token) {
+        foreach (['Block', 'EndBlock', 'ConditionalInclude', 'Include', 'Inject', 'Extends'] as $token) {
             $out = $this->{'compile' . $token}($expression);
 
             if (strlen($out) !== 0) {
@@ -81,6 +81,23 @@ trait CompileExtends
 
         $output = preg_replace_callback($regex, function ($match) {
             return "<?php echo \$__tintin->getStackManager()->includeFile({$match[1]}, ['__tintin' => \$__tintin]); ?>";
+        }, $expression);
+
+        return $output == $expression ? '' : $output;
+    }
+
+    /**
+     * Compile the %include statement
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileConditionalInclude(string $expression): string
+    {
+        $regex = "/\%include(?:if|when)\s*\(((?:\n|\s|\t)*(?:.+)(?:\n|\s|\t)*\)?)\)/sm";
+
+        $output = preg_replace_callback($regex, function ($match) {
+            return "<?php echo \$__tintin->getStackManager()->includeFileIf({$match[1]}, ['__tintin' => \$__tintin]); ?>";
         }, $expression);
 
         return $output == $expression ? '' : $output;
