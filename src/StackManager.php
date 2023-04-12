@@ -67,8 +67,8 @@ class StackManager
      * @return string
      */
     public function includeFileIf(
-        bool $condition, string
-        $filename,
+        bool $condition,
+        string $filename,
         array $data = [],
         array $context = []
     ) {
