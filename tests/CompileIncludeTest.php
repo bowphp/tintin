@@ -108,7 +108,7 @@ TEMPLATE;
     public function testCompileFullIncludeTemplate()
     {
         $instance = new Tintin($this->loader);
-        
+
         $output = $instance->render("include", ["name" => false]);
         $this->assertEquals("included", trim($output));
     }
