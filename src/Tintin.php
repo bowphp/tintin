@@ -212,7 +212,7 @@ class Tintin
      * @param string $content
      * @return string
      */
-    private function createTmpFile(string $content)
+    private function createTmpFile(string $content): string
     {
         $tmp_dir = sys_get_temp_dir() . '/__tintin';
 

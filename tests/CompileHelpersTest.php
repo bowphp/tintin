@@ -116,5 +116,6 @@ class CompileHelpersTest extends \PHPUnit\Framework\TestCase
         $render = $this->compiler->compile($html);
 
         $this->assertStringContainsString('<?php if (auth()->check()): ?>', $render);
+        $this->assertStringContainsString('<?php if (!auth()->check()): ?>', $render);
     }
 }

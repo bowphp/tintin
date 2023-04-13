@@ -14,6 +14,7 @@ class Compiler
     use Lexique\CompileCustomDirective;
     use Lexique\CompileExtends;
     use Lexique\CompileHelpers;
+    use Lexique\CompileVerbatim;
 
     /**
      * The echo tags
@@ -48,7 +49,7 @@ class Compiler
         'ExtendsStack',
         'HelpersStack',
         'CustomStack',
-        'CustomDirective'
+        'CustomDirective',
     ];
 
     /**
@@ -77,26 +78,42 @@ class Compiler
      *
      * @var array
      */
-    protected $extends_render = [];
+    protected array $extends_render = [];
+
+    /**
+     * The %verbatim accumulator
+     *
+     * @var array
+     */
+    protected array $verbatim_accumulator = [];
+
+    /**
+     * Define the vertabim placeholder
+     *
+     * @var string
+     */
+    protected string $verbatim_placeholder = "@__tintin_verbatim__{index}__@";
 
     /**
      * The custom directive collector
      *
      * @var array
      */
-    private $directives = [];
+    private array $directives = [];
 
     /**
      * List of default directive
      *
      * @var array
      */
-    private $directivesProtected = [
+    private array $directivesProtected = [
         'if',
         'else',
         'elseif',
         'elif',
         'endif',
+        'verbatim',
+        'endverbatim',
         'env',
         'endenv',
         'production',
@@ -136,6 +153,7 @@ class Compiler
      */
     public function compile(string $data): string
     {
+        $data = $this->compileVerbatim($data);
         $data = preg_split('/\n|\r\n/', $data);
 
         foreach ($data as $value) {
@@ -145,6 +163,9 @@ class Compiler
                 $this->result .= strlen($value) == 0 || $value == ' ' ? trim($value) : $value . "\n";
             }
         }
+
+        // Apply the verbatim
+        $this->applyVerbatimAccumulatorContent();
 
         return $this->resetCompilationAccumulator();
     }
@@ -187,6 +208,32 @@ class Compiler
         $this->extends_render = [];
 
         return $result;
+    }
+
+    /**
+     * Apply %verbatim accumulator content
+     *
+     * @return void
+     */
+    private function applyVerbatimAccumulatorContent(): void
+    {
+        foreach ($this->verbatim_accumulator as $index => $verbatim) {
+            $placeholder = $this->generateVerbatimPlaceholder($index + 1);
+            $this->result = str_replace($placeholder, $verbatim, $this->result);
+        }
+
+        $this->verbatim_accumulator = [];
+    }
+
+    /**
+     * Generate the verbatim placeholder
+     *
+     * @param integer $index
+     * @return string
+     */
+    private function generateVerbatimPlaceholder(int $index): string
+    {
+        return str_replace("{index}", $index, $this->verbatim_placeholder);
     }
 
     /**
