@@ -104,4 +104,30 @@ TEMPLATE;
 
         $this->assertEquals($render, $render_out);
     }
+
+    public function testCompileFullIncludeTemplate()
+    {
+        $instance = new Tintin($this->loader);
+        
+        $output = $instance->render("include", ["name" => false]);
+        $this->assertEquals("included", trim($output));
+    }
+
+    public function testCompileFullIncludeIfTemplate()
+    {
+        $instance = new Tintin($this->loader);
+
+        $output = $instance->render("include", ["name" => "bowphp"]);
+        $this->assertStringContainsString("included", trim($output));
+        $this->assertStringContainsString("include-if", trim($output));
+    }
+
+    public function testCompileFullIncludeWhenTemplate()
+    {
+        $instance = new Tintin($this->loader);
+
+        $output = $instance->render("include", ["name" => false, "logged" => true]);
+        $this->assertStringContainsString("included", trim($output));
+        $this->assertStringContainsString("include-when", trim($output));
+    }
 }
