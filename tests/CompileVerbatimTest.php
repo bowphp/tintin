@@ -14,7 +14,7 @@ class CompileVerbatimTest extends \PHPUnit\Framework\TestCase
     {
         $this->compiler = new Compiler();
     }
- 
+
     public function testCompileBasiclyTheVerbatimTag()
     {
         $template = "%verbatim\n\t%if (true)\n\t\t{{ \$name }}\n\t%endif\n%endverbatim";
