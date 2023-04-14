@@ -15,6 +15,7 @@ class Compiler
     use Lexique\CompileExtends;
     use Lexique\CompileHelpers;
     use Lexique\CompileVerbatim;
+    use Lexique\CompileJson;
 
     /**
      * The echo tags
@@ -50,6 +51,7 @@ class Compiler
         'HelpersStack',
         'CustomStack',
         'CustomDirective',
+        'Json'
     ];
 
     /**
@@ -143,6 +145,7 @@ class Compiler
         'endloop',
         'stop',
         'jump',
+        'json'
     ];
 
     /**
@@ -158,6 +161,11 @@ class Compiler
 
         foreach ($data as $value) {
             if (strlen($value) > 0) {
+                if (strpos($value, "%json") !== false) {
+                    echo "The string contains '%json'";
+                    var_dump($value);
+                }
+
                 $value = $this->compileToken($value);
 
                 $this->result .= strlen($value) == 0 || $value == ' ' ? trim($value) : $value . "\n";
