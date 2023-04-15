@@ -2,7 +2,6 @@
 
 namespace Tintin;
 
-use Closure;
 use Tintin\StackManager;
 use Tintin\Loader\LoaderInterface;
 use Tintin\Exception\DirectiveNotAllowException;
@@ -31,6 +30,13 @@ class Tintin
     private StackManager $stackManager;
 
     /**
+     * The stack manager instance
+     *
+     * @var MacroNanager
+     */
+    private MacroNanager $macroManager;
+
+    /**
      * The shared data
      *
      * @var array
@@ -47,6 +53,7 @@ class Tintin
         $this->loader = $loader;
         $this->compiler = new Compiler();
         $this->stackManager = new StackManager($this);
+        $this->macroManager = new MacroNanager();
     }
 
     /**
@@ -57,6 +64,16 @@ class Tintin
     public function getStackManager(): StackManager
     {
         return $this->stackManager;
+    }
+
+    /**
+     * Get macro manager
+     *
+     * @return MacroManager
+     */
+    public function getMacroManager(): MacroNanager
+    {
+        return $this->macroManager;
     }
 
     /**
