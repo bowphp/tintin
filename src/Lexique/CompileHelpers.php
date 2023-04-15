@@ -143,7 +143,7 @@ trait CompileHelpers
             }
 
             if ($lexic == '%lang') {
-                if (strlen(trim($params)) == 1) {
+                if (strlen(trim($params)) > 1) {
                     return "<?php if (client_locale() == " . $params . "): ?>";
                 }
                 $message = "The %lang take $1 parameter missing but $0 passed";
@@ -151,7 +151,7 @@ trait CompileHelpers
             }
 
             if ($lexic == '%env') {
-                if (strlen(trim($params)) == 1) {
+                if (strlen(trim($params)) > 1) {
                     return "<?php if (app_mode() == " . $params . "): ?>";
                 }
                 $message = "The %env take $1 parameter missing but $0 passed";
