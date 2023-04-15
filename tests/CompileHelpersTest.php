@@ -67,6 +67,23 @@ class CompileHelpersTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($render, '<?php if (client_locale() == "fr"): ?> ');
     }
 
+    public function testCompileCsrfStatement()
+    {
+        $compileCsrf = $this->makeReflectionFor('compileCsrf');
+
+        $render = $compileCsrf->invoke($this->compiler, '%csrf');
+        $this->assertEquals($render, '<?= csrf_field(); ?>');
+
+        $render = $compileCsrf->invoke($this->compiler, '%csrf ');
+        $this->assertEquals($render, '<?= csrf_field(); ?> ');
+
+        $render = $compileCsrf->invoke($this->compiler, ' %csrf ');
+        $this->assertEquals($render, ' <?= csrf_field(); ?> ');
+
+        $render = $compileCsrf->invoke($this->compiler, '%csrf()');
+        $this->assertEquals($render, '<?= csrf_field(); ?>()');
+    }
+
     public function testCompileEnvStatement()
     {
         $compileEnv = $this->makeReflectionFor('compileEnv');
