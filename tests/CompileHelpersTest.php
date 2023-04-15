@@ -67,6 +67,23 @@ class CompileHelpersTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($render, '<?php if (client_locale() == "fr"): ?> ');
     }
 
+    public function testCompileCsrfStatement()
+    {
+        $compileCsrf = $this->makeReflectionFor('compileCsrf');
+
+        $render = $compileCsrf->invoke($this->compiler, '%csrf');
+        $this->assertEquals($render, '<?= csrf_field(); ?>');
+
+        $render = $compileCsrf->invoke($this->compiler, '%csrf ');
+        $this->assertEquals($render, '<?= csrf_field(); ?> ');
+
+        $render = $compileCsrf->invoke($this->compiler, ' %csrf ');
+        $this->assertEquals($render, ' <?= csrf_field(); ?> ');
+
+        $render = $compileCsrf->invoke($this->compiler, '%csrf()');
+        $this->assertEquals($render, '<?= csrf_field(); ?>()');
+    }
+
     public function testCompileEnvStatement()
     {
         $compileEnv = $this->makeReflectionFor('compileEnv');
@@ -86,7 +103,7 @@ class CompileHelpersTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($render, '<?php if (app_mode() == "production"): ?>');
 
         $render = $compileProduction->invoke($this->compiler, '%production("hello world")');
-        $this->assertEquals($render, '<?php throw new \ErrorException("The %production cannot take the parameters!") ?>');
+        $this->assertEquals($render, "<?php throw new \Tintin\Exception\BadDirectiveCalledException('The %production cannot take the parameters!') ?>");
     }
 
     public function testcompileEndHelpersStatement()

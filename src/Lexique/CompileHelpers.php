@@ -12,15 +12,31 @@ trait CompileHelpers
      */
     protected function compileHelpersStack(string $expression): string
     {
-        foreach (['Auth', 'Guest', 'Lang', 'Env', "Production", 'EndHelpers'] as $token) {
-            $out = $this->{'compile' . $token}($expression);
-
+        foreach (["Auth", "Guest", "Lang", "Env", "Csrf", "Production", "EndHelpers"] as $token) {
+            $out = $this->{"compile" . $token}($expression);
             if (strlen($out) !== 0) {
                 $expression = $out;
             }
         }
 
         return $expression;
+    }
+
+    /**
+     * Compile the csrf token
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileCsrf(string $expression): string
+    {
+        $output = preg_replace_callback('/\n*(%csrf)\n*/', function ($match) {
+            array_shift($match);
+
+            return "<?= csrf_field(); ?>";
+        }, $expression);
+
+        return $output == $expression ? '' : $output;
     }
 
     /**
@@ -127,18 +143,27 @@ trait CompileHelpers
             }
 
             if ($lexic == '%lang') {
-                return "<?php if (client_locale() == " . $params . "): ?>";
+                if (strlen(trim($params)) > 1) {
+                    return "<?php if (client_locale() == " . $params . "): ?>";
+                }
+                $message = "The %lang take $1 parameter missing but $0 passed";
+                return "<?php throw new \Tintin\Exception\BadDirectiveCalledException('$message') ?>";
             }
 
             if ($lexic == '%env') {
-                return "<?php if (app_mode() == " . $params . "): ?>";
+                if (strlen(trim($params)) > 1) {
+                    return "<?php if (app_mode() == " . $params . "): ?>";
+                }
+                $message = "The %env take $1 parameter missing but $0 passed";
+                return "<?php throw new \Tintin\Exception\BadDirectiveCalledException('$message') ?>";
             }
 
             if ($lexic == '%production') {
-                if (strlen(trim($params)) > 0) {
-                    return '<?php throw new \ErrorException("The %production cannot take the parameters!") ?>';
+                if (strlen(trim($params)) == 0) {
+                    return "<?php if (app_mode() == \"production\"): ?>";
                 }
-                return "<?php if (app_mode() == \"production\"): ?>";
+                $message = "The %production cannot take the parameters!";
+                return "<?php throw new \Tintin\Exception\BadDirectiveCalledException('$message') ?>";
             }
 
             return $expression;
