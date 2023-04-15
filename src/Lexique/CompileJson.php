@@ -12,7 +12,6 @@ trait CompileJson
      */
     protected function compileJson(string $expression): string
     {
-        //$expression = preg_replace('/^%json\((.*)\)$/', '$1', $expression);
         $output = preg_replace_callback(
             '/^%json\((.*)\)$/',
             function ($match) {
