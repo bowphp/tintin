@@ -17,6 +17,7 @@ class Compiler
     use Lexique\CompileVerbatim;
     use Lexique\CompileJson;
     use Lexique\CompileClass;
+    use Lexique\CompileMacro;
 
     /**
      * The echo tags
