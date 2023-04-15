@@ -5,7 +5,7 @@ namespace Tintin\Lexique;
 trait CompileCustomDirective
 {
     /**
-     * Compile the custom directive
+     * Compile the custom statement
      *
      * @param string $expression
      * @return string

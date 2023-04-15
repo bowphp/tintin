@@ -46,6 +46,7 @@ class Compiler
         'LoopStack',
         'ExtendsStack',
         'HelpersStack',
+        'CustomDirective',
         'Json',
         'Class',
         'Import'
