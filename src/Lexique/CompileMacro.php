@@ -26,16 +26,15 @@ trait CompileMacro
         array_shift($matches);
 
         if (count($matches) > 0) {
-            [$functions, $contents] = $matches;
-            foreach($functions as $key => $function) {
-                $partials = preg_split("/\s*,\s*/", $function);
-                $name = current($partials);
+            [$definitions, $contents] = $matches;
+            foreach ($definitions as $key => $definition) {
+                $partials = preg_split("/\s*,\s*/", $definition);
+                $function = current($partials);
+                $function = trim(trim($function), '"\'');
                 array_shift($partials);
                 $parameters = $partials;
-                $name = trim($name);
-                $name = trim($name, '"\'');
                 $content = $contents[$key];
-                $this->macros[$name] = compact('parameters', 'content');
+                $this->macros[$function] = compact('parameters', 'content');
             }
         }
 
@@ -60,4 +59,3 @@ trait CompileMacro
         return $output == $expression ? '' : $output;
     }
 }
-

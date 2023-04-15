@@ -7,7 +7,7 @@ class CompileMacroTest extends PHPUnit\Framework\TestCase
     use CompileClassReflection;
 
     private Compiler $compiler;
-    
+
     public function setUp(): void
     {
         $this->compiler = new Compiler();
@@ -15,7 +15,7 @@ class CompileMacroTest extends PHPUnit\Framework\TestCase
 
     public function testCompileMacro()
     {
-        $template = file_get_contents(__DIR__.'/view/macro.tintin.php');
+        $template = file_get_contents(__DIR__ . '/view/macro.tintin.php');
 
         $compileMacro = $this->makeReflectionFor('compileMacro');
         $output = $compileMacro->invoke($this->compiler, $template);
