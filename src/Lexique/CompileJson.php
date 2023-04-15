@@ -16,9 +16,10 @@ trait CompileJson
             '/^%json\((.*)\)$/',
             function ($match) {
                 array_shift($match);
+
                 $parts = explode(',', $match[0]);
 
-                if  (! isset($parts[1])) {
+                if (! isset($parts[1])) {
                     return  "<?php echo json_encode($parts[0]); ?>";
                 }
 
