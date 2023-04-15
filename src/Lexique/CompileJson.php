@@ -13,7 +13,7 @@ trait CompileJson
     protected function compileJson(string $expression): string
     {
         $output = preg_replace_callback(
-            '/^%json\((.*)\)$/',
+            '/^%json\s*\((.*)\)$/',
             function ($match) {
                 array_shift($match);
 

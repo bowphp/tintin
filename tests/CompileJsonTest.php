@@ -25,6 +25,15 @@ class CompileJsonTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($render, "<?php echo json_encode(['name' => 'tintin']); ?>");
     }
 
+    public function testCompileJsonWithSpace()
+    {
+        $compile_json = $this->makeReflectionFor('compileJson');
+
+        $render = $compile_json->invoke($this->compiler, "%json (['name' => 'tintin'])");
+
+        $this->assertEquals($render, "<?php echo json_encode(['name' => 'tintin']); ?>");
+    }
+
     public function testCompileJsonWithEncodingOptions()
     {
         $compile_json = $this->makeReflectionFor('compileJson');
