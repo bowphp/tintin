@@ -16,6 +16,7 @@ class Compiler
     use Lexique\CompileHelpers;
     use Lexique\CompileVerbatim;
     use Lexique\CompileJson;
+    use Lexique\CompileClass;
 
     /**
      * The echo tags
@@ -51,7 +52,8 @@ class Compiler
         'HelpersStack',
         'CustomStack',
         'CustomDirective',
-        'Json'
+        'Json',
+        'Class'
     ];
 
     /**
@@ -145,7 +147,8 @@ class Compiler
         'endloop',
         'stop',
         'jump',
-        'json'
+        'json',
+        'class'
     ];
 
     /**
