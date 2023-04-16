@@ -31,7 +31,7 @@ class CompileClassTest extends \PHPUnit\Framework\TestCase
 
         $isActive = true;
 
-        $render = $compile_class->invoke($this->compiler, "%class(['bg-red', 'text-dark', 'underline' => ! $isActive, 'font-bold' => $isActive])");
+        $render = $compile_class->invoke($this->compiler, "%class (['bg-red', 'text-dark', 'underline' => ! $isActive, 'font-bold' => $isActive])");
 
         $this->assertEquals($render, "<?= 'class=\"bg-red text-dark font-bold\"' ?>");
     }
