@@ -53,7 +53,8 @@ class Compiler
         'HelpersStack',
         'CustomDirective',
         'Json',
-        'Class'
+        'Class',
+        'Import'
     ];
 
     /**
@@ -83,6 +84,13 @@ class Compiler
      * @var array
      */
     protected array $extends_render = [];
+
+    /**
+     * The reverse inclusion using for %import
+     *
+     * @var array
+     */
+    protected array $imports_render = [];
 
     /**
      * The %verbatim accumulator
@@ -148,7 +156,8 @@ class Compiler
         'stop',
         'jump',
         'json',
-        'class'
+        'class',
+        'import'
     ];
 
     /**
@@ -173,7 +182,7 @@ class Compiler
         // Apply the verbatim
         $this->applyVerbatimAccumulatorContent();
 
-        return $this->resetCompilationAccumulator();
+        return $this->applyImportTemplate();
     }
 
     /**
@@ -187,7 +196,7 @@ class Compiler
         foreach ($this->tokens as $token) {
             $out = $this->{'compile' . $token}($value);
 
-            if ($token == 'Comments') {
+            if (in_array($token, ['Comments', 'Import'])) {
                 if (strlen($out) == 0) {
                     return "";
                 }
@@ -202,15 +211,20 @@ class Compiler
     }
 
     /**
-     * Reset Compilation accumulator
+     * Apply the importation template
+     *
      * @return string
      */
-    private function resetCompilationAccumulator(): string
+    private function applyImportTemplate(): string
     {
-        $result = $this->result . implode("\n", $this->extends_render);
+        $result = implode("\n", $this->imports_render) . "\n" . $this->result;
+        $result = trim($result);
+        $result = $result . "\n" . implode("\n", $this->extends_render);
+        $result = trim($result);
 
         $this->result = '';
 
+        $this->imports_render = [];
         $this->extends_render = [];
 
         return $result;

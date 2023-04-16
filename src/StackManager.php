@@ -11,21 +11,21 @@ class StackManager
      *
      * @var array
      */
-    private $stacks = [];
+    private array $stacks = [];
 
     /**
      * The stack rendered collector
      *
      * @var array
      */
-    private $pushes = [];
+    private array $pushes = [];
 
     /**
      * The Tintin instance
      *
      * @var Tintin
      */
-    private $tintin;
+    private Tintin $tintin;
 
     /**
      * StackManager constructor.
@@ -48,7 +48,7 @@ class StackManager
      * @param array $context
      * @return string
      */
-    public function includeFile(string $filename, array $data = [], array $context = [])
+    public function includeFile(string $filename, array $data = [], array $context = []): string
     {
         $this->tintin->pushSharedData(array_merge($context, $data));
 
@@ -71,7 +71,7 @@ class StackManager
         string $filename,
         array $data = [],
         array $context = []
-    ) {
+    ): string {
         if ($condition) {
             return $this->includeFile($filename, $data, $context);
         }

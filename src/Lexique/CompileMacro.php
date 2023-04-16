@@ -65,13 +65,17 @@ trait CompileMacro
      */
     public function compileImport(string $expression): string
     {
-        $regex = "/^%import\s*\n*\((.*?)\)$/sm";
+        $regex = "/%import\s*\n*\((.*?)\)/sm";
 
-        $output = preg_replace_callback($regex, function ($match) {
-            $name = trim($match[1], '"\'');
-            return "<?php echo \$__tintin->getMacroManager()->make(\"{$name}\", ['__tintin' => \$__tintin]); ?>";
-        }, $expression);
+        if (!preg_match($regex, $expression, $match)) {
+            return $expression;
+        };
 
-        return $output == $expression ? '' : $output;
+        $name = trim($match[1], '"\'');
+
+        $this->imports_render[] =
+            "<?php \$__tintin->getMacroManager()->make(\"{$name}\", ['__tintin' => \$__tintin]); ?>";
+
+        return "";
     }
 }
