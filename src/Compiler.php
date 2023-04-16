@@ -50,7 +50,6 @@ class Compiler
         'LoopStack',
         'ExtendsStack',
         'HelpersStack',
-        'CustomStack',
         'CustomDirective',
         'Json',
         'Class'

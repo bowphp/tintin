@@ -5,42 +5,6 @@ namespace Tintin\Lexique;
 trait CompileCustomDirective
 {
     /**
-     * Compile custom token stack
-     *
-     * @param string $expression
-     * @return string
-     */
-    protected function compileCustomStack(string $expression): string
-    {
-        foreach (['Csrf'] as $token) {
-            $out = $this->{'compile' . $token}($expression);
-
-            if (strlen($out) !== 0) {
-                $expression = $out;
-            }
-        }
-
-        return $expression;
-    }
-
-    /**
-     * Compile the csrf token
-     *
-     * @param string $expression
-     * @return string
-     */
-    protected function compileCsrf(string $expression): string
-    {
-        $output = preg_replace_callback('/\n*(%csrf)\n*/', function ($match) {
-            array_shift($match);
-
-            return "<?= csrf_field(); ?>";
-        }, $expression);
-
-        return $output == $expression ? '' : $output;
-    }
-
-    /**
      * Compile the custom statement
      *
      * @param string $expression
