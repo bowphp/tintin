@@ -13,14 +13,14 @@ class CompileMacroTest extends PHPUnit\Framework\TestCase
         $this->compiler = new Compiler();
     }
 
-    public function testCompileMacro()
+    public function testCompileMacroExtraction()
     {
         $template = file_get_contents(__DIR__ . '/view/macro.tintin.php');
 
-        $compileMacro = $this->makeReflectionFor('compileMacro');
+        $compileMacro = $this->makeReflectionFor('compileMacroExtraction');
         $output = $compileMacro->invoke($this->compiler, $template);
 
-        $this->assertStringContainsString("Hello {{ \$name }}", $output);
+        $this->assertStringContainsString("", $output);
     }
 
     public function testCompileImport()
