@@ -2,6 +2,7 @@
 
 %extends('layout')
 
-%block('name')
-    {{ greeting("papac") }}
+%block('content')
+    {{ greeting("Papac") }}
+    {{{ user_list(["Franck", "Brice", "Lucien"]) }}}
 %endblock

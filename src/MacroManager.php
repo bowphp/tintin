@@ -26,10 +26,10 @@ class MacroManager
     /**
      * Make the macro bundle
      *
-     * @param string $name
+     * @param string $template
      * @return string
      */
-    public function make(string $template, array $data = [])
+    public function make(string $template)
     {
         $__template = $template;
         $loader = $this->tintin->getLoader();
@@ -68,7 +68,6 @@ class MacroManager
         $result = "<?php\n\n" . $result;
         $loader->cache($__template, $result);
 
-        $__tintin = $this->tintin;
         require $loader->getCacheFileResolvedPath($__template);
     }
 
@@ -85,12 +84,13 @@ class MacroManager
         array $parameters,
         string $content
     ): string {
-        $content = htmlspecialchars($content, ENT_QUOTES, "UTF-8");
+        $content = addslashes($content);
         return sprintf(
-            "if (!function_exists('%s')) {\n\tfunction %s (%s) use (\$__tintin) \n\t{\n\t\treturn \$__tintin->renderString(\"%s\", func_get_args());\n\t}\n}\n\n",
+            "if (!function_exists('%s')) {\n\tfunction %s(%s)\n\t{\n\t\t%s\n\t\treturn \$tintin->renderstring('%s', get_defined_vars());\n\t}\n}\n\n",
             $function,
             $function,
             implode(', ', $parameters),
+            "\$tintin = new \Tintin\Tintin();",
             trim($content)
         );
     }

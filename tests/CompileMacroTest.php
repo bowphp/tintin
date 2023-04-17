@@ -44,7 +44,7 @@ class CompileMacroTest extends PHPUnit\Framework\TestCase
         $this->assertEquals("", $output);
         $this->assertNotEmpty($imports_render);
         $this->assertStringContainsString(
-            "<?php \$__tintin->getMacroManager()->make(\"helpers\", ['__tintin' => \$__tintin]); ?>",
+            "<?php \$__tintin->getMacroManager()->make(\"helpers\"); ?>",
             $imports_render[0]
         );
     }
@@ -59,7 +59,9 @@ class CompileMacroTest extends PHPUnit\Framework\TestCase
 
         $tintin = new Tintin($loader);
         $output = $tintin->render("macro-template");
-
-        $this->assertStringContainsString("Hello papac", $output);
+        $this->assertStringContainsString("Hello Papac", $output);
+        $this->assertStringContainsString("User's Franck", $output);
+        $this->assertStringContainsString("User's Lucien", $output);
+        $this->assertStringContainsString("User's Brice", $output);
     }
 }

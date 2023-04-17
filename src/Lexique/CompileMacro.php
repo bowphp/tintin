@@ -74,7 +74,7 @@ trait CompileMacro
         $name = trim($match[1], '"\'');
 
         $this->imports_render[] =
-            "<?php \$__tintin->getMacroManager()->make(\"{$name}\", ['__tintin' => \$__tintin]); ?>";
+            "<?php \$__tintin->getMacroManager()->make(\"{$name}\"); ?>";
 
         return "";
     }
