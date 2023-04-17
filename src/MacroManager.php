@@ -84,7 +84,7 @@ class MacroManager
         array $parameters,
         string $content
     ): string {
-        $content = addslashes($content);
+        $content = addcslashes($content, "'");
         return sprintf(
             "if (!function_exists('%s')) {\n\tfunction %s(%s)\n\t{\n\t\t%s\n\t\treturn \$tintin->renderstring('%s', get_defined_vars());\n\t}\n}\n\n",
             $function,
