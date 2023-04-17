@@ -86,7 +86,7 @@ class MacroManager
     ): string {
         $content = addcslashes($content, "'");
         return sprintf(
-            "if (!function_exists('%s')) {\n\tfunction %s(%s)\n\t{\n\t\t%s\n\t\treturn \"\n\" . \$tintin->renderstring('%s', get_defined_vars()) . \"\n\";\n\t}\n}\n\n",
+            "if (!function_exists('%s')) {\n\tfunction %s(%s)\n\t{\n\t\t%s\n\t\treturn \$tintin->renderstring('%s', get_defined_vars());\n\t}\n}\n\n",
             $function,
             $function,
             implode(', ', $parameters),

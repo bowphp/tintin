@@ -106,6 +106,14 @@ class CompileHelpersTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($render, "<?php throw new \Tintin\Exception\BadDirectiveCalledException('The %production cannot take the parameters!') ?>");
     }
 
+    public function testCompileFlashStatement()
+    {
+        $compileFlash = $this->makeReflectionFor('compileFlash');
+
+        $render = $compileFlash->invoke($this->compiler, '%flash("error")');
+        $this->assertEquals($render, '<?php echo session()->flash("error"); ?>');
+    }
+
     public function testcompileEndHelpersStatement()
     {
         $compileHelper = $this->makeReflectionFor('compileEndHelpers');

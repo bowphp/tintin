@@ -12,7 +12,7 @@ trait CompileHelpers
      */
     protected function compileHelpersStack(string $expression): string
     {
-        foreach (["Auth", "Guest", "Lang", "Env", "Csrf", "Production", "EndHelpers"] as $token) {
+        foreach (["Auth", "Guest", "Lang", "Env", "Csrf", "Flash", "Production", "EndHelpers"] as $token) {
             $out = $this->{"compile" . $token}($expression);
             if (strlen($out) !== 0) {
                 $expression = $out;
@@ -70,6 +70,17 @@ trait CompileHelpers
     protected function compileLang(string $expression): string
     {
         return $this->compileHelpersStatement($expression, '%lang');
+    }
+
+    /**
+     * Compile the %flash statement
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileFlash(string $expression): string
+    {
+        return $this->compileHelpersStatement($expression, '%flash');
     }
 
     /**
@@ -164,6 +175,15 @@ trait CompileHelpers
                 }
                 $message = "The %production cannot take the parameters!";
                 return "<?php throw new \Tintin\Exception\BadDirectiveCalledException('$message') ?>";
+            }
+
+            if ($lexic == '%flash') {
+                if (strlen(trim($params)) == 0) {
+                    $message = "The %flash take $1 parameter missing but $0 passed";
+                    return "<?php throw new \Tintin\Exception\BadDirectiveCalledException('$message') ?>";
+                }
+
+                return "<?php echo session()->flash(" . $params . "); ?>";
             }
 
             return $expression;
