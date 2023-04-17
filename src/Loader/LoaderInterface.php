@@ -7,69 +7,65 @@ interface LoaderInterface
     /**
      * Get the cache repository path
      *
-     * @return mixed
+     * @return string
      */
-    public function getCachePath();
+    public function getCachePath(): string;
 
     /**
      * Get the absolute cache file path
      *
      * @param string $filename
-     *
-     * @return mixed
+     * @return string
      */
-    public function getCacheFileResolvedPath($filename);
+    public function getCacheFileResolvedPath(string $filename): string;
 
     /**
      * Get file content
      *
      * @param string $filename
-     *
      * @return mixed
      */
-    public function getFileContent($filename);
+    public function getFileContent(string $filename);
 
     /**
      * Check if file exists
      *
      * @param string $filename
-     *
      * @return bool
      */
-    public function exists($filename);
+    public function exists(string $filename): bool;
 
     /**
      * Check if file is expire
      *
      * @param string $filename
-     * @return mixed
+     * @return bool
      */
-    public function isExpired($filename);
+    public function isExpired(string $filename): bool;
 
     /**
      * Check if file is cached
      *
      * @param string $filename
-     * @return mixed
+     * @return bool
      */
-    public function isCached($filename);
+    public function isCached(string $filename): bool;
 
     /**
      * Make cache
      *
      * @param string $filename
      * @param string $data
-     * @return mixed
+     * @return bool
      */
-    public function cache($filename, $data);
+    public function cache(string $filename, string $data): bool;
 
     /**
      * Throw load error
      *
      * @param string $message
      * @return void
-     *
      * @throws \Exception
      */
-    public function failLoading($message);
+    public function failLoading(string $message);
 }

@@ -2,8 +2,8 @@
 
 namespace Tintin;
 
-use Closure;
 use Tintin\StackManager;
+use Tintin\MacroManager;
 use Tintin\Loader\LoaderInterface;
 use Tintin\Exception\DirectiveNotAllowException;
 
@@ -31,6 +31,13 @@ class Tintin
     private StackManager $stackManager;
 
     /**
+     * The stack manager instance
+     *
+     * @var MacroManager
+     */
+    private MacroManager $macroManager;
+
+    /**
      * The shared data
      *
      * @var array
@@ -47,6 +54,7 @@ class Tintin
         $this->loader = $loader;
         $this->compiler = new Compiler();
         $this->stackManager = new StackManager($this);
+        $this->macroManager = new MacroManager($this);
     }
 
     /**
@@ -60,11 +68,21 @@ class Tintin
     }
 
     /**
+     * Get macro manager
+     *
+     * @return MacroManager
+     */
+    public function getMacroManager(): MacroManager
+    {
+        return $this->macroManager;
+    }
+
+    /**
      * Get loader
      *
-     * @return LoaderInterface
+     * @return ?LoaderInterface
      */
-    public function getLoader(): LoaderInterface
+    public function getLoader(): ?LoaderInterface
     {
         return $this->loader;
     }
@@ -105,22 +123,26 @@ class Tintin
         $__template = $template;
 
         if (is_null($this->loader)) {
+            // Try to compile the plain string
             return $this->renderString($__template, $data);
         }
 
+        // Check existence of file from cache
         if (! $this->loader->exists($__template)) {
             $this->loader->failLoading($__template . ' not found');
         }
 
+        // Merge passing data to the shared data
         $this->pushSharedData($data);
 
         $__tintin = $this;
 
+        // Extract the shared data
         extract($this->getSharedData());
 
-        /**
-         * Load template when is not a cached file
-         */
+        // Check if the file cache is not expire
+        // If cache is not still alive we load template
+        // and create the new cache for
         if (! $this->loader->isExpired($__template)) {
             $this->obFlushAndStar();
 
@@ -129,9 +151,7 @@ class Tintin
             return $this->obGetContent();
         }
 
-        /**
-         * Put the template into cache
-         */
+        // Put the template into cache
         $content = $this->loader->getFileContent($__template);
 
         $this->loader->cache(

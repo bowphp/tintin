@@ -9,7 +9,7 @@ class Filesystem implements LoaderInterface
      *
      * @var array
      */
-    private $config;
+    private array $config;
 
     /**
      * Filesystem constructor.
@@ -28,7 +28,7 @@ class Filesystem implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function getFileResolvedPath($filename)
+    public function getFileResolvedPath(string $filename): string
     {
         $filename = str_replace('.', '/', $filename);
 
@@ -38,7 +38,7 @@ class Filesystem implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function getCacheFileResolvedPath($filename)
+    public function getCacheFileResolvedPath(string $filename): string
     {
         if (!$this->exists($filename)) {
             $this->failLoading($filename . ' file not exists !');
@@ -54,7 +54,7 @@ class Filesystem implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function getCachePath()
+    public function getCachePath(): string
     {
         return isset($this->config['cache']) ? $this->config['cache'] : sys_get_temp_dir();
     }
@@ -62,7 +62,7 @@ class Filesystem implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function getExtension()
+    public function getExtension(): string
     {
         return isset($this->config['extension']) ? trim($this->config['extension'], '.') : 'tintin.php';
     }
@@ -70,7 +70,7 @@ class Filesystem implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function getFileContent($filename)
+    public function getFileContent(string $filename): string
     {
         return file_get_contents($this->getFileResolvedPath($filename));
     }
@@ -78,7 +78,7 @@ class Filesystem implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function isExpired($filename)
+    public function isExpired(string $filename): bool
     {
         if (!$this->isCached($filename)) {
             return true;
@@ -98,7 +98,7 @@ class Filesystem implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function isCached($filename)
+    public function isCached(string $filename): bool
     {
         return file_exists(
             $this->getCacheFileResolvedPath($filename)
@@ -108,7 +108,7 @@ class Filesystem implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function exists($filename)
+    public function exists(string $filename): bool
     {
         return file_exists(
             $this->getFileResolvedPath($filename)
@@ -118,7 +118,7 @@ class Filesystem implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function cache($filename, $config)
+    public function cache(string $filename, $config): bool
     {
         $md5 = sha1($filename);
 
@@ -130,13 +130,13 @@ class Filesystem implements LoaderInterface
 
         $path = $this->getCachePath() . '/' . $dirname . '/' . $md5 . '.php';
 
-        return file_put_contents($path, $config);
+        return (bool) file_put_contents($path, $config);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function failLoading($message)
+    public function failLoading(string $message)
     {
         throw new \Tintin\Exception\FileNotFoundException($message);
     }
