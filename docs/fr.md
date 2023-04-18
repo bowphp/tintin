@@ -337,8 +337,8 @@ Le fichier `content.tintin.php` va hérité du code de `layout.tintin.php` et si
 Tintin peut être étendu avec son systême de directive personnalisé, pour ce faire utilisé la méthode `directive`
 
 ```php
-$tintin->directive('hello', function (array $attributes = []) {
-  return 'Hello, '. $attributes[0];
+$tintin->directive('hello', function (string $name) {
+  return 'Hello, '. $name;
 });
 
 echo $tintin->render('%hello("Tintin")');
@@ -362,7 +362,7 @@ $tintin->directive('button', function (string $type, string $label) {
   return '<button type="'.$type.'">'.$label.'"</button>';
 });
 
-$tintin->directive('form', function (string $action, string $method, string $enctype == "multipart/form-data") {
+$tintin->directive('form', function (string $action, string $method, string $enctype = "multipart/form-data") {
   return '<form action="'.$action.'" method="'.$method.'" enctype="'.$enctype.'">';
 });
 
