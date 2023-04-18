@@ -14,7 +14,9 @@
     - [Using $for](#using-for)
     - [Using #while](#using-while)
   - [Include of file](#include-of-file)
+  - [Condition include of file](#condition-include-of-file)
     - [Example of inclusion](#example-of-inclusion)
+    - [Example of includewhen or includeif](#example-of-includewhen-or-includeif)
 - [Inherit with #extends, #block and #inject](#inherit-with-extends-block-and-inject)
   - [Explication](#explication)
 - [Personalized directive](#personalized-directive)
@@ -120,13 +122,13 @@ And that's it, now your default template engine is `tintin`: +1:
 
 You can display the contents of the name variable as follows:
 
-```c
+```t
 Hello, {{ $name }}.
 ```
 
 Of course, you are not limited to displaying the content of the variables passed to the view. You can also echo the results of any PHP function. In fact, you can insert any PHP code into an echo statement:
 
-```html
+```t
 Hello, {{ strtoupper($name) }}.
 ```
 
@@ -136,19 +138,19 @@ Hello, {{ strtoupper($name) }}.
 
 By default, Tintin `{{}}` instructions are automatically sent via the PHP function `htmlspecialchars` to prevent XSS attacks. If you do not want your data to be protected, you can use the following syntax:
 
-```html
+```t
 Hello, {{{ $name }}}.
 ```
 
 ### Add a comment
 
-This `{# comments #}` clause adds a comment to your `tintin` code.
+This `{## comments ##}` clause adds a comment to your `tintin` code.
 
 ### %if / %elseif or %elif / %else
 
 These are the clauses which make it possible to establish conditional branches as in most programming languages.
 
-```c
+```t
 %if ($name == 'tintin')
   {{ $name }}
 %elseif ($name == 'template')
@@ -246,11 +248,15 @@ This clause does exactly the `while` action.
 
 Often when you are developing your code, you have to subdivide the views of your application to be more flexible and write less code.
 
-`#include` allows to include another template file in another.
+`%include` allows to include another template file in another.
 
 ```t
 %include('filename', data)
 ```
+
+### Condition include of file
+
+Sometime you want to include a file when some condition are validate. No panic, the `%includeif` or `%includewhen` is here for you.
 
 #### Example of inclusion
 
@@ -267,6 +273,16 @@ Use:
 // => Hello Tintin
 ```
 
+#### Example of includewhen or includeif
+
+Consider the same file
+
+```t
+%includewhen(!$user->isAdmin(), "hello", ["name" => "Tintin"])
+```
+
+> Tintin will execute the templae only if the `!$user->isAdmin()` condition is correct
+
 ## Inherit with #extends, #block and #inject
 
 Like any good template system **tintin** supports code sharing between files. This makes your code flexible and maintainable.
@@ -282,7 +298,7 @@ Consider the following **tintin** code:
 </head>
 <body>
   <h1>Page header</h1>
-  <div id="page-content">
+  <div>
     %inject('content')
   </div>
   <p>Page footer</p>
@@ -313,7 +329,7 @@ The `content.tintin.php` file will inherit the code from` layout.tintin.php` and
 </head>
 <body>
   <h1>Page header</h1>
-  <div id="page-content">
+  <div>
     <p>This is the page content</p>
   </div>
   <p>Page footer</p>

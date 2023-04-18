@@ -157,7 +157,11 @@ class Compiler
         'jump',
         'json',
         'class',
-        'import'
+        'import',
+        'hasflash',
+        'endhasflash',
+        'empty',
+        'endempty',
     ];
 
     /**

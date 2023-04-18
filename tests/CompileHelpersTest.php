@@ -106,12 +106,36 @@ class CompileHelpersTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($render, "<?php throw new \Tintin\Exception\BadDirectiveCalledException('The %production cannot take the parameters!') ?>");
     }
 
+    public function testCompileHasFlashStatement()
+    {
+        $compileFlash = $this->makeReflectionFor('compileHasFlash');
+
+        $render = $compileFlash->invoke($this->compiler, '%hasflash("error")');
+        $this->assertEquals($render, '<?php if (session()->has("error")): ?>');
+    }
+
     public function testCompileFlashStatement()
     {
         $compileFlash = $this->makeReflectionFor('compileFlash');
 
         $render = $compileFlash->invoke($this->compiler, '%flash("error")');
-        $this->assertEquals($render, '<?php echo session()->flash("error"); ?>');
+        $this->assertEquals($render, '<?php echo session()->get("error"); ?>');
+    }
+
+    public function testCompileEmptyStatement()
+    {
+        $compileFlash = $this->makeReflectionFor('compileEmpty');
+
+        $render = $compileFlash->invoke($this->compiler, '%empty($users)');
+        $this->assertEquals($render, '<?php if (empty($users)): ?>');
+    }
+
+    public function testCompileNotEmptyStatement()
+    {
+        $compileFlash = $this->makeReflectionFor('compileNotEmpty');
+
+        $render = $compileFlash->invoke($this->compiler, '%notempty($users)');
+        $this->assertEquals($render, '<?php if (!empty($users)): ?>');
     }
 
     public function testcompileEndHelpersStatement()
@@ -130,7 +154,16 @@ class CompileHelpersTest extends \PHPUnit\Framework\TestCase
         $render = $compileHelper->invoke($this->compiler, '%endenv');
         $this->assertEquals($render, '<?php endif; ?>');
 
+        $render = $compileHelper->invoke($this->compiler, '%endempty');
+        $this->assertEquals($render, '<?php endif; ?>');
+
+        $render = $compileHelper->invoke($this->compiler, '%endnotempty');
+        $this->assertEquals($render, '<?php endif; ?>');
+
         $render = $compileHelper->invoke($this->compiler, '%endproduction');
+        $this->assertEquals($render, '<?php endif; ?>');
+
+        $render = $compileHelper->invoke($this->compiler, '%endhasflash');
         $this->assertEquals($render, '<?php endif; ?>');
     }
 
