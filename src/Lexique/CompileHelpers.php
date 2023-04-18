@@ -12,7 +12,11 @@ trait CompileHelpers
      */
     protected function compileHelpersStack(string $expression): string
     {
-        foreach (["Auth", "Guest", "Lang", "Env", "Csrf", "Flash", "Production", "EndHelpers"] as $token) {
+        foreach (
+            [
+            "Auth", "Guest", "Lang", "Env", "Csrf", "Flash", "Production", "HasFlash", "EndHelpers", "Empty", "NotEmpty"
+            ] as $token
+        ) {
             $out = $this->{"compile" . $token}($expression);
             if (strlen($out) !== 0) {
                 $expression = $out;
@@ -95,6 +99,28 @@ trait CompileHelpers
     }
 
     /**
+     * Compile the %empty statement
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileEmpty(string $expression): string
+    {
+        return $this->compileHelpersStatement($expression, '%empty');
+    }
+
+    /**
+     * Compile the %notempty statement
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileNotEmpty(string $expression): string
+    {
+        return $this->compileHelpersStatement($expression, '%notempty');
+    }
+
+    /**
      * Compile the %production statement
      *
      * @param string $expression
@@ -106,6 +132,17 @@ trait CompileHelpers
     }
 
     /**
+     * Compile the %hasflash statement
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileHasFlash(string $expression): string
+    {
+        return $this->compileHelpersStatement($expression, '%hasflash');
+    }
+
+    /**
      * Compile the %endif statement
      *
      * @param string $expression
@@ -114,7 +151,7 @@ trait CompileHelpers
     protected function compileEndHelpers(string $expression): string
     {
         $output = preg_replace_callback(
-            '/\n*(%endauth|%endguest|%endlang|%endenv|%endproduction)\n*/',
+            '/\n*(%endauth|%endguest|%endlang|%endenv|%endproduction|%endhasflash|%endempty|%endnotempty)\n*/',
             function ($match) {
                 array_shift($match);
 
@@ -153,6 +190,18 @@ trait CompileHelpers
                 return "<?php if (!auth(" . $params . ")->check()): ?>";
             }
 
+            if ($lexic == '%hasflash') {
+                return "<?php if (session()->has(" . $params . ")): ?>";
+            }
+
+            if ($lexic == '%empty') {
+                return "<?php if (empty(" . $params . ")): ?>";
+            }
+
+            if ($lexic == '%notempty') {
+                return "<?php if (!empty(" . $params . ")): ?>";
+            }
+
             if ($lexic == '%lang') {
                 if (strlen(trim($params)) > 1) {
                     return "<?php if (client_locale() == " . $params . "): ?>";
@@ -183,7 +232,7 @@ trait CompileHelpers
                     return "<?php throw new \Tintin\Exception\BadDirectiveCalledException('$message') ?>";
                 }
 
-                return "<?php echo session()->flash(" . $params . "); ?>";
+                return "<?php echo session()->get(" . $params . "); ?>";
             }
 
             return $expression;
