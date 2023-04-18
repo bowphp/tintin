@@ -7,17 +7,17 @@
     - [Display of non-escaped data](#display-of-non-escaped-data)
   - [Add a comment](#add-a-comment)
   - [%if / %elseif or %elif / %else](#if--elseif-or-elif--else)
-  - [#unless](#unless)
+  - [%unless](#unless)
   - [%loop / %for / %while](#loop--for--while)
     - [Using %loop](#using-loop)
     - [Syntax sugars %jump and %stop](#syntax-sugars-jump-and-stop)
-    - [Using $for](#using-for)
-    - [Using #while](#using-while)
+    - [Using %for](#using-for)
+    - [Using %while](#using-while)
   - [Include of file](#include-of-file)
-  - [Condition include of file](#condition-include-of-file)
+  - [Condition %include of file](#condition-include-of-file)
     - [Example of inclusion](#example-of-inclusion)
-    - [Example of includewhen or includeif](#example-of-includewhen-or-includeif)
-- [Inherit with #extends, #block and #inject](#inherit-with-extends-block-and-inject)
+    - [Example of %includewhen or %includeif](#example-of-includewhen-or-includeif)
+- [Inherit with %extends, %block and %inject](#inherit-with-extends-block-and-inject)
   - [Explication](#explication)
 - [Personalized directive](#personalized-directive)
   - [Example](#example)
@@ -47,7 +47,9 @@ require 'vendor/autoload.php';
 
 $tintin = new Tintin\Tintin;
 
-echo $tintin->render('Hello, world {{ strtoupper($name) }}', ['name' => 'tintin']);
+echo $tintin->render('Hello, {{ strtoupper($name) }}', [
+  'name' => 'tintin'
+]);
 // -> Hello, world TINTIN
 ```
 
@@ -75,13 +77,13 @@ $tt = new Tintin\Tintin($loader);
 
 ```php
 // Configuration made previously
-$tt = new Tintin\Tintin($loader);
+$tintins = new Tintin\Tintin($loader);
 
-$tt->render('filename', ['name' => 'data']);
-// Ou
-$tt->render('dossier/filename', ['name' => 'data']);
-// Ou
-$tt->render('dossier.filename', ['name' => 'data']);
+$tintins->render('filename', ['name' => 'data']);
+// Or
+$tintins->render('dossier/filename', ['name' => 'data']);
+// Or
+$tintins->render('dossier.filename', ['name' => 'data']);
 ```
 
 > Note that the source of the files is always the path to `path`.
@@ -104,7 +106,7 @@ public function configurations() {
 
 And again in the configuration file views located in `config/view.php`.
 
-> Bow framework use tintin as default view engine
+> Bow framework use tintin as default view engine.
 
 ```php
 return [
@@ -151,9 +153,9 @@ This `{## comments ##}` clause adds a comment to your `tintin` code.
 These are the clauses which make it possible to establish conditional branches as in most programming languages.
 
 ```t
-%if ($name == 'tintin')
+%if($name == 'tintin')
   {{ $name }}
-%elseif ($name == 'template')
+%elseif($name == 'template')
   {{ $name }}
 %else
   {{ $name }}
@@ -162,9 +164,10 @@ These are the clauses which make it possible to establish conditional branches a
 
 > You can use `%elif` instead of `%elseif`.
 
-### #unless
+### %unless
 
-Small specificity, the `#unless` meanwhile, it allows to make a reverse condition of `#if`.
+Small specificity, the `%unless` meanwhile, it allows to make a reverse condition of `%if`.
+
 To put it simply, here is an example:
 
 ```t
@@ -187,11 +190,11 @@ This clause does exactly the `foreach` action.
 %endloop
 ```
 
-This clause can also be paired with any other clause such as `#if`. A quick example.
+This clause can also be paired with any other clause such as `%if`. A quick example.
 
 ```t
-%loop ($names as $name)
-  %if ($name == 'tintin')
+%loop($names as $name)
+  %if($name == 'tintin')
     Hello {{ $name }}
     %stop
   %endif
@@ -205,8 +208,8 @@ You may have noticed the `%stop` it allows to stop the execution of the loop. Th
 Often the developer is made to make stop conditions of the `%loop` like this:
 
 ```t
-%loop ($names as $name)
-  %if ($name == 'tintin')
+%loop($names as $name)
+  %if($name == 'tintin')
     %stop
     // Or
     %jump
@@ -217,14 +220,14 @@ Often the developer is made to make stop conditions of the `%loop` like this:
 With syntactic sugars, we can reduce the code like this:
 
 ```t
-%loop ($names as $name)
+%loop($names as $name)
   %stop($name == 'tintin')
   // Or
   %jump($name == 'tintin')
 %endloop
 ```
 
-#### Using $for
+#### Using %for
 
 This clause does exactly the `for` action.
 
@@ -234,12 +237,12 @@ This clause does exactly the `for` action.
 %endfor
 ```
 
-#### Using #while
+#### Using %while
 
 This clause does exactly the `while` action.
 
 ```t
-%while ($name != 'tintin')
+%while($name != 'tintin')
  // ..
 %endwhile
 ```
@@ -254,7 +257,7 @@ Often when you are developing your code, you have to subdivide the views of your
 %include('filename', data)
 ```
 
-### Condition include of file
+### Condition %include of file
 
 Sometime you want to include a file when some condition are validate. No panic, the `%includeif` or `%includewhen` is here for you.
 
@@ -269,21 +272,21 @@ Hello {{ $name }}
 Use:
 
 ```t
-%include('hello', ['name' => 'Tintin'])
+%include('the-include-file-name', ['name' => 'Tintin'])
 // => Hello Tintin
 ```
 
-#### Example of includewhen or includeif
+#### Example of %includewhen or %includeif
 
 Consider the same file
 
 ```t
-%includewhen(!$user->isAdmin(), "hello", ["name" => "Tintin"])
+%includewhen(!$user->isAdmin(), "include-file-name", ["name" => "Tintin"])
 ```
 
 > Tintin will execute the templae only if the `!$user->isAdmin()` condition is correct
 
-## Inherit with #extends, #block and #inject
+## Inherit with %extends, %block and %inject
 
 Like any good template system **tintin** supports code sharing between files. This makes your code flexible and maintainable.
 
@@ -355,51 +358,37 @@ echo $tintin->render('%hello("Tintin")');
 Creating a directive to manage a form:
 
 ```php
-$tintin->directive('input', function (array $attributes = []) {
-  $attribute = $attributes[0];
-
-  return '<input type="'.$attribute['type'].'" name="'.$attribute['name'].'" value="'.$attribute['value'].'" />';
+$tintin->directive('input', function (string $type, string $name, ?string $value) {
+  return '<input type="'.$type.'" name="'.$name.'" value="'.$value.'" />';
 });
 
-$tintin->directive('textarea', function (array $attributes = []) {
-  $attribute = $attributes[0];
-
-  return '<textarea name="'.$attribute['name'].'">"'.$attribute['value'].'"</textarea>';
+$tintin->directive('textarea', function (string $name, ?string $value) {
+  return '<textarea name="'.$name.'">"'.$value.'"</textarea>';
 });
 
-$tintin->directive('button', function (array $attributes = []) {
-  $attribute = $attributes[0];
-
-  return '<button type="'.$attribute['type'].'">'.$attribute['label'].'"</button>';
+$tintin->directive('button', function (string $type, string $label) {
+  return '<button type="'.$type.'">'.$label.'"</button>';
 });
 
-$tintin->directive('form', function (array $attributes = []) {
-  $attribute = " ";
-  
-  if (isset($attributes[0])) {
-    foreach ($attributes[0] as $key => $value) {
-      $attribute .= $key . '="'.$value.'" ';
-    }
-  }
-
-  return '<form "'.trim($attribute).'">';
+$tintin->directive('form', function (string $action, string $method, string $enctype == "multipart/form-data") {
+  return '<form action="'.$action.'" method="'.$method.'" enctype="'.$enctype.'">';
 });
 
-$tintin->directive('endform', function (array $attributes = []) {
+$tintin->directive('endform', function () {
   return '</form>';
 });
 ```
 
 ### Use of directives
 
-To use these guidelines, nothing is easier. Write the name of the directive preceded by `%`. Then if this directive takes parameters, launch the directive as you run the functions in your program. The parameters will be grouped in the `$attributes` varibles in the added order.
+To use these guidelines, nothing is easier. Write the name of the directive preceded by `%`. Then if this directive takes parameters, launch the directive as you run the functions in your program.
 
 ```t
 // File form.tintin.php
-%form(['method' => 'post', "action" => "/posts", "enctype" => "multipart/form-data"])
-  %input(["type" => "text", "value" => null, "name" => "name"])
-  %textarea(["value" => null, "name" => "content"])
-  %button(['type' => 'submit', 'label' => 'Add'])
+%form("/posts", "post", "multipart/form-data")
+  %input("text", "name")
+  %textarea("content")
+  %button('submit', 'Add')
 %endform
 ```
 
@@ -427,7 +416,7 @@ In case you use the Tintin configuration for Bow Framework.
 Change your configuration in the `ApplicationController::class` in the `app/Configurations` folder.
 
 ```php
-use Tintin\Tintin;
+namespace App\Configurations;
 
 class ApplicationConfiguration extends Configuration
 {
@@ -439,7 +428,8 @@ class ApplicationConfiguration extends Configuration
    */
   public function create(Loader $config): void
   {
-    $tintin = Tintin::getInstance();  
+    $tintin = app('view')->getTemplate();
+
     $tintin->directive('super', function (array $attributes = []) {
       return "Super !";
     });
@@ -450,6 +440,6 @@ class ApplicationConfiguration extends Configuration
 Now the `%super` directive is available and you can use it.
 
 ```php
-  return $tintin->render('%super');
-  // => Super !
+return $tintin->render('%super');
+// => Super !
 ```
