@@ -220,7 +220,6 @@ class Compiler
         $result = implode("\n", $this->imports_render) . "\n" . $this->result;
         $result = trim($result);
         $result = $result . "\n" . implode("\n", $this->extends_render);
-        $result = trim($result);
 
         $this->result = '';
 
@@ -265,7 +264,7 @@ class Compiler
      * @return void
      * @throws DirectiveNotAllowException
      */
-    public function pushDirective($name, $handler, $broken = false)
+    public function pushDirective(string $name, callable $handler, bool $broken = false)
     {
         if (in_array($name, $this->directivesProtected)) {
             throw new DirectiveNotAllowException('The ' . $name . ' directive is not allow.');
@@ -280,15 +279,16 @@ class Compiler
      * @param string $name
      * @param array $params
      * @return mixed
+     * @throws DirectiveNotAllowException
      */
-    public function _____executeCustomDirectory($name, ...$params): mixed
+    public function _____executeCustomDirectory(string $name, ...$params): mixed
     {
         if (!isset($this->directives[$name])) {
-            return null;
+            throw new DirectiveNotAllowException("The %$name is not found");
         }
 
         $directive = $this->directives[$name];
 
-        return call_user_func_array($directive['handler'], [$params]);
+        return call_user_func_array($directive['handler'], $params);
     }
 }

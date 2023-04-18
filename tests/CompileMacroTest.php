@@ -60,7 +60,7 @@ class CompileMacroTest extends PHPUnit\Framework\TestCase
         $tintin = new Tintin($loader);
         $output = $tintin->render("macro-template");
 
-        $this->assertStringContainsString("Hello Papac", $output);
+        $this->assertStringContainsString("Hello, Papac", $output);
         $this->assertStringContainsString("User's Franck", $output);
         $this->assertStringContainsString("User's Lucien", $output);
         $this->assertStringContainsString("User's Brice", $output);

@@ -30,27 +30,21 @@ class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
         ]);
     }
 
-    /**
-     * @throws \Tintin\Exception\DirectiveNotAllowException
-     */
     public function testHelloDirective()
     {
-        $this->tintin->directive('hello', function (array $attributes = []) {
-            return 'Hello ' . implode(" ", $attributes);
+        $this->tintin->directive('hello', function ($title, $name) {
+            return "Hello $title $name";
         });
 
-        $r = $this->tintin->render('%hello("Tintin", "Bow")');
+        $render = $this->tintin->render('%hello("Tintin", "Bow")');
 
-        $this->assertEquals($r, "Hello Tintin Bow");
+        $this->assertEquals($render, "Hello Tintin Bow");
     }
 
-    /**
-     * @throws \Tintin\Exception\DirectiveNotAllowException
-     */
     public function testSimpleDirective()
     {
         $now = time();
-        $this->tintin->directive('now', function (array $attributes = []) use ($now) {
+        $this->tintin->directive('now', function () use ($now) {
             return $now;
         });
 
@@ -59,39 +53,49 @@ class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($now, $r);
     }
 
-    /**
-     * @throws \Tintin\Exception\DirectiveNotAllowException
-     */
     public function testComplexDirective()
     {
-        $this->tintin->directive('input', function (array $attributes = []) {
-            $attribute = $attributes[0];
-
+        $this->tintin->directive('input', function (array $attribute) {
             return '<input type="' . $attribute['type'] . '" name="' . $attribute['name'] . '" value="' . $attribute['value'] . '" />';
         });
 
-        $r = $this->tintin->render('%input(["type" => "text", "value" => null, "name" => "name"])');
+        $render = $this->tintin->render('%input(["type" => "text", "value" => null, "name" => "name"])');
 
-        $this->assertEquals($r, '<input type="text" name="name" value="" />');
+        $this->assertEquals($render, '<input type="text" name="name" value="" />');
     }
 
-    /**
-     * @throws \Tintin\Exception\DirectiveNotAllowException
-     */
+    public function testCompileCustomDirectiveWithPlanParameters()
+    {
+        $tintin = new Tintin();
+
+        $tintin->directive('greeting', function (string $name) {
+            return "Hello $name";
+        });
+
+        $render = $tintin->render('%greeting($name)', ['name' => 'franck']);
+
+        $this->assertEquals(trim($render), 'Hello franck');
+    }
+
     public function testCompileCustomDirectiveDefineAsBrockenClause()
     {
         $tintin = new Tintin($this->loader);
 
-        $tintin->directive('admin', function (array $expression) {
+        $tintin->directive('greeting', function (string $name) {
+            return "Hello, $name";
+        });
+
+        $tintin->directive('admin', function () {
             return '<?php if (true): ?>';
         }, true);
 
-        $tintin->directive('endadmin', function (array $expression) {
+        $tintin->directive('endadmin', function () {
             return '<?php endif; ?>';
         }, true);
 
-        $render = $tintin->render('custom', ['name' => 'Tintin access allowed']);
+        $output = $tintin->render('custom', ['name' => 'franck']);
 
-        $this->assertEquals(trim($render), 'Tintin access allowed');
+        $this->assertStringContainsString('Franck, access allowed', trim($output));
+        $this->assertStringContainsString('Hello, franck', trim($output));
     }
 }

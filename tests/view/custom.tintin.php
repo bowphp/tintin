@@ -1,3 +1,5 @@
 %admin
-    {{ $name }}
+    {{ ucfirst($name) }}, access allowed
 %endadmin
+
+%greeting($name)

@@ -13,8 +13,7 @@ trait CompileCustomDirective
     protected function compileCustomDirective(string $expression): string
     {
         $output = preg_replace_callback($this->getCustomDirectivePartern(), function ($match) {
-            $value = $match[0];
-            $name = $match[1];
+            [$value, $name] = $match;
 
             if (!isset($this->directives[$name])) {
                 return $value;
@@ -25,16 +24,20 @@ trait CompileCustomDirective
             if ($directive['broken']) {
                 return $this->_____executeCustomDirectory(
                     $name,
-                    isset($match[3]) ? $match[3] : null
+                    $match[3] ?? []
                 );
             }
 
-            $params = isset($match[3]) ? $match[3] : 'null';
+            $params = $match[3] ?? null;
+
+            if (is_null($params)) {
+                return "<?php echo \$__tintin->getCompiler()->_____executeCustomDirectory(\"$name\");";
+            }
 
             return "<?php echo \$__tintin->getCompiler()->_____executeCustomDirectory(\"$name\", $params);";
         }, $expression);
 
-        return is_null($output) ? $expression : $output;
+        return $output == $expression ? '' : $output;
     }
 
     /**
@@ -43,6 +46,6 @@ trait CompileCustomDirective
      */
     private function getCustomDirectivePartern()
     {
-        return "/\n*\%([a-zA-Z_]+)\s*(\((.+?)?\)\n?)?/";
+        return "/\n*\%([a-zA-Z_]+)\s*(\((.*?)?\)\n?)?/";
     }
 }
