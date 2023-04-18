@@ -171,9 +171,9 @@ Small specificity, the `%unless` meanwhile, it allows to make a reverse conditio
 To put it simply, here is an example:
 
 ```t
-%unless ($name == 'tintin')
+%unless($name == 'tintin')
 # Equals to
-%if (!($name == 'tintin'))
+%if(!($name == 'tintin'))
 ```
 
 ### %loop / %for / %while
@@ -185,7 +185,7 @@ Often you may have to make lists or repetitions on items. For example, view all 
 This clause does exactly the `foreach` action.
 
 ```t
-%loop ($names as $name)
+%loop($names as $name)
   Hello {{ $name }}
 %endloop
 ```
@@ -232,7 +232,7 @@ With syntactic sugars, we can reduce the code like this:
 This clause does exactly the `for` action.
 
 ```t
-%for ($i = 0; $i < 10; $i++)
+%for($i = 0; $i < 10; $i++)
  // ..
 %endfor
 ```
@@ -263,7 +263,7 @@ Sometime you want to include a file when some condition are validate. No panic, 
 
 #### Example of inclusion
 
-Consider the following `hello.tintin.php` file:
+Consider the following `filename.tintin.php` file:
 
 ```t
 Hello {{ $name }}
@@ -272,16 +272,16 @@ Hello {{ $name }}
 Use:
 
 ```t
-%include('the-include-file-name', ['name' => 'Tintin'])
+%include('filename', ['name' => 'Tintin'])
 // => Hello Tintin
 ```
 
 #### Example of %includewhen or %includeif
 
-Consider the same file
+Sometimes you would like to include content when a condition is well defined. So to do this you can use `%includeif` or `%includewhen`
 
 ```t
-%includewhen(!$user->isAdmin(), "include-file-name", ["name" => "Tintin"])
+%includewhen(!$user->isAdmin(), "filename", ["name" => "Tintin"])
 ```
 
 > Tintin will execute the templae only if the `!$user->isAdmin()` condition is correct

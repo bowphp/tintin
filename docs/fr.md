@@ -15,6 +15,7 @@
     - [L'utilisation de %while](#lutilisation-de-while)
   - [Inclusion de fichier](#inclusion-de-fichier)
     - [Exemple d'inclusion](#exemple-dinclusion)
+    - [Exemple de %includewhen or %includeif](#exemple-de-includewhen-or-includeif)
 - [Héritage avec #extends, #block et #inject](#héritage-avec-extends-block-et-inject)
   - [Explication](#explication)
 - [Directive personnelisée](#directive-personnelisée)
@@ -254,7 +255,7 @@ Souvent lorsque vous dévéloppez votre code, vous êtes amener à subdiviser le
 
 #### Exemple d'inclusion
 
-Considérons le fichier `hello.tintin.php` suivant:
+Considérons le fichier `filename.tintin.php` contenant le code suivant:
 
 ```t
 Hello, {{ $name }}
@@ -263,9 +264,19 @@ Hello, {{ $name }}
 Utilisation:
 
 ```t
-%include('hello', ['name' => 'Tintin'])
+%include('filename', ['name' => 'Tintin'])
 // => Hello Tintin
 ```
+
+#### Exemple de %includewhen or %includeif
+
+Parfois vous aimeriez inclut un contenu quand une condition est bien définit. Alors pour se faire vous pouvez utiliser `%includeif` ou `%includewhen`
+
+```t
+%includewhen(!$user->isAdmin(), "include-file-name", ["name" => "Tintin"])
+```
+
+> Tintin will execute the templae only if the `!$user->isAdmin()` condition is correct
 
 ## Héritage avec #extends, #block et #inject
 
