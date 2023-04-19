@@ -15,3 +15,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add the %guest and %endguest tags
 - Add the %flash tags for show the flash message
 - Add the %auth and %endauth tags
+- Add the `getEngine` method for Bow Framework integration

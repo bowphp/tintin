@@ -50,7 +50,7 @@ class TintinEngine extends EngineAbstract
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      * @throws
      */
     public function render(string $filename, array $data = []): string
@@ -65,7 +65,7 @@ class TintinEngine extends EngineAbstract
      *
      * @return Tintin
      */
-    public function getTemplate(): Tintin
+    public function getEngine(): Tintin
     {
         return $this->template;
     }
