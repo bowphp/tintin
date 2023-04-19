@@ -6,6 +6,8 @@ use Tintin\Loader\LoaderInterface;
 
 class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
 {
+    use CompileClassReflection;
+
     /**
      * @var Tintin
      */
@@ -80,13 +82,27 @@ class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
     public function testCompileCustomDirectiveWithBrakeLineParameters()
     {
         $tintin = new Tintin();
+        $compiler = $tintin->getCompiler();
 
         $tintin->directive('user', function (array $info) {
             return "Hello {$info['name']}, {$info['lastname']}";
         });
+        
+        $template = <<<TEMPLATE
+%user([
+    "name" => \$name,
+    "lastname" => \$lastname
+])
+TEMPLATE;
 
-        $render = $tintin->render('%user(["name" => $name, "lastname" => $lastname])', ['name' => 'franck', 'lastname' => 'bowman']);
+        $compileCustomDirective = $this->makeReflectionFor('compileCustomDirective');
+        $output = $compileCustomDirective->invoke($compiler, $template);
+        $this->assertStringContainsString('<?php echo $__tintin->getCompiler()->_____executeCustomDirectory("user", [
+    "name" => $name,
+    "lastname" => $lastname
+]);', $output);
 
+        $render = $tintin->render($template, ['name' => 'franck', 'lastname' => 'bowman']);
         $this->assertEquals(trim($render), 'Hello franck, bowman');
     }
 
