@@ -2,16 +2,14 @@
     Hello, {{ $name }}
 %endmacro
 
-%macro("sum", int $number_1, int $number_2)
-    Sum of {{ $number_1 }} + {{ $number_2 }} = {{ $number_1 + $number_2 }}
+%macro("sum", int $a, int $b)
+    Sum of {{ $a }} + {{ $b }} = {{ $b + $a }}
 %endmacro
 
-%macro("user_list", $users)
-<ul>
+%macro("show_users", $users)
     %loop($users as $user)
-        <li>User's {{ $user }}</li>
+        <div>User's {{ $user }}</div>
     %endloop
-</ul>
 %endmacro
 
 %macro('field', $type, $name, $value)

@@ -9,12 +9,13 @@
   - [%if / %elseif ou %elif / %else](#if--elseif-ou-elif--else)
   - [%unless](#unless)
   - [%loop / %for / %while](#loop--for--while)
-    - [L'utilisation de #loop](#lutilisation-de-loop)
+    - [L'utilisation de %loop](#lutilisation-de-loop)
     - [Les sucres syntaxiques %jump et %stop](#les-sucres-syntaxiques-jump-et-stop)
     - [L'utilisation de %for](#lutilisation-de-for)
-    - [L'utilisation de #while](#lutilisation-de-while)
+    - [L'utilisation de %while](#lutilisation-de-while)
   - [Inclusion de fichier](#inclusion-de-fichier)
     - [Exemple d'inclusion](#exemple-dinclusion)
+    - [Exemple de %includeWhen or %includeIf](#exemple-de-includeWhen-or-includeIf)
 - [Héritage avec #extends, #block et #inject](#héritage-avec-extends-block-et-inject)
   - [Explication](#explication)
 - [Directive personnelisée](#directive-personnelisée)
@@ -120,38 +121,38 @@ Et c'est tout, désormais votre moteur de template par defaut est `tintin` :+1:
 
 Vous pouvez afficher le contenu de la variable name de la manière suivante:
 
-```c
+```t
 Hello, {{ $name }}.
 ```
 
 Bien entendu, vous n'êtes pas limité à afficher le contenu des variables transmises à la vue. Vous pouvez également faire écho aux résultats de toute fonction PHP. En fait, vous pouvez insérer n'importe quel code PHP dans une instruction echo Tintin:
 
-```html
+```t
 Hello, {{ strtoupper($name) }}.
 ```
 
-> Les instructions Tintin `{{}}` sont automatiquement envoyées via la fonction PHP `htmlspecialchars` pour empêcher les attaques XSS.
+> Les instructions Tintin `{{ }}` sont automatiquement envoyées via la fonction PHP `htmlspecialchars` pour empêcher les attaques XSS.
 
 #### Affichage des données non échappées
 
-Par défaut, les instructions Tintin `{{}}` sont automatiquement envoyées via la fonction PHP `htmlspecialchars` pour empêcher les attaques XSS. Si vous ne souhaitez pas que vos données soient protégées, vous pouvez utiliser la syntaxe suivante:
+Par défaut, les instructions Tintin `{{ }}` sont automatiquement envoyées via la fonction PHP `htmlspecialchars` pour empêcher les attaques XSS. Si vous ne souhaitez pas que vos données soient protégées, vous pouvez utiliser la syntaxe suivante:
 
-```html
+```t
 Hello, {{{ $name }}}.
 ```
 
 ### Ajouter un commentaire
 
-Cette clause `{# comments #}` permet d'ajouter un commentaire à votre code `tintin`.
+Cette clause `{## comments ##}` permet d'ajouter un commentaire à votre code `tintin`.
 
 ### %if / %elseif ou %elif / %else
 
 Ce sont les clauses qui permettent d'établir des branchements conditionnels comme dans la plupart des langages de programmation.
 
 ```t
-%if ($name == 'tintin')
+%if($name == 'tintin')
   {{ $name }}
-%elseif ($name == 'template')
+%elseif($name == 'template')
   {{ $name }}
 %else
   {{ $name }}
@@ -165,20 +166,21 @@ Ce sont les clauses qui permettent d'établir des branchements conditionnels com
 Petite spécificité, le `%unless` quant à lui, il permet de faire une condition inverse du `%if`.
 Pour faire simple, voici un exemple:
 
-```c
-%unless ($name == 'tintin') => %if (!($name == 'tintin'))
+```t
+%unless($name == 'tintin')
+=> %if (!($name == 'tintin'))
 ```
 
 ### %loop / %for / %while
 
 Souvent vous pouvez être amener à faire des listes ou répétitions sur des éléments. Par exemple, afficher tout les utilisateurs de votre plateforme.
 
-#### L'utilisation de #loop
+#### L'utilisation de %loop
 
 Cette clause faire exactement l'action de `foreach`.
 
 ```t
-%loop ($names as $name)
+%loop($names as $name)
   Bonjour {{ $name }}
 %endloop
 ```
@@ -187,8 +189,8 @@ Cette clause peux être aussi coupler avec tout autre clause telque `#if`.
 Un exemple rapide.
 
 ```t
-%loop ($names as $name)
-  %if ($name == 'tintin')
+%loop($names as $name)
+  %if($name == 'tintin')
     Bonjour {{ $name }}
     %stop
   %endif
@@ -202,8 +204,8 @@ Vous avez peut-être remarquer le `%stop` il permet de stoper l'éxécution de l
 Souvent le dévéloppeur est amené à faire des conditions d'arrêt de la boucle `%loop` comme ceci:
 
 ```t
-%loop ($names as $name)
-  %if ($name == 'tintin')
+%loop($names as $name)
+  %if($name == 'tintin')
     %stop
     // Ou
     %jump
@@ -214,7 +216,7 @@ Souvent le dévéloppeur est amené à faire des conditions d'arrêt de la boucl
 Avec les sucres syntaxique, on peut réduire le code comme ceci:
 
 ```t
-%loop ($names as $name)
+%loop($names as $name)
   %stop($name == 'tintin')
   // Ou
   %jump($name == 'tintin')
@@ -225,18 +227,18 @@ Avec les sucres syntaxique, on peut réduire le code comme ceci:
 
 Cette clause faire exactement l'action de `for`.
 
-```c
-%for ($i = 0; $i < 10; $i++)
+```t
+%for($i = 0; $i < 10; $i++)
  // ..
 %endfor
 ```
 
-#### L'utilisation de #while
+#### L'utilisation de %while
 
 Cette clause faire exactement l'action de `while`.
 
 ```t
-%while ($name != 'tintin')
+%while($name != 'tintin')
  // ..
 %endwhile
 ```
@@ -247,24 +249,34 @@ Souvent lorsque vous dévéloppez votre code, vous êtes amener à subdiviser le
 
 `%include` permet d'include un autre fichier de template dans un autre.
 
-```c
+```t
  %include('filename', data)
 ```
 
 #### Exemple d'inclusion
 
-Considérons le fichier `hello.tintin.php` suivant:
+Considérons le fichier `filename.tintin.php` contenant le code suivant:
 
-```jinja
-Hello {{ $name }}
+```t
+Hello, {{ $name }}
 ```
 
 Utilisation:
 
 ```t
-%include('hello', ['name' => 'Tintin'])
+%include('filename', ['name' => 'Tintin'])
 // => Hello Tintin
 ```
+
+#### Exemple de %includeWhen or %includeIf
+
+Parfois vous aimeriez inclut un contenu quand une condition est bien définit. Alors pour se faire vous pouvez utiliser `%includeIf` ou `%includeWhen`
+
+```t
+%includeWhen(!$user->isAdmin(), "include-file-name", ["name" => "Tintin"])
+```
+
+> Tintin will execute the templae only if the `!$user->isAdmin()` condition is correct
 
 ## Héritage avec #extends, #block et #inject
 
@@ -281,7 +293,7 @@ Considérérons le code **tintin** suivant:
 </head>
 <body>
   <h1>Page header</h1>
-  <div id="page-content">
+  <div>
     %inject('content')
   </div>
   <p>Page footer</p>
@@ -304,7 +316,7 @@ Et aussi, on a un autre fichier qui hérite du code du fichier `layout.tintin.ph
 
 Le fichier `content.tintin.php` va hérité du code de `layout.tintin.php` et si vous rémarquez bien, dans le fichier `layout.tintin.php` on a la clause `%inject` qui a pour paramètre le nom du `%block` de `content.tintin.php` qui est `content`. Ce qui veut dire que le contenu du `%block` `content` sera remplacé par `%inject`. Ce qui donnéra à la fin ceci:
 
-```c
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -312,7 +324,7 @@ Le fichier `content.tintin.php` va hérité du code de `layout.tintin.php` et si
 </head>
 <body>
   <h1>Page header</h1>
-  <div id="page-content">
+  <div>
     <p>This is the page content</p>
   </div>
   <p>Page footer</p>
@@ -325,8 +337,8 @@ Le fichier `content.tintin.php` va hérité du code de `layout.tintin.php` et si
 Tintin peut être étendu avec son systême de directive personnalisé, pour ce faire utilisé la méthode `directive`
 
 ```php
-$tintin->directive('hello', function (array $attributes = []) {
-  return 'Hello, '. $attributes[0];
+$tintin->directive('hello', function (string $name) {
+  return 'Hello, '. $name;
 });
 
 echo $tintin->render('%hello("Tintin")');
@@ -338,51 +350,37 @@ echo $tintin->render('%hello("Tintin")');
 Création de directive pour gérer un formulaires:
 
 ```php
-$tintin->directive('input', function (array $attributes = []) {
-  $attribute = $attributes[0];
-
-  return '<input type="'.$attribute['type'].'" name="'.$attribute['name'].'" value="'.$attribute['value'].'" />';
+$tintin->directive('input', function (string $type, string $name, ?string $value) {
+  return '<input type="'.$type.'" name="'.$name.'" value="'.$value.'" />';
 });
 
-$tintin->directive('textarea', function (array $attributes = []) {
-  $attribute = $attributes[0];
-
-  return '<textarea name="'.$attribute['name'].'">"'.$attribute['value'].'"</textarea>';
+$tintin->directive('textarea', function (string $name, ?string $value) {
+  return '<textarea name="'.$name.'">"'.$value.'"</textarea>';
 });
 
-$tintin->directive('button', function (array $attributes = []) {
-  $attribute = $attributes[0];
-
-  return '<button type="'.$attribute['type'].'">'.$attribute['label'].'"</button>';
+$tintin->directive('button', function (string $type, string $label) {
+  return '<button type="'.$type.'">'.$label.'"</button>';
 });
 
-$tintin->directive('form', function (array $attributes = []) {
-  $attribute = " ";
-  
-  if (isset($attributes[0])) {
-    foreach ($attributes[0] as $key => $value) {
-      $attribute .= $key . '="'.$value.'" ';
-    }
-  }
-
-  return '<form "'.trim($attribute).'">';
+$tintin->directive('form', function (string $action, string $method, string $enctype = "multipart/form-data") {
+  return '<form action="'.$action.'" method="'.$method.'" enctype="'.$enctype.'">';
 });
 
-$tintin->directive('endform', function (array $attributes = []) {
+$tintin->directive('endform', function () {
   return '</form>';
 });
 ```
 
 ### Utilisation des directives
 
-Pour utiliser ces directives, rien de plus simple. Ecrivez le nom de la directive précédé la par `%`. Ensuite si cette directive prend des paramètres, lancer la directive comme vous lancez les fonctions dans votre programme. Les paramètres seront régroupés dans la varibles `$attributes` dans l'ordre d'ajout.
+Pour utiliser ces directives, rien de plus simple. Ecrivez le nom de la directive précédé la par `%`. Ensuite si cette directive prend des paramètres, lancer la directive comme vous lancez les fonctions dans votre programme.
 
 ```t
-// Fichier form.tintin.php
-%form(['method' => 'post', "action" => "/posts", "enctype" => "multipart/form-data"])
-  %input(["type" => "text", "value" => null, "name" => "name"])
-  %textarea(["value" => null, "name" => "content"])
-  %button(['type' => 'submit', 'label' => 'Add'])
+# File form.tintin.php
+%form("/posts", "post", "multipart/form-data")
+  %input("text", "name")
+  %textarea("content")
+  %button('submit', 'Add')
 %endform
 ```
 
@@ -410,7 +408,7 @@ Dans le cas ou vous utilisez la configuration Tintin pour Bow Framework.
 Changer le vos configuration dans le `ApplicationController::class` dans le dossier `app/Configurations`.
 
 ```php
-use Tintin\Tintin;
+namespace App\Configurations;
 
 class ApplicationConfiguration extends Configuration
 {
@@ -422,8 +420,9 @@ class ApplicationConfiguration extends Configuration
    */
   public function create(Loader $config): void
   {
-    $tintin = Tintin::getInstance();  
-    $tintin->directive('super', function (array $attributes = []) {
+    $tintin = app('view')->getTemplate();
+
+    $tintin->directive('super', function () {
       return "Super !";
     });
   }
@@ -433,6 +432,6 @@ class ApplicationConfiguration extends Configuration
 Maintenant la directive `%super` est disponible et vous pouvez l'utiliser.
 
 ```php
-  return $tintin->render('%super');
-  // => Super !
+return $tintin->render('%super');
+// => Super !
 ```

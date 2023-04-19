@@ -24,6 +24,13 @@ class TintinEngine extends EngineAbstract
     protected string $name = 'tintin';
 
     /**
+     * The template config
+     *
+     * @var array
+     */
+    protected array $config;
+
+    /**
      * BladeEngine constructor.
      *
      * @param Loader $config
