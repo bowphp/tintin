@@ -2,11 +2,11 @@
     Hello, {{ $name }}
 %endmacro
 
-%macro("sum", int $b, int $b)
-    Sum of {{ $b }} + {{ $b }} = {{ $b + $a }}
+%macro("sum", int $a, int $b)
+    Sum of {{ $a }} + {{ $b }} = {{ $b + $a }}
 %endmacro
 
-%macro("user_list", $users)
+%macro("show_users", $users)
     %loop($users as $user)
         <div>User's {{ $user }}</div>
     %endloop
