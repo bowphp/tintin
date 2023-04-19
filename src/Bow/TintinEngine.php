@@ -4,7 +4,7 @@ namespace Tintin\Bow;
 
 use Bow\Configuration\Loader;
 use Bow\View\EngineAbstract;
-use Tintin\Loader\Filesystem as TintinFilesystem;
+use Tintin\Filesystem as TintinFilesystem;
 use Tintin\Tintin;
 
 class TintinEngine extends EngineAbstract

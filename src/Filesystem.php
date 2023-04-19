@@ -1,6 +1,8 @@
 <?php
 
-namespace Tintin\Loader;
+namespace Tintin;
+
+use Tintin\Exception\FileNotFoundException;
 
 class Filesystem implements LoaderInterface
 {
@@ -28,11 +30,20 @@ class Filesystem implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function getFileResolvedPath(string $filename): string
+    public function getFileResolvedPath(string $filename): string|bool
     {
         $filename = str_replace('.', '/', $filename);
+        $paths = (array) $this->config['path'];
 
-        return realpath($this->config['path'] . '/' . $filename . '.' . $this->getExtension());
+        foreach ($paths as $path) {
+            $full_filename = $path  . '/' . $filename . '.' . $this->getExtension();
+            $realpath = realpath($full_filename);
+            if ($realpath !== false && file_exists($realpath)) {
+                return $realpath;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -56,7 +67,7 @@ class Filesystem implements LoaderInterface
      */
     public function getCachePath(): string
     {
-        return isset($this->config['cache']) ? $this->config['cache'] : sys_get_temp_dir();
+        return $this->config['cache'] ?? sys_get_temp_dir();
     }
 
     /**
@@ -64,7 +75,7 @@ class Filesystem implements LoaderInterface
      */
     public function getExtension(): string
     {
-        return isset($this->config['extension']) ? trim($this->config['extension'], '.') : 'tintin.php';
+        return $this->config['extension'] ?? 'tintin.php';
     }
 
     /**

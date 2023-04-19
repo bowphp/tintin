@@ -1,11 +1,13 @@
 <?php
 
 use Tintin\Tintin;
-use Tintin\Loader\Filesystem;
-use Tintin\Loader\LoaderInterface;
+use Tintin\Filesystem;
+use Tintin\LoaderInterface;
 
 class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
 {
+    use CompileClassReflection;
+
     /**
      * @var Tintin
      */
@@ -80,14 +82,25 @@ class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
     public function testCompileCustomDirectiveWithBrakeLineParameters()
     {
         $tintin = new Tintin();
+        $compiler = $tintin->getCompiler();
 
         $tintin->directive('user', function (array $info) {
             return "Hello {$info['name']}, {$info['lastname']}";
         });
 
-        $render = $tintin->render('%user(["name" => $name, "lastname" => $lastname])', ['name' => 'franck', 'lastname' => 'bowman']);
+        $template = <<<TEMPLATE
+%user([
+    "name" => \$name,
+    "lastname" => \$lastname
+])
+TEMPLATE;
 
-        $this->assertEquals(trim($render), 'Hello franck, bowman');
+        $compileCustomDirective = $this->makeReflectionFor('compileCustomDirective');
+        $output = $compileCustomDirective->invoke($compiler, $template);
+        $this->assertStringContainsString('<?php echo $__tintin->getCompiler()->_____executeCustomDirectory("user", [
+    "name" => $name,
+    "lastname" => $lastname
+]);', $output);
     }
 
     public function testCompileCustomDirectiveDefineAsBrockenClause()

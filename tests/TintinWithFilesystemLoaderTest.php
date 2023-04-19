@@ -1,7 +1,7 @@
 <?php
 
 use Tintin\Tintin;
-use Tintin\Loader\Filesystem;
+use Tintin\Filesystem;
 
 class TintinWithFilesystemLoaderTest extends \PHPUnit\Framework\TestCase
 {

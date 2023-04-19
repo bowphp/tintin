@@ -4,7 +4,7 @@ namespace Tintin;
 
 use Tintin\StackManager;
 use Tintin\MacroManager;
-use Tintin\Loader\LoaderInterface;
+use Tintin\LoaderInterface;
 use Tintin\Exception\DirectiveNotAllowException;
 
 class Tintin

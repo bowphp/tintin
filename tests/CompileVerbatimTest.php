@@ -1,8 +1,6 @@
 <?php
 
-use Tintin\Tintin;
 use Tintin\Compiler;
-use Tintin\Loader\Filesystem;
 
 class CompileVerbatimTest extends \PHPUnit\Framework\TestCase
 {

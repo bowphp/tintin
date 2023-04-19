@@ -46,6 +46,6 @@ trait CompileCustomDirective
      */
     private function getCustomDirectivePartern()
     {
-        return "/\n*\%([a-zA-Z_]+)\s*(\((.*?)?\)\n?)?/";
+        return "/^%([a-zA-Z_]+)\s*(\((.*?)\))?$/sm";
     }
 }
