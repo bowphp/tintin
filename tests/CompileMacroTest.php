@@ -64,5 +64,6 @@ class CompileMacroTest extends PHPUnit\Framework\TestCase
         $this->assertStringContainsString("User's Franck", $output);
         $this->assertStringContainsString("User's Lucien", $output);
         $this->assertStringContainsString("User's Brice", $output);
+        $this->assertStringContainsString("Sum of 1 + 2 = 3", $output);
     }
 }
