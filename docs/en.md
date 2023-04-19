@@ -16,7 +16,7 @@
   - [Include of file](#include-of-file)
   - [Condition %include of file](#condition-include-of-file)
     - [Example of inclusion](#example-of-inclusion)
-    - [Example of %includeWhen or %includeIf](#example-of-includeWhen-or-includeIf)
+    - [Example of %includeWhen or %includeIf](#example-of-includewhen-or-includeif)
 - [Inherit with %extends, %block and %inject](#inherit-with-extends-block-and-inject)
   - [Explication](#explication)
 - [Personalized directive](#personalized-directive)

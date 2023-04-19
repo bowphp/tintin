@@ -58,6 +58,57 @@ class Compiler
     ];
 
     /**
+     * List of default directive
+     *
+     * @var array
+     */
+    private array $directivesProtected = [
+        'if',
+        'else',
+        'elseif',
+        'elif',
+        'endif',
+        'verbatim',
+        'endverbatim',
+        'env',
+        'endenv',
+        'production',
+        'endproduction',
+        'unlang',
+        'endunlang',
+        'unless',
+        'endunless',
+        'auth',
+        'endauth',
+        'guest',
+        'endguest',
+        'isset',
+        'endisset',
+        'extends',
+        'block',
+        'inject',
+        'include',
+        'includeIf',
+        'includeWhen',
+        'endblock',
+        'while',
+        'endwhile',
+        'for',
+        'endfor',
+        'loop',
+        'endloop',
+        'stop',
+        'jump',
+        'json',
+        'class',
+        'import',
+        'hasflash',
+        'endhasflash',
+        'empty',
+        'endempty',
+    ];
+
+    /**
      * The compile result
      *
      * @var string
@@ -112,57 +163,6 @@ class Compiler
      * @var array
      */
     private array $directives = [];
-
-    /**
-     * List of default directive
-     *
-     * @var array
-     */
-    private array $directivesProtected = [
-        'if',
-        'else',
-        'elseif',
-        'elif',
-        'endif',
-        'verbatim',
-        'endverbatim',
-        'env',
-        'endenv',
-        'production',
-        'endproduction',
-        'unlang',
-        'endunlang',
-        'unless',
-        'endunless',
-        'auth',
-        'endauth',
-        'guest',
-        'endguest',
-        'isset',
-        'endisset',
-        'extends',
-        'block',
-        'inject',
-        'include',
-        'includeIf',
-        'includeWhen',
-        'endblock',
-        'while',
-        'endwhile',
-        'for',
-        'endfor',
-        'loop',
-        'endloop',
-        'stop',
-        'jump',
-        'json',
-        'class',
-        'import',
-        'hasflash',
-        'endhasflash',
-        'empty',
-        'endempty',
-    ];
 
     /**
      * Launch the compilation

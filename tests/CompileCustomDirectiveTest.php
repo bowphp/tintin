@@ -77,6 +77,19 @@ class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(trim($render), 'Hello franck');
     }
 
+    public function testCompileCustomDirectiveWithBrakeLineParameters()
+    {
+        $tintin = new Tintin();
+
+        $tintin->directive('user', function (array $info) {
+            return "Hello {$info['name']}, {$info['lastname']}";
+        });
+
+        $render = $tintin->render('%user(["name" => $name, "lastname" => $lastname])', ['name' => 'franck', 'lastname' => 'bowman']);
+
+        $this->assertEquals(trim($render), 'Hello franck, bowman');
+    }
+
     public function testCompileCustomDirectiveDefineAsBrockenClause()
     {
         $tintin = new Tintin($this->loader);
