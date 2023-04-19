@@ -420,8 +420,9 @@ class ApplicationConfiguration extends Configuration
    */
   public function create(Loader $config): void
   {
-    $tintin = app('view')->getTemplate(); 
-    $tintin->directive('super', function (array $attributes = []) {
+    $tintin = app('view')->getTemplate();
+
+    $tintin->directive('super', function () {
       return "Super !";
     });
   }

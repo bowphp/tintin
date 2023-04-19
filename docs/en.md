@@ -430,7 +430,7 @@ class ApplicationConfiguration extends Configuration
   {
     $tintin = app('view')->getTemplate();
 
-    $tintin->directive('super', function (array $attributes = []) {
+    $tintin->directive('super', function () {
       return "Super !";
     });
   }
