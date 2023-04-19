@@ -25,7 +25,7 @@ class TintinEngine extends EngineAbstract
 
     /**
      * The template config
-     * 
+     *
      * @var array
      */
     protected array $config;

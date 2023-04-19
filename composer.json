@@ -20,8 +20,7 @@
     "require-dev": {
         "phpunit/phpunit": "^8",
         "squizlabs/php_codesniffer": "3.*",
-        "laravel/framework": "^8.0",
-        "bowphp/framework": "^5.0@RC"
+        "laravel/framework": "^8.0"
     },
     "extra": {
         "laravel": {
