@@ -1,13 +1,13 @@
 <?php
 
-use Tintin\Loader\Filesystem;
+use Tintin\Filesystem;
 
 class FilesystemTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Filesystem
      */
-    private Filesystem $loader;
+    private Filesystem $filesystem;
 
     public function setUp(): void
     {

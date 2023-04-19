@@ -1,6 +1,6 @@
 <?php
 
-namespace Tintin\Loader;
+namespace Tintin;
 
 interface LoaderInterface
 {

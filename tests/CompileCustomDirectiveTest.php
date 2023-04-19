@@ -1,8 +1,8 @@
 <?php
 
 use Tintin\Tintin;
-use Tintin\Loader\Filesystem;
-use Tintin\Loader\LoaderInterface;
+use Tintin\Filesystem;
+use Tintin\LoaderInterface;
 
 class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
 {

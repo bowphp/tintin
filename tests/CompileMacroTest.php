@@ -2,7 +2,7 @@
 
 use Tintin\Tintin;
 use Tintin\Compiler;
-use Tintin\Loader\Filesystem;
+use Tintin\Filesystem;
 
 class CompileMacroTest extends PHPUnit\Framework\TestCase
 {
