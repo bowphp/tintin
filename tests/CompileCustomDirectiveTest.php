@@ -87,7 +87,7 @@ class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
         $tintin->directive('user', function (array $info) {
             return "Hello {$info['name']}, {$info['lastname']}";
         });
-        
+
         $template = <<<TEMPLATE
 %user([
     "name" => \$name,
