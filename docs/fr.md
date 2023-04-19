@@ -15,8 +15,8 @@
     - [L'utilisation de %while](#lutilisation-de-while)
   - [Inclusion de fichier](#inclusion-de-fichier)
     - [Exemple d'inclusion](#exemple-dinclusion)
-    - [Exemple de %includeWhen or %includeIf](#exemple-de-includeWhen-or-includeIf)
-- [Héritage avec #extends, #block et #inject](#héritage-avec-extends-block-et-inject)
+    - [Exemple de %includeWhen or %includeIf](#exemple-de-includewhen-or-includeif)
+- [Héritage avec %extends, %block et %inject](#héritage-avec-extends-block-et-inject)
   - [Explication](#explication)
 - [Directive personnelisée](#directive-personnelisée)
   - [Exemple](#exemple)
@@ -24,6 +24,7 @@
   - [Compilation du template](#compilation-du-template)
   - [Sortie après compilation](#sortie-après-compilation)
   - [Ajouter vos directive de la configuration](#ajouter-vos-directive-de-la-configuration)
+  - [Les %macro](#les-macro)
 
 ## Introduction
 
@@ -278,7 +279,7 @@ Parfois vous aimeriez inclut un contenu quand une condition est bien définit. A
 
 > Tintin will execute the templae only if the `!$user->isAdmin()` condition is correct
 
-## Héritage avec #extends, #block et #inject
+## Héritage avec %extends, %block et %inject
 
 Comme tout bon système de template **tintin** support le partage de code entre fichier. Ceci permet de rendre votre code flexible et maintenable.
 
@@ -410,6 +411,8 @@ Changer le vos configuration dans le `ApplicationController::class` dans le doss
 ```php
 namespace App\Configurations;
 
+use Bow\Configuration\Loader;
+
 class ApplicationConfiguration extends Configuration
 {
   /**
@@ -420,9 +423,9 @@ class ApplicationConfiguration extends Configuration
    */
   public function create(Loader $config): void
   {
-    $tintin = app('view')->getTemplate();
+    $tintin = app('view')->getEngine();
 
-    $tintin->directive('super', function () {
+    $tintin->define('super', function () {
       return "Super !";
     });
   }
@@ -435,3 +438,7 @@ Maintenant la directive `%super` est disponible et vous pouvez l'utiliser.
 return $tintin->render('%super');
 // => Super !
 ```
+
+### Les %macro
+
+Souvant, vous serez amener utiliser et reutiliser un block de template pour optimiser l'ecriture de votre application

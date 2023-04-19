@@ -34,7 +34,7 @@ class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
 
     public function testHelloDirective()
     {
-        $this->tintin->directive('hello', function ($title, $name) {
+        $this->tintin->define('hello', function ($title, $name) {
             return "Hello $title $name";
         });
 
@@ -46,7 +46,7 @@ class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
     public function testSimpleDirective()
     {
         $now = time();
-        $this->tintin->directive('now', function () use ($now) {
+        $this->tintin->define('now', function () use ($now) {
             return $now;
         });
 
@@ -57,7 +57,7 @@ class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
 
     public function testComplexDirective()
     {
-        $this->tintin->directive('input', function (array $attribute) {
+        $this->tintin->define('input', function (array $attribute) {
             return '<input type="' . $attribute['type'] . '" name="' . $attribute['name'] . '" value="' . $attribute['value'] . '" />';
         });
 
@@ -70,7 +70,7 @@ class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
     {
         $tintin = new Tintin();
 
-        $tintin->directive('greeting', function (string $name) {
+        $tintin->define('greeting', function (string $name) {
             return "Hello $name";
         });
 
@@ -84,7 +84,7 @@ class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
         $tintin = new Tintin();
         $compiler = $tintin->getCompiler();
 
-        $tintin->directive('user', function (array $info) {
+        $tintin->define('user', function (array $info) {
             return "Hello {$info['name']}, {$info['lastname']}";
         });
 
@@ -107,15 +107,15 @@ TEMPLATE;
     {
         $tintin = new Tintin($this->loader);
 
-        $tintin->directive('greeting', function (string $name) {
+        $tintin->define('greeting', function (string $name) {
             return "Hello, $name";
         });
 
-        $tintin->directive('admin', function () {
+        $tintin->define('admin', function () {
             return '<?php if (true): ?>';
         }, true);
 
-        $tintin->directive('endadmin', function () {
+        $tintin->define('endadmin', function () {
             return '<?php endif; ?>';
         }, true);
 

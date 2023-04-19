@@ -267,7 +267,7 @@ class Tintin
      *
      * @throws DirectiveNotAllowException
      */
-    public function directive(string $name, callable $handler, bool $broken = false)
+    public function define(string $name, callable $handler, bool $broken = false)
     {
         $this->compiler->pushDirective($name, $handler, $broken);
     }
