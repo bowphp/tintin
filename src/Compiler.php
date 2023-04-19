@@ -69,7 +69,7 @@ class Compiler
      *
      * @var string
      */
-    protected $condition_pattern = '/(%s\s*\((.+?)?\))+\s*/sm';
+    protected $condition_pattern = '/(%s\s*\((.*)\))\s*/sm';
 
     /**
      * The option expression pattern

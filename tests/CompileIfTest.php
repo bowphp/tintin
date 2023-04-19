@@ -21,12 +21,13 @@ class CompileIfTest extends \PHPUnit\Framework\TestCase
         $compileIf = $this->makeReflectionFor('compileIf');
 
         $render = $compileIf->invoke($this->compiler, '%if ($name > 0)');
-
         $this->assertEquals($render, '<?php if ($name > 0): ?>');
 
         $render = $compileIf->invoke($this->compiler, '%if($name > 0)');
-
         $this->assertEquals($render, '<?php if ($name > 0): ?>');
+
+        $render = $compileIf->invoke($this->compiler, '%if(isset($name) && $name == "papac")');
+        $this->assertEquals($render, '<?php if (isset($name) && $name == "papac"): ?>');
     }
 
     public function testCompileElseStatement()
@@ -48,9 +49,15 @@ class CompileIfTest extends \PHPUnit\Framework\TestCase
         $render = $compileElse->invoke($this->compiler, '%elseif($name > 0)');
         $this->assertEquals($render, '<?php elseif ($name > 0): ?>');
 
+        $render = $compileElse->invoke($this->compiler, '%elseif(isset($name) && $name == "papac")');
+        $this->assertEquals($render, '<?php elseif (isset($name) && $name == "papac"): ?>');
+
         $compileelIf = $this->makeReflectionFor('compileElseIfAlias');
         $render = $compileelIf->invoke($this->compiler, '%elif ($name > 0)');
         $this->assertEquals($render, '<?php elseif ($name > 0): ?>');
+
+        $render = $compileelIf->invoke($this->compiler, '%elif (isset($name) && $name == "papac")');
+        $this->assertEquals($render, '<?php elseif (isset($name) && $name == "papac"): ?>');
     }
 
     public function testCompileUnLessStatement()
@@ -60,8 +67,8 @@ class CompileIfTest extends \PHPUnit\Framework\TestCase
         $render = $compileUnless->invoke($this->compiler, '%unless ($name > 0)');
         $this->assertEquals($render, '<?php if (! ($name > 0)): ?>');
 
-        $render = $compileUnless->invoke($this->compiler, '%unless($name > 0)');
-        $this->assertEquals($render, '<?php if (! ($name > 0)): ?>');
+        $render = $compileUnless->invoke($this->compiler, '%unless(isset($name) && $name == "papac")');
+        $this->assertEquals($render, '<?php if (! (isset($name) && $name == "papac")): ?>');
     }
 
     public function testCompileIssetStatement()
