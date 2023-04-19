@@ -15,7 +15,7 @@
     - [L'utilisation de %while](#lutilisation-de-while)
   - [Inclusion de fichier](#inclusion-de-fichier)
     - [Exemple d'inclusion](#exemple-dinclusion)
-    - [Exemple de %includewhen or %includeif](#exemple-de-includewhen-or-includeif)
+    - [Exemple de %includeWhen or %includeIf](#exemple-de-includeWhen-or-includeIf)
 - [Héritage avec #extends, #block et #inject](#héritage-avec-extends-block-et-inject)
   - [Explication](#explication)
 - [Directive personnelisée](#directive-personnelisée)
@@ -268,12 +268,12 @@ Utilisation:
 // => Hello Tintin
 ```
 
-#### Exemple de %includewhen or %includeif
+#### Exemple de %includeWhen or %includeIf
 
-Parfois vous aimeriez inclut un contenu quand une condition est bien définit. Alors pour se faire vous pouvez utiliser `%includeif` ou `%includewhen`
+Parfois vous aimeriez inclut un contenu quand une condition est bien définit. Alors pour se faire vous pouvez utiliser `%includeIf` ou `%includeWhen`
 
 ```t
-%includewhen(!$user->isAdmin(), "include-file-name", ["name" => "Tintin"])
+%includeWhen(!$user->isAdmin(), "include-file-name", ["name" => "Tintin"])
 ```
 
 > Tintin will execute the templae only if the `!$user->isAdmin()` condition is correct

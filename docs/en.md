@@ -16,7 +16,7 @@
   - [Include of file](#include-of-file)
   - [Condition %include of file](#condition-include-of-file)
     - [Example of inclusion](#example-of-inclusion)
-    - [Example of %includewhen or %includeif](#example-of-includewhen-or-includeif)
+    - [Example of %includeWhen or %includeIf](#example-of-includeWhen-or-includeIf)
 - [Inherit with %extends, %block and %inject](#inherit-with-extends-block-and-inject)
   - [Explication](#explication)
 - [Personalized directive](#personalized-directive)
@@ -259,7 +259,7 @@ Often when you are developing your code, you have to subdivide the views of your
 
 ### Condition %include of file
 
-Sometime you want to include a file when some condition are validate. No panic, the `%includeif` or `%includewhen` is here for you.
+Sometime you want to include a file when some condition are validate. No panic, the `%includeIf` or `%includeWhen` is here for you.
 
 #### Example of inclusion
 
@@ -276,12 +276,12 @@ Use:
 // => Hello Tintin
 ```
 
-#### Example of %includewhen or %includeif
+#### Example of %includeWhen or %includeIf
 
-Sometimes you would like to include content when a condition is well defined. So to do this you can use `%includeif` or `%includewhen`
+Sometimes you would like to include content when a condition is well defined. So to do this you can use `%includeIf` or `%includeWhen`
 
 ```t
-%includewhen(!$user->isAdmin(), "filename", ["name" => "Tintin"])
+%includeWhen(!$user->isAdmin(), "filename", ["name" => "Tintin"])
 ```
 
 > Tintin will execute the templae only if the `!$user->isAdmin()` condition is correct

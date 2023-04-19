@@ -94,7 +94,7 @@ trait CompileExtends
      */
     protected function compileConditionalInclude(string $expression): string
     {
-        $regex = "/\%include(?:if|when)\s*\(((?:\n|\s|\t)*(?:.+)(?:\n|\s|\t)*\)?)\)/sm";
+        $regex = "/\%include(?:If|When)\s*\(((?:\n|\s|\t)*(?:.+)(?:\n|\s|\t)*\)?)\)/sm";
 
         $output = preg_replace_callback($regex, function ($match) {
             return "<?php echo \$__tintin->getStackManager()->includeFileIf({$match[1]}, ['__tintin' => \$__tintin]); ?>";
