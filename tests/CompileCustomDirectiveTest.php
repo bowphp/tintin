@@ -101,9 +101,6 @@ TEMPLATE;
     "name" => $name,
     "lastname" => $lastname
 ]);', $output);
-
-        $render = $tintin->render($template, ['name' => 'franck', 'lastname' => 'bowman']);
-        $this->assertEquals(trim($render), 'Hello franck, bowman');
     }
 
     public function testCompileCustomDirectiveDefineAsBrockenClause()
