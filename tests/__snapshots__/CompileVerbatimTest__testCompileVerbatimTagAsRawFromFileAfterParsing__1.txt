@@ -1,0 +1,13 @@
+%guest
+        A guest session
+    %endguest
+
+
+    %if (true)
+        {{{ $name }}}
+    %endif
+
+
+    %auth
+        A auth session
+    %endauth

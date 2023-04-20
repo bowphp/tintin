@@ -1,5 +1,6 @@
 <?php
 
+use Spatie\Snapshots\MatchesSnapshots;
 use Tintin\Tintin;
 use Tintin\Filesystem;
 use Tintin\LoaderInterface;
@@ -7,6 +8,7 @@ use Tintin\LoaderInterface;
 class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
 {
     use CompileClassReflection;
+    use MatchesSnapshots;
 
     /**
      * @var Tintin
@@ -123,5 +125,6 @@ TEMPLATE;
 
         $this->assertStringContainsString('Franck, access allowed', trim($output));
         $this->assertStringContainsString('Hello, franck', trim($output));
+        $this->assertMatchesTextSnapshot($output);
     }
 }

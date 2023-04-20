@@ -1,10 +1,12 @@
 <?php
 
+use Spatie\Snapshots\MatchesSnapshots;
 use Tintin\Compiler;
 
 class CompileVerbatimTest extends \PHPUnit\Framework\TestCase
 {
     use CompileClassReflection;
+    use MatchesSnapshots;
 
     private Compiler $compiler;
 
@@ -57,6 +59,7 @@ class CompileVerbatimTest extends \PHPUnit\Framework\TestCase
         $this->assertStringNotContainsString("%guest\nA guest session\n%endguest", $output);
         $this->assertStringNotContainsString("%if (true)\n{{{ \$name }}}\n%endif", $output);
         $this->assertStringNotContainsString("%auth\nA auth session\n%endif", $output);
+        $this->assertMatchesTextSnapshot($output);
     }
 
     public function testCompileVerbatimTagAsRawFromFileAfterParsing()
@@ -73,5 +76,6 @@ class CompileVerbatimTest extends \PHPUnit\Framework\TestCase
         $this->assertStringNotContainsString("@__tintin_verbatim__1__@", $output);
         $this->assertStringNotContainsString("@__tintin_verbatim__2__@", $output);
         $this->assertStringNotContainsString("@__tintin_verbatim__3__@", $output);
+        $this->assertMatchesTextSnapshot($output);
     }
 }

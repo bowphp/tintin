@@ -1,10 +1,12 @@
 <?php
 
 use Tintin\Compiler;
+use Spatie\Snapshots\MatchesSnapshots;
 
 class CompileHelpersTest extends \PHPUnit\Framework\TestCase
 {
     use CompileClassReflection;
+    use MatchesSnapshots;
 
     /**
      * @var Compiler
@@ -200,5 +202,6 @@ class CompileHelpersTest extends \PHPUnit\Framework\TestCase
 
         $this->assertStringContainsString('<?php if (auth()->check()): ?>', $render);
         $this->assertStringContainsString('<?php if (!auth()->check()): ?>', $render);
+        $this->assertMatchesTextSnapshot($render);
     }
 }

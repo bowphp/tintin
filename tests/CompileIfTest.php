@@ -1,10 +1,12 @@
 <?php
 
+use Spatie\Snapshots\MatchesSnapshots;
 use Tintin\Compiler;
 
 class CompileIfTest extends \PHPUnit\Framework\TestCase
 {
     use CompileClassReflection;
+    use MatchesSnapshots;
 
     /**
      * @var Compiler
@@ -103,5 +105,6 @@ class CompileIfTest extends \PHPUnit\Framework\TestCase
         $render = $this->compiler->compile($html);
 
         $this->assertStringContainsString('<?php if ($age > 16): ?>', $render);
+        $this->assertMatchesTextSnapshot($render);
     }
 }
