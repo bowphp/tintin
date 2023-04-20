@@ -5,7 +5,7 @@ namespace Tintin\Lexique;
 trait CompileRawPhp
 {
     /**
-     * Compile the %raw...%endraw statement
+     * Compile the %raw...%endraw directive
      *
      * @param string $expression
      * @return string

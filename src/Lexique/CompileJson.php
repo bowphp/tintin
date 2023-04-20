@@ -5,7 +5,7 @@ namespace Tintin\Lexique;
 trait CompileJson
 {
     /**
-     * Compile the %json statement
+     * Compile the %json directive
      *
      * @param string $expression
      * @return string

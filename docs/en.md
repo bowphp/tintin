@@ -418,6 +418,8 @@ Change your configuration in the `ApplicationController::class` in the `app/Conf
 ```php
 namespace App\Configurations;
 
+use Bow\Configuration\Loader;
+
 class ApplicationConfiguration extends Configuration
 {
   /**
@@ -428,7 +430,7 @@ class ApplicationConfiguration extends Configuration
    */
   public function create(Loader $config): void
   {
-    $tintin = app('view')->getTemplate();
+    $tintin = app('view')->getEngine();
 
     $tintin->directive('super', function () {
       return "Super !";

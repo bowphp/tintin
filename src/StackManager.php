@@ -58,6 +58,23 @@ class StackManager
     }
 
     /**
+     * Include a file to compile if the filename exist
+     *
+     * @param string $filename
+     * @param array $data
+     * @param array $context
+     * @return string
+     */
+    public function includeFileIf(string $filename, array $data = [], array $context = []): string
+    {
+        if ($this->tintin->getLoader()->exists($filename)) {
+            return $this->includeFile($filename, $data, $context);
+        }
+
+        return "";
+    }
+
+    /**
      * Include a file to compile if the condition match.
      * The all logic is base on data structure algorithm call stack
      *
@@ -66,7 +83,7 @@ class StackManager
      * @param array $context
      * @return string
      */
-    public function includeFileIf(
+    public function includeFileWhen(
         bool $condition,
         string $filename,
         array $data = [],

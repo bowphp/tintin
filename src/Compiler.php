@@ -106,6 +106,8 @@ class Compiler
         'endhasflash',
         'empty',
         'endempty',
+        'method',
+        'service',
     ];
 
     /**

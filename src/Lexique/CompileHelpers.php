@@ -2,10 +2,12 @@
 
 namespace Tintin\Lexique;
 
+use Tintin\Exception\BadDirectiveCalledException;
+
 trait CompileHelpers
 {
     /**
-     * Compile the if statement stack
+     * Compile the %if directive stack
      *
      * @param string $expression
      * @return string
@@ -14,7 +16,8 @@ trait CompileHelpers
     {
         foreach (
             [
-            "Auth", "Guest", "Lang", "Env", "Csrf", "Flash", "Production", "HasFlash", "EndHelpers", "Empty", "NotEmpty"
+            "Auth", "Guest", "Lang", "Env", "Csrf", "Flash", "Production",
+            "HasFlash", "EndHelpers", "Empty", "NotEmpty", "Method", "Service"
             ] as $token
         ) {
             $out = $this->{"compile" . $token}($expression);
@@ -27,7 +30,7 @@ trait CompileHelpers
     }
 
     /**
-     * Compile the csrf token
+     * Compile the %csrf directive
      *
      * @param string $expression
      * @return string
@@ -44,7 +47,53 @@ trait CompileHelpers
     }
 
     /**
-     * Compile the %auth statement
+     * Compile the %method token
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileMethod(string $expression): string
+    {
+        $output = preg_replace_callback('/\n*(%method\s*\((.+?)\))\n*/', function ($match) {
+            array_shift($match);
+
+            $method = end($match);
+
+            return "<?= method_field($method); ?>";
+        }, $expression);
+
+        return $output == $expression ? '' : $output;
+    }
+
+    /**
+     * Compile the %service directive
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileService(string $expression): string
+    {
+        $output = preg_replace_callback('/\n*(%service\s*\((.+?)\))\n*/', function ($match) {
+            array_shift($match);
+
+            $definition = end($match);
+            $parameters = preg_split("/\s*,\s*/", $definition);
+
+            if (count($parameters) != 2) {
+                throw new BadDirectiveCalledException();
+            }
+
+            [$variable, $service] = $parameters;
+            $variable = trim($variable, '"\'');
+
+            return "<?php \${$variable} = app($service); ?>";
+        }, $expression);
+
+        return $output == $expression ? '' : $output;
+    }
+
+    /**
+     * Compile the %auth directive
      *
      * @param string $expression
      * @return string
@@ -55,7 +104,7 @@ trait CompileHelpers
     }
 
     /**
-     * Compile the %guest statement
+     * Compile the %guest directive
      *
      * @param string $expression
      * @return string
@@ -66,7 +115,7 @@ trait CompileHelpers
     }
 
     /**
-     * Compile the %lang statement
+     * Compile the %lang directive
      *
      * @param string $expression
      * @return string
@@ -77,7 +126,7 @@ trait CompileHelpers
     }
 
     /**
-     * Compile the %flash statement
+     * Compile the %flash directive
      *
      * @param string $expression
      * @return string
@@ -88,7 +137,7 @@ trait CompileHelpers
     }
 
     /**
-     * Compile the %env statement
+     * Compile the %env directive
      *
      * @param string $expression
      * @return string
@@ -99,7 +148,7 @@ trait CompileHelpers
     }
 
     /**
-     * Compile the %empty statement
+     * Compile the %empty directive
      *
      * @param string $expression
      * @return string
@@ -110,7 +159,7 @@ trait CompileHelpers
     }
 
     /**
-     * Compile the %notempty statement
+     * Compile the %notempty directive
      *
      * @param string $expression
      * @return string
@@ -121,7 +170,7 @@ trait CompileHelpers
     }
 
     /**
-     * Compile the %production statement
+     * Compile the %production directive
      *
      * @param string $expression
      * @return string
@@ -132,7 +181,7 @@ trait CompileHelpers
     }
 
     /**
-     * Compile the %hasflash statement
+     * Compile the %hasflash directive
      *
      * @param string $expression
      * @return string
@@ -143,7 +192,7 @@ trait CompileHelpers
     }
 
     /**
-     * Compile the %endif statement
+     * Compile the %endif directive
      *
      * @param string $expression
      * @return string
@@ -164,7 +213,7 @@ trait CompileHelpers
     }
 
     /**
-     * Compile the %if statement
+     * Compile the %if directive
      *
      * Note: $o_lexic is the original PHP lexique
      *

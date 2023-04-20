@@ -22,7 +22,7 @@ trait CompileMacro
     }
 
     /**
-     * Complie the %macro and %endmacro statements
+     * Complie the %macro and %endmacro directives
      *
      * @param string $expression
      * @return string

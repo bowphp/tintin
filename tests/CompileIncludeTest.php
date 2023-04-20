@@ -68,9 +68,9 @@ class CompileIncludeTest extends \PHPUnit\Framework\TestCase
     {
         $compiler = new Compiler();
         $compileInclude = $this->makeReflectionFor('compileConditionalInclude');
-        $render = $compileInclude->invoke($compiler, "%includeIf(',' == 'f', 'filename', ['name' => 'Bow', 'is_admin' => isset(\$is_admin)])");
+        $render = $compileInclude->invoke($compiler, "%includeIf('filename', ['name' => 'Bow', 'is_admin' => isset(\$is_admin)])");
 
-        $this->assertEquals($render, "<?php echo \$__tintin->getStackManager()->includeFileIf(',' == 'f', 'filename', ['name' => 'Bow', 'is_admin' => isset(\$is_admin)], ['__tintin' => \$__tintin]); ?>");
+        $this->assertEquals($render, "<?php echo \$__tintin->getStackManager()->includeFileIf('filename', ['name' => 'Bow', 'is_admin' => isset(\$is_admin)], ['__tintin' => \$__tintin]); ?>");
     }
 
     public function testCompileIncludeWhenStatementWithParamComplex()
@@ -79,7 +79,7 @@ class CompileIncludeTest extends \PHPUnit\Framework\TestCase
         $compileInclude = $this->makeReflectionFor('compileConditionalInclude');
         $render = $compileInclude->invoke($compiler, "%includeWhen(',' == 'f', 'filename', ['name' => 'Bow', 'is_admin' => isset(\$is_admin)])");
 
-        $this->assertEquals($render, "<?php echo \$__tintin->getStackManager()->includeFileIf(',' == 'f', 'filename', ['name' => 'Bow', 'is_admin' => isset(\$is_admin)], ['__tintin' => \$__tintin]); ?>");
+        $this->assertEquals($render, "<?php echo \$__tintin->getStackManager()->includeFileWhen(',' == 'f', 'filename', ['name' => 'Bow', 'is_admin' => isset(\$is_admin)], ['__tintin' => \$__tintin]); ?>");
     }
 
     public function testCompileIncludeStatementWithParamComplexUsage()
@@ -110,7 +110,7 @@ TEMPLATE;
         $instance = new Tintin($this->loader);
 
         $output = $instance->render("include", ["name" => false]);
-        $this->assertEquals("included", trim($output));
+        $this->assertEquals("included\ninclude-if", trim($output));
     }
 
     public function testCompileFullIncludeIfTemplate()
