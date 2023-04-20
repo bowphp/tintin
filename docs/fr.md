@@ -6,16 +6,16 @@
   - [Affichage des données](#affichage-des-données)
     - [Affichage des données non échappées](#affichage-des-données-non-échappées)
   - [Ajouter un commentaire](#ajouter-un-commentaire)
-  - [%if / %elseif ou %elif / %else](#if--elseif-ou-elif--else)
-  - [%unless](#unless)
-  - [%loop / %for / %while](#loop--for--while)
-    - [L'utilisation de %loop](#lutilisation-de-loop)
-    - [Les sucres syntaxiques %jump et %stop](#les-sucres-syntaxiques-jump-et-stop)
-    - [L'utilisation de %for](#lutilisation-de-for)
-    - [L'utilisation de %while](#lutilisation-de-while)
+  - [les directives `%if` / `%elseif` ou `%elif` / `%else`](#les-directives-if--elseif-ou-elif--else)
+  - [La directive `%unless`](#la-directive-unless)
+  - [Les directives `%loop` / `%for` / `%while`](#les-directives-loop--for--while)
+    - [L'utilisation de `%loop`](#lutilisation-de-loop)
+    - [Les sucres syntaxiques `%jump` et `%stop`](#les-sucres-syntaxiques-jump-et-stop)
+    - [L'utilisation de `%for`](#lutilisation-de-for)
+    - [La directive `%while`](#la-directive-while)
   - [Inclusion de fichier](#inclusion-de-fichier)
     - [Exemple d'inclusion](#exemple-dinclusion)
-    - [Exemple de %includeWhen or %includeIf](#exemple-de-includewhen-or-includeif)
+    - [Exemple de `%includeWhen` ou `%includeIf`](#exemple-de-includewhen-ou-includeif)
 - [Héritage avec %extends, %block et %inject](#héritage-avec-extends-block-et-inject)
   - [Explication](#explication)
 - [Directive personnelisée](#directive-personnelisée)
@@ -23,8 +23,8 @@
   - [Utilisation des directives](#utilisation-des-directives)
   - [Compilation du template](#compilation-du-template)
   - [Sortie après compilation](#sortie-après-compilation)
-  - [Ajouter vos directive de la configuration](#ajouter-vos-directive-de-la-configuration)
-  - [Les %macro](#les-macro)
+  - [Ajouter vos directives de la configuration](#ajouter-vos-directives-de-la-configuration)
+  - [La directive `%macro`](#la-directive-macro)
 
 ## Introduction
 
@@ -146,7 +146,7 @@ Hello, {{{ $name }}}.
 
 Cette clause `{## comments ##}` permet d'ajouter un commentaire à votre code `tintin`.
 
-### %if / %elseif ou %elif / %else
+### les directives `%if` / `%elseif` ou `%elif` / `%else`
 
 Ce sont les clauses qui permettent d'établir des branchements conditionnels comme dans la plupart des langages de programmation.
 
@@ -162,7 +162,7 @@ Ce sont les clauses qui permettent d'établir des branchements conditionnels com
 
 > Vous pouvez utiliser `%elif` à la place de `%elseif`.
 
-### %unless
+### La directive `%unless`
 
 Petite spécificité, le `%unless` quant à lui, il permet de faire une condition inverse du `%if`.
 Pour faire simple, voici un exemple:
@@ -172,11 +172,11 @@ Pour faire simple, voici un exemple:
 => %if (!($name == 'tintin'))
 ```
 
-### %loop / %for / %while
+### Les directives `%loop` / `%for` / `%while`
 
 Souvent vous pouvez être amener à faire des listes ou répétitions sur des éléments. Par exemple, afficher tout les utilisateurs de votre plateforme.
 
-#### L'utilisation de %loop
+#### L'utilisation de `%loop`
 
 Cette clause faire exactement l'action de `foreach`.
 
@@ -200,7 +200,7 @@ Un exemple rapide.
 
 Vous avez peut-être remarquer le `%stop` il permet de stoper l'éxécution de la boucle. Il y a aussi son conjoint le `%jump`, lui parcontre permet d'arrêter l'éxécution à son niveau et de lancer s'éxécution du prochain tour de la boucle.
 
-#### Les sucres syntaxiques %jump et %stop
+#### Les sucres syntaxiques `%jump` et `%stop`
 
 Souvent le dévéloppeur est amené à faire des conditions d'arrêt de la boucle `%loop` comme ceci:
 
@@ -224,7 +224,7 @@ Avec les sucres syntaxique, on peut réduire le code comme ceci:
 %endloop
 ```
 
-#### L'utilisation de %for
+#### L'utilisation de `%for`
 
 Cette clause faire exactement l'action de `for`.
 
@@ -234,7 +234,7 @@ Cette clause faire exactement l'action de `for`.
 %endfor
 ```
 
-#### L'utilisation de %while
+#### La directive `%while`
 
 Cette clause faire exactement l'action de `while`.
 
@@ -269,15 +269,21 @@ Utilisation:
 // => Hello Tintin
 ```
 
-#### Exemple de %includeWhen or %includeIf
+#### Exemple de `%includeWhen` ou `%includeIf`
 
-Parfois vous aimeriez inclut un contenu quand une condition est bien définit. Alors pour se faire vous pouvez utiliser `%includeIf` ou `%includeWhen`
+Parfois vous aimeriez inclut un contenu quand une condition est bien définit, alors pour se faire vous pouvez utiliser `%includeWhen` et dans certain si la vue à intégrer exists alors `%includeIf`
 
 ```t
 %includeWhen(!$user->isAdmin(), "include-file-name", ["name" => "Tintin"])
 ```
 
 > Tintin will execute the templae only if the `!$user->isAdmin()` condition is correct
+
+Disons que le fichier `filename.tintin.php` n'existe pas mais vous souhaitez l'intéger parce que souvent par d'autre moyen ce fichier existe
+
+```t
+%includeIf("filename", ["name" => "Tintin"])
+```
 
 ## Héritage avec %extends, %block et %inject
 
@@ -403,7 +409,7 @@ echo $tintin->render('form');
 </form>
 ```
 
-### Ajouter vos directive de la configuration
+### Ajouter vos directives de la configuration
 
 Dans le cas ou vous utilisez la configuration Tintin pour Bow Framework.
 Changer le vos configuration dans le `ApplicationController::class` dans le dossier `app/Configurations`.
@@ -439,6 +445,42 @@ return $tintin->render('%super');
 // => Super !
 ```
 
-### Les %macro
+### La directive `%macro`
 
-Souvant, vous serez amener utiliser et reutiliser un block de template pour optimiser l'ecriture de votre application
+Souvant, vous serez amener utiliser ou réutiliser un block de template pour optimiser l'écriture de votre application. Alors les macros sont là pour cela
+Les macros doivent être définir dans un fichier séparé.
+
+Pour vous utiliser les `%macro` vous devez passer en premier paramêtre le nom du macro et ensuite les paramêtres du macro.
+
+Considérons le fichier `user-macro.tintin.php`.
+
+```t
+%macro('users', array $users)
+  %loop($users as $user)
+    <div>{{ $user }}</div>
+  %endloop
+%endmacro
+```
+
+Pour utiliser le macro vous devez l'importer dans un autre fichier avec `%import`. Nous allons appelé le fichier `app.tintin.php`.
+
+```t
+%import('user-macro')
+
+{{ users($users) }}
+```
+
+Après compilation du fichier
+
+```php
+$users = ["franck", "lucien", "brice"];
+$tintin->render('app', compact('users'));
+```
+
+Après compilation du fichier
+
+```html
+<div>franck</div>
+<div>lucien</div>
+<div>brice</div>
+```

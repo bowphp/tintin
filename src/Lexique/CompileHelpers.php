@@ -16,7 +16,7 @@ trait CompileHelpers
     {
         foreach (
             [
-            "Auth", "Guest", "Lang", "Env", "Csrf", "Flash", "Production", 
+            "Auth", "Guest", "Lang", "Env", "Csrf", "Flash", "Production",
             "HasFlash", "EndHelpers", "Empty", "NotEmpty", "Method", "Service"
             ] as $token
         ) {
