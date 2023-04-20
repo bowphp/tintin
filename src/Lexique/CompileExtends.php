@@ -5,7 +5,7 @@ namespace Tintin\Lexique;
 trait CompileExtends
 {
     /**
-     * Compile the inherit concept statement
+     * Compile the inherit concept directive
      *
      * @param string $expression
      * @return string
@@ -24,7 +24,7 @@ trait CompileExtends
     }
 
     /**
-     * Compile the %block statement
+     * Compile the %block directive
      *
      * @param string $expression
      * @return string
@@ -55,7 +55,7 @@ trait CompileExtends
     }
 
     /**
-     * Compile the %endblock statement
+     * Compile the %endblock directive
      *
      * @param string $expression
      * @return string
@@ -70,7 +70,7 @@ trait CompileExtends
     }
 
     /**
-     * Compile the %include statement
+     * Compile the %include directive
      *
      * @param string $expression
      * @return string
@@ -87,24 +87,26 @@ trait CompileExtends
     }
 
     /**
-     * Compile the %include statement
+     * Compile the %include directive
      *
      * @param string $expression
      * @return string
      */
     protected function compileConditionalInclude(string $expression): string
     {
-        $regex = "/\%include(?:If|When)\s*\(((?:\n|\s|\t)*(?:.+)(?:\n|\s|\t)*\)?)\)/sm";
+        $regex = "/\%include(If|When)\s*\(((?:\n|\s|\t)*(?:.+)(?:\n|\s|\t)*\)?)\)/sm";
 
         $output = preg_replace_callback($regex, function ($match) {
-            return "<?php echo \$__tintin->getStackManager()->includeFileIf({$match[1]}, ['__tintin' => \$__tintin]); ?>";
+            array_shift($match);
+            [$type, $params] = $match;
+            return "<?php echo \$__tintin->getStackManager()->includeFile{$type}({$params}, ['__tintin' => \$__tintin]); ?>";
         }, $expression);
 
         return $output == $expression ? '' : $output;
     }
 
     /**
-     * Compile the %extends statement
+     * Compile the %extends directive
      *
      * @param string $expression
      * @return string
@@ -123,7 +125,7 @@ trait CompileExtends
     }
 
     /**
-     * Compile the %inject statement
+     * Compile the %inject directive
      *
      * @param string $expression
      * @return string

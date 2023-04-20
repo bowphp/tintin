@@ -5,7 +5,7 @@ namespace Tintin\Lexique;
 trait CompileEchos
 {
     /**
-     * Compile the echo statement concept
+     * Compile the echo directive concept
      *
      * @param string $expression
      * @return string
@@ -24,7 +24,7 @@ trait CompileEchos
     }
 
     /**
-     * Compile the {{ $name }} statement
+     * Compile the {{ $name }} directive
      *
      * @param string $expression
      * @return string
@@ -52,7 +52,7 @@ trait CompileEchos
     }
 
     /**
-     * Compile the {{{ $name }}} statement
+     * Compile the {{{ $name }}} directive
      *
      * @param string $expression
      * @return string

@@ -1,3 +1,4 @@
 %include("partials.simple")
-%includeIf($name == 'bowphp', "partials.include-if")
+%includeIf("partials.include-if-not-exists")
+%includeIf("partials.include-if")
 %includeWhen($logged ?? false, "partials.include-when")

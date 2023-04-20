@@ -23,7 +23,7 @@ trait CompileLoop
     }
 
     /**
-     * Compile the loop statement stack
+     * Compile the loop directive stack
      *
      * @param string $expression
      * @return string
@@ -42,7 +42,7 @@ trait CompileLoop
     }
 
     /**
-     * Compile the %loop statement
+     * Compile the %loop directive
      *
      * @param string $expression
      * @param string $lexic
@@ -63,7 +63,7 @@ trait CompileLoop
     }
 
     /**
-     * Compile the %endloop statement
+     * Compile the %endloop directive
      *
      * @param string $expression
      * @param string $lexic
@@ -80,7 +80,7 @@ trait CompileLoop
     }
 
     /**
-     * Compile the loop breaker statement
+     * Compile the loop breaker directive
      *
      * @param string $expression
      * @param string $lexic
@@ -107,7 +107,7 @@ trait CompileLoop
     }
 
     /**
-     * Compile the %loop statement
+     * Compile the %loop directive
      *
      * @param string $expression
      * @return string
@@ -118,7 +118,7 @@ trait CompileLoop
     }
 
     /**
-     * Compile the %while statement
+     * Compile the %while directive
      *
      * @param $expression
      * @return string
@@ -129,7 +129,7 @@ trait CompileLoop
     }
 
     /**
-     * Compile the %for statement
+     * Compile the %for directive
      *
      * @param string $expression
      * @return string
@@ -140,7 +140,7 @@ trait CompileLoop
     }
 
     /**
-     * Compile the %endloop statement
+     * Compile the %endloop directive
      *
      * @param $expression
      * @return string
@@ -151,7 +151,7 @@ trait CompileLoop
     }
 
     /**
-     * Compile the %endwhile statement
+     * Compile the %endwhile directive
      *
      * @param string $expression
      * @return string
@@ -162,7 +162,7 @@ trait CompileLoop
     }
 
     /**
-     * Compile the %endfor statement
+     * Compile the %endfor directive
      *
      * @param string $expression
      * @return string
@@ -173,7 +173,7 @@ trait CompileLoop
     }
 
     /**
-     * Compile the %jump statement
+     * Compile the %jump directive
      *
      * @param string $expression
      * @return string
@@ -184,7 +184,7 @@ trait CompileLoop
     }
 
     /**
-     * Compile the %stop statement
+     * Compile the %stop directive
      *
      * @param string $expression
      * @return string

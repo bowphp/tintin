@@ -425,7 +425,7 @@ class ApplicationConfiguration extends Configuration
   {
     $tintin = app('view')->getEngine();
 
-    $tintin->define('super', function () {
+    $tintin->directive('super', function () {
       return "Super !";
     });
   }

@@ -5,7 +5,7 @@ namespace Tintin\Lexique;
 trait CompileClass
 {
     /**
-     * Compile the %class statement
+     * Compile the %class directive
      *
      * @param string $expression
      * @return string

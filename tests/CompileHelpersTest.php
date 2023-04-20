@@ -84,6 +84,31 @@ class CompileHelpersTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($render, '<?= csrf_field(); ?>()');
     }
 
+    public function testCompileMethodStatement()
+    {
+        $compileMethod = $this->makeReflectionFor('compileMethod');
+
+        $render = $compileMethod->invoke($this->compiler, '%method("PUT")');
+        $this->assertEquals($render, '<?= method_field("PUT"); ?>');
+
+        $render = $compileMethod->invoke($this->compiler, '%method("DELETE")');
+        $this->assertEquals($render, '<?= method_field("DELETE"); ?>');
+
+        $render = $compileMethod->invoke($this->compiler, '%method("PUT") ');
+        $this->assertEquals($render, '<?= method_field("PUT"); ?> ');
+
+        $render = $compileMethod->invoke($this->compiler, ' %method("PUT") ');
+        $this->assertEquals($render, ' <?= method_field("PUT"); ?> ');
+    }
+
+    public function testCompileServiceStatement()
+    {
+        $compileService = $this->makeReflectionFor('compileService');
+
+        $render = $compileService->invoke($this->compiler, '%service("user_service", "App\Service\UserService")');
+        $this->assertEquals($render, '<?php $user_service = app("App\Service\UserService"); ?>');
+    }
+
     public function testCompileEnvStatement()
     {
         $compileEnv = $this->makeReflectionFor('compileEnv');

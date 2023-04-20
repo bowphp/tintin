@@ -5,7 +5,7 @@ namespace Tintin\Lexique;
 trait CompileIf
 {
     /**
-     * Compile the if statement stack
+     * Compile the if directive stack
      *
      * @param string $expression
      * @return string
@@ -24,7 +24,7 @@ trait CompileIf
     }
 
     /**
-     * Compile the %if statement
+     * Compile the %if directive
      *
      * Note: $o_lexic is the original PHP lexique
      *
@@ -56,7 +56,7 @@ trait CompileIf
     }
 
     /**
-     * Compile the %if statement
+     * Compile the %if directive
      *
      * @param string $expression
      * @return string
@@ -67,7 +67,7 @@ trait CompileIf
     }
 
     /**
-     * Compile the %unless statement
+     * Compile the %unless directive
      *
      * @param string $expression
      * @return string
@@ -78,7 +78,7 @@ trait CompileIf
     }
 
     /**
-     * Compile the %isset statement
+     * Compile the %isset directive
      *
      * @param string $expression
      * @return string
@@ -89,7 +89,7 @@ trait CompileIf
     }
 
     /**
-     * Compile the %else statement
+     * Compile the %else directive
      *
      * @param string $expression
      * @return string
@@ -104,7 +104,7 @@ trait CompileIf
     }
 
     /**
-     * Compile the %elseif statement
+     * Compile the %elseif directive
      *
      * @param string $expression
      * @return string
@@ -115,7 +115,7 @@ trait CompileIf
     }
 
     /**
-     * Compile the %elseif statement
+     * Compile the %elseif directive
      *
      * @param string $expression
      * @return string
@@ -126,7 +126,7 @@ trait CompileIf
     }
 
     /**
-     * Compile the %endif statement
+     * Compile the %endif directive
      *
      * @param string $expression
      * @return string

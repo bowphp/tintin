@@ -5,7 +5,7 @@ namespace Tintin\Lexique;
 trait CompileVerbatim
 {
     /**
-     * Compile %verbatim statement
+     * Compile %verbatim directive
      *
      * @param string $expression
      * @return string
