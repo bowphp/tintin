@@ -113,11 +113,11 @@ TEMPLATE;
 
         $tintin->directive('admin', function () {
             return '<?php if (true): ?>';
-        });
+        }, true);
 
         $tintin->directive('endadmin', function () {
             return '<?php endif; ?>';
-        });
+        }, true);
 
         $output = $tintin->render('custom', ['name' => 'franck']);
 
