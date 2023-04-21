@@ -24,10 +24,6 @@
 - [Héritage avec %extends, %block et %inject](#héritage-avec-extends-block-et-inject)
   - [Explication](#explication)
 - [Directive personnelisée](#directive-personnelisée)
-  - [Exemple](#exemple)
-  - [Utilisation des directives](#utilisation-des-directives)
-  - [Compilation du template](#compilation-du-template)
-  - [Sortie après compilation](#sortie-après-compilation)
   - [Ajouter vos directives de la configuration](#ajouter-vos-directives-de-la-configuration)
   - [La directive `%macro`](#la-directive-macro)
 
@@ -506,19 +502,7 @@ Le fichier `content.tintin.php` va hérité du code de `layout.tintin.php` et si
 ## Directive personnelisée
 
 Tintin peut être étendu avec son systême de directive personnalisé, pour ce faire utilisé la méthode `directive`
-
-```php
-$tintin->directive('hello', function (string $name) {
-  return 'Hello, '. $name;
-});
-
-echo $tintin->render('%hello("Tintin")');
-// => Hello, Tintin
-```
-
-### Exemple
-
-Création de directive pour gérer un formulaires:
+Créons des directives pour gérer un formulaires:
 
 ```php
 $tintin->directive('input', function (string $type, string $name, ?string $value) {
@@ -538,19 +522,16 @@ $tintin->directive('endform', function () {
 });
 ```
 
-### Utilisation des directives
-
 Pour utiliser ces directives, rien de plus simple. Ecrivez le nom de la directive précédé la par `%`. Ensuite si cette directive prend des paramètres, lancer la directive comme vous lancez les fonctions dans votre programme.
 
 ```t
-# File form.tintin.php
-%form("/posts", "post", "multipart/form-data")
-  %input("text", "name")
-  %button('submit', 'Add')
-%endform
+<div class="container">
+  %form("/posts", "post", "multipart/form-data")
+    %input("text", "name")
+    %button('submit', 'Add')
+  %endform
+</div>
 ```
-
-### Compilation du template
 
 La compilation se fait comme d'habitude, pour plus d'information sur la [compilation](#utilisation).
 
@@ -558,7 +539,7 @@ La compilation se fait comme d'habitude, pour plus d'information sur la [compila
 echo $tintin->render('form');
 ```
 
-### Sortie après compilation
+Sortie après compilation:
 
 ```html
 <form action="/posts" method="post" enctype="multipart/form-data">
@@ -575,17 +556,17 @@ Changer le vos configuration dans le `ApplicationController::class` dans le doss
 ```php
 namespace App\Configurations;
 
-use Bow\Configuration\Loader;
+use Bow\Configuration\Loader as Config;
 
 class ApplicationConfiguration extends Configuration
 {
   /**
    * Launch configuration
    *
-   * @param Loader $config
+   * @param Config $config
    * @return void
    */
-  public function create(Loader $config): void
+  public function create(Config $config): void
   {
     $tintin = app('view')->getEngine();
 
@@ -605,8 +586,9 @@ return $tintin->render('%super');
 
 ### La directive `%macro`
 
-Souvant, vous serez amener utiliser ou réutiliser un block de template pour optimiser l'écriture de votre application. Alors les macros sont là pour cela
-Les macros doivent être définir dans un fichier séparé.
+Souvent, vous serez amené utiliser ou réutiliser un bloc de template pour optimiser l'écriture de votre application. Alors les macros sont là pour cela.
+
+> Les macros doivent être définies dans un fichier séparé.
 
 Pour vous utiliser les `%macro` vous devez passer en premier paramêtre le nom du macro et ensuite les paramêtres du macro.
 
@@ -620,9 +602,7 @@ Considérons le fichier `user-macro.tintin.php`.
 %endmacro
 ```
 
-Pour utiliser le macro vous devez l'importer dans un autre fichier avec `%import`.
-
-Nous allons appeler le fichier `app.tintin.php`.
+Pour utiliser le macro vous devez l'importer dans un autre fichier avec `%import`. Nous allons appeler le fichier `app.tintin.php` contenant le template suivant:
 
 ```t
 %import('user-macro')
@@ -630,14 +610,17 @@ Nous allons appeler le fichier `app.tintin.php`.
 %extends('layout')
 
 %block('content')
-  {{ users($users) }}
+  <div class="container">
+    {{ users($users) }}
+  </div>
 %endblock
 ```
 
-Après compilation du fichier
+Pour la compilation nous allons passer la liste des utilisateurs suivant:
 
 ```php
 $users = ["franck", "lucien", "brice"];
+
 $tintin->render('app', compact('users'));
 ```
 
