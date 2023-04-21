@@ -19,6 +19,8 @@
   - [Injection de services](#injection-de-services)
   - [Directives d'authentification](#directives-dauthentification)
   - [Environment Guidelines](#environment-guidelines)
+  - [Champ CSRF](#champ-csrf)
+  - [Champ Méthode](#champ-méthode)
 - [Héritage avec %extends, %block et %inject](#héritage-avec-extends-block-et-inject)
   - [Explication](#explication)
 - [Directive personnelisée](#directive-personnelisée)
@@ -427,6 +429,26 @@ Ou, vous pouvez déterminer si l'application s'exécute dans un environnement sp
 %endenv
 ```
 
+### Champ CSRF
+
+Chaque fois que vous définissez un formulaire HTML dans votre application, vous devez inclure un champ de jeton CSRF masqué dans le formulaire afin que le middleware de protection CSRF puisse valider la demande. Vous pouvez utiliser la directive `%csrf` Tintin pour générer le champ de jeton :
+
+```t
+<form method="POST" action="/profile">
+  %csrf
+</form>
+```
+
+### Champ Méthode
+
+Étant donné que les formulaires HTML ne peuvent pas effectuer de requêtes `PUT`, `PATCH` ou `DELETE`, vous devrez ajouter un champ _method masqué pour usurper ces verbes HTTP. La directive `%method` Tintin peut créer ce champ pour vous :
+
+```t
+<form action="/foo/bar" method="POST">
+  %method('PUT')
+</form>
+```
+
 ## Héritage avec %extends, %block et %inject
 
 Comme tout bon système de template **tintin** support le partage de code entre fichier. Ceci permet de rendre votre code flexible et maintenable.
@@ -503,10 +525,6 @@ $tintin->directive('input', function (string $type, string $name, ?string $value
   return '<input type="'.$type.'" name="'.$name.'" value="'.$value.'" />';
 });
 
-$tintin->directive('textarea', function (string $name, ?string $value) {
-  return '<textarea name="'.$name.'">"'.$value.'"</textarea>';
-});
-
 $tintin->directive('button', function (string $type, string $label) {
   return '<button type="'.$type.'">'.$label.'"</button>';
 });
@@ -528,7 +546,6 @@ Pour utiliser ces directives, rien de plus simple. Ecrivez le nom de la directiv
 # File form.tintin.php
 %form("/posts", "post", "multipart/form-data")
   %input("text", "name")
-  %textarea("content")
   %button('submit', 'Add')
 %endform
 ```
@@ -546,7 +563,6 @@ echo $tintin->render('form');
 ```html
 <form action="/posts" method="post" enctype="multipart/form-data">
   <input type="text" name="name" value="" />
-  <textarea name="content"></textarea>
   <button type="submit">Add</button>
 </form>
 ```
