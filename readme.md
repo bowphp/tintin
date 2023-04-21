@@ -42,6 +42,13 @@ Thank you for considering contributing to Bow Framework! The contribution guide 
 - [Franck DAKIA](https://github.com/papac)
 - [Thank's collaborators](https://github.com/bowphp/tintin/graphs/contributors)
 
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
+
+
 ## Contact
 
 - [papac@bowphp.com](mailto:papac@bowphp.com)
