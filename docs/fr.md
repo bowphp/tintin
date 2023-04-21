@@ -6,8 +6,8 @@
   - [Affichage des données](#affichage-des-données)
     - [Affichage des données non échappées](#affichage-des-données-non-échappées)
   - [Ajouter un commentaire](#ajouter-un-commentaire)
-  - [les directives `%if` / `%elseif` ou `%elif` / `%else`](#les-directives-if--elseif-ou-elif--else)
-  - [La directive `%unless`](#la-directive-unless)
+  - [La directive %verbatim](#la-directive-verbatim)
+  - [les directives `%if`](#les-directives-if)
   - [Les directives `%loop` / `%for` / `%while`](#les-directives-loop--for--while)
     - [L'utilisation de `%loop`](#lutilisation-de-loop)
     - [Les sucres syntaxiques `%jump` et `%stop`](#les-sucres-syntaxiques-jump-et-stop)
@@ -16,6 +16,8 @@
   - [Inclusion de fichier](#inclusion-de-fichier)
     - [Exemple d'inclusion](#exemple-dinclusion)
     - [Exemple de `%includeWhen` ou `%includeIf`](#exemple-de-includewhen-ou-includeif)
+  - [Directives d'authentification](#directives-dauthentification)
+  - [Environment Guidelines](#environment-guidelines)
 - [Héritage avec %extends, %block et %inject](#héritage-avec-extends-block-et-inject)
   - [Explication](#explication)
 - [Directive personnelisée](#directive-personnelisée)
@@ -146,14 +148,28 @@ Hello, {{{ $name }}}.
 
 Cette clause `{## comments ##}` permet d'ajouter un commentaire à votre code `tintin`.
 
-### les directives `%if` / `%elseif` ou `%elif` / `%else`
+### La directive %verbatim
+
+Si vous affichez des variables JavaScript dans une grande partie de votre modèle, vous pouvez envelopper le code HTML dans la directive `%verbatim` afin de ne pas avoir à préfixer chaque instruction Blade echo avec un symbole `%` :
+
+```t
+%verbatim
+  <div class="container">
+    Hello, {{ name }}.
+  </div>
+%endverbatim
+```
+
+### les directives `%if`
 
 Ce sont les clauses qui permettent d'établir des branchements conditionnels comme dans la plupart des langages de programmation.
 
+Vous pouvez construire des instructions if en utilisant les directives `%if`, `%elseif`, `%elif`, `%else` et `%endif`. Ces directives fonctionnent de la même manière que leurs homologues PHP :
+
 ```t
-%if($name == 'tintin')
+%if ($name == 'tintin')
   {{ $name }}
-%elseif($name == 'template')
+%elseif ($name == 'template')
   {{ $name }}
 %else
   {{ $name }}
@@ -162,14 +178,25 @@ Ce sont les clauses qui permettent d'établir des branchements conditionnels com
 
 > Vous pouvez utiliser `%elif` à la place de `%elseif`.
 
-### La directive `%unless`
-
 Petite spécificité, le `%unless` quant à lui, il permet de faire une condition inverse du `%if`.
 Pour faire simple, voici un exemple:
 
 ```t
-%unless($name == 'tintin')
-=> %if (!($name == 'tintin'))
+%unless($user->isAdmin())
+  // do something else
+$endunless
+```
+
+En plus des directives conditionnelles déjà discutées, les directives `%isset` et `%empty` peuvent être utilisées comme raccourcis pratiques pour leurs fonctions PHP respectives :
+
+```t
+%isset($records)
+  // $records is defined and is not null...
+%endisset
+ 
+%empty($records)
+  // $records is "empty"...
+%endempty
 ```
 
 ### Les directives `%loop` / `%for` / `%while`
@@ -283,6 +310,54 @@ Disons que le fichier `filename.tintin.php` n'existe pas mais vous souhaitez l'i
 
 ```t
 %includeIf("filename", ["name" => "Tintin"])
+```
+
+### Directives d'authentification
+
+Les directives `%auth` et `%guest` peuvent être utilisées pour déterminer rapidement si l'utilisateur actuel est authentifié ou est un invité :
+
+```t
+%auth
+  // The user is authenticated...
+%endauth
+ 
+%guest
+  // The user is not authenticated...
+%endguest
+```
+
+Si nécessaire, vous pouvez spécifier la garde d'authentification qui doit être vérifiée lors de l'utilisation des directives `%auth` et `%guest` :
+
+```t
+%auth('admin')
+  // The user is authenticated...
+%endauth
+ 
+%guest('admin')
+  // The user is not authenticated...
+%endguest
+```
+
+### Environment Guidelines
+
+Vous pouvez vérifier si l'application s'exécute dans l'environnement de production à l'aide de la directive `%production` :
+
+```t
+%production
+  // Production specific content...
+%endproduction
+```
+
+Ou, vous pouvez déterminer si l'application s'exécute dans un environnement spécifique à l'aide de la directive `%env` :
+
+```t
+%env('staging')
+  // The application is running in "staging"...
+%endenv
+
+%env(['staging', 'production'])
+  // The application is running in "staging" or "production"...
+%endenv
 ```
 
 ## Héritage avec %extends, %block et %inject
@@ -462,12 +537,18 @@ Considérons le fichier `user-macro.tintin.php`.
 %endmacro
 ```
 
-Pour utiliser le macro vous devez l'importer dans un autre fichier avec `%import`. Nous allons appelé le fichier `app.tintin.php`.
+Pour utiliser le macro vous devez l'importer dans un autre fichier avec `%import`.
+
+Nous allons appeler le fichier `app.tintin.php`.
 
 ```t
 %import('user-macro')
 
-{{ users($users) }}
+%extends('layout')
+
+%block('content')
+  {{ users($users) }}
+%endblock
 ```
 
 Après compilation du fichier

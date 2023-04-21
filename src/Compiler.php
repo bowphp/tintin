@@ -108,6 +108,7 @@ class Compiler
         'endempty',
         'method',
         'service',
+        'trans',
     ];
 
     /**

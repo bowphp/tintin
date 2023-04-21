@@ -111,15 +111,23 @@ class CompileHelpersTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($render, '<?php $user_service = app("App\Service\UserService"); ?>');
     }
 
+    public function testCompileTransStatement()
+    {
+        $compileService = $this->makeReflectionFor('compileTrans');
+
+        $render = $compileService->invoke($this->compiler, '%trans("user.service")');
+        $this->assertEquals($render, '<?php echo __("user.service"); ?>');
+    }
+
     public function testCompileEnvStatement()
     {
         $compileEnv = $this->makeReflectionFor('compileEnv');
 
         $render = $compileEnv->invoke($this->compiler, '%env("production")');
-        $this->assertEquals($render, '<?php if (app_mode() == "production"): ?>');
+        $this->assertEquals($render, '<?php if (in_array(app_mode(), (array) "production")): ?>');
 
         $render = $compileEnv->invoke($this->compiler, '%env("production") ');
-        $this->assertEquals($render, '<?php if (app_mode() == "production"): ?> ');
+        $this->assertEquals($render, '<?php if (in_array(app_mode(), (array) "production")): ?> ');
     }
 
     public function testCompileProductionStatement()
