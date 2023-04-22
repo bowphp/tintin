@@ -181,7 +181,6 @@ class Compiler
         foreach ($data as $value) {
             if (strlen($value) > 0) {
                 $value = $this->compileToken($value);
-
                 $this->result .= strlen($value) == 0 || $value == ' ' ? trim($value) . "\n" : $value . "\n";
             }
         }
@@ -204,10 +203,8 @@ class Compiler
         foreach ($this->tokens as $token) {
             $out = $this->{'compile' . $token}($value);
 
-            if (in_array($token, ['Comments', 'Import'])) {
-                if (strlen($out) == 0) {
-                    return "";
-                }
+            if (in_array($token, ['Comments', 'Import']) && strlen($out) == 0) {
+                return "";
             }
 
             if (strlen($out) !== 0) {
