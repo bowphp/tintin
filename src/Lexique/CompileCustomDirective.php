@@ -58,6 +58,7 @@ trait CompileCustomDirective
 
     /**
      * Get partern
+     *
      * @return string
      */
     private function getCustomDirectivePartern()
