@@ -3,10 +3,12 @@
 use Tintin\Tintin;
 use Tintin\Compiler;
 use Tintin\Filesystem;
+use Spatie\Snapshots\MatchesSnapshots;
 
 class CompileMacroTest extends PHPUnit\Framework\TestCase
 {
     use CompileClassReflection;
+    use MatchesSnapshots;
 
     private Compiler $compiler;
 
@@ -66,5 +68,6 @@ class CompileMacroTest extends PHPUnit\Framework\TestCase
         $this->assertStringContainsString("User's Brice", $output);
         $this->assertStringContainsString("Sum of 1 + 2 = 3", $output);
         $this->assertStringContainsString('<input type="text" name="name" value="papac"/>', $output);
+        $this->assertMatchesTextSnapshot(trim($output));
     }
 }

@@ -16,7 +16,7 @@ trait CompileHelpers
     {
         foreach (
             [
-            "Auth", "Guest", "Lang", "Env", "Csrf", "Flash", "Production",
+            "Auth", "Guest", "Lang", "Env", "Csrf", "Flash", "Production", "Trans",
             "HasFlash", "EndHelpers", "Empty", "NotEmpty", "Method", "Service"
             ] as $token
         ) {
@@ -123,6 +123,17 @@ trait CompileHelpers
     protected function compileLang(string $expression): string
     {
         return $this->compileHelpersStatement($expression, '%lang');
+    }
+
+    /**
+     * Compile the %trans directive
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileTrans(string $expression): string
+    {
+        return $this->compileHelpersStatement($expression, '%trans');
     }
 
     /**
@@ -259,9 +270,17 @@ trait CompileHelpers
                 return "<?php throw new \Tintin\Exception\BadDirectiveCalledException('$message') ?>";
             }
 
+            if ($lexic == '%trans') {
+                if (strlen(trim($params)) > 1) {
+                    return "<?php echo __(" . $params . "); ?>";
+                }
+                $message = "The %trans take $1 parameter missing but $0 passed";
+                return "<?php throw new \Tintin\Exception\BadDirectiveCalledException('$message') ?>";
+            }
+
             if ($lexic == '%env') {
                 if (strlen(trim($params)) > 1) {
-                    return "<?php if (app_mode() == " . $params . "): ?>";
+                    return "<?php if (in_array(app_mode(), (array) " . $params . ")): ?>";
                 }
                 $message = "The %env take $1 parameter missing but $0 passed";
                 return "<?php throw new \Tintin\Exception\BadDirectiveCalledException('$message') ?>";

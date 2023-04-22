@@ -173,7 +173,7 @@ class Tintin
      * @param array $data
      * @return string
      */
-    public function renderString($template, array $data = []): string
+    public function renderString(string $template, array $data = []): string
     {
         $__template = $template;
         return $this->executePlainRendering(
@@ -189,13 +189,16 @@ class Tintin
      * @param array $data
      * @return string
      */
-    private function executePlainRendering($content, $data): string
+    private function executePlainRendering(string $content, array $data): string
     {
         $this->obFlushAndStar();
 
         extract($data);
 
-        $filename = $this->createTmpFile($content);
+        $parts = preg_split("/\n|\r\n/", $content);
+        $parts = array_map(fn ($value) => trim($value), $parts);
+
+        $filename = $this->createTmpFile(implode("\n\t", $parts));
 
         require $filename;
 
@@ -211,9 +214,7 @@ class Tintin
      */
     private function obGetContent(): string
     {
-        $data = ob_get_clean();
-
-        return (string) $data;
+        return (string) ob_get_clean();
     }
 
     /**

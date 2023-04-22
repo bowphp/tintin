@@ -1,0 +1,7 @@
+<?php if ($age > 16): ?>
+	<?php echo htmlspecialchars("You can drive !", ENT_QUOTES); ?>
+<?php elseif ($name > 15 ): ?>
+	<?php echo htmlspecialchars("You can drive next year !", ENT_QUOTES); ?>
+<?php else: ?>
+	<?php echo htmlspecialchars("You can\'t drive", ENT_QUOTES); ?>
+<?php endif; ?>

@@ -1,5 +1,6 @@
 <?php
 
+use Spatie\Snapshots\MatchesSnapshots;
 use Tintin\Tintin;
 use Tintin\Compiler;
 use Tintin\Filesystem;
@@ -7,6 +8,7 @@ use Tintin\Filesystem;
 class CompileIncludeTest extends \PHPUnit\Framework\TestCase
 {
     use CompileClassReflection;
+    use MatchesSnapshots;
 
     /**
      * @var Filesystem
@@ -129,5 +131,6 @@ TEMPLATE;
         $output = $instance->render("include", ["name" => false, "logged" => true]);
         $this->assertStringContainsString("included", trim($output));
         $this->assertStringContainsString("include-when", trim($output));
+        $this->assertMatchesTextSnapshot($output);
     }
 }

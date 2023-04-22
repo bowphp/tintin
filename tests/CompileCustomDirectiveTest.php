@@ -1,5 +1,6 @@
 <?php
 
+use Spatie\Snapshots\MatchesSnapshots;
 use Tintin\Tintin;
 use Tintin\Filesystem;
 use Tintin\LoaderInterface;
@@ -7,6 +8,7 @@ use Tintin\LoaderInterface;
 class CompileCustomDirectiveTest extends \PHPUnit\Framework\TestCase
 {
     use CompileClassReflection;
+    use MatchesSnapshots;
 
     /**
      * @var Tintin
@@ -101,6 +103,16 @@ TEMPLATE;
     "name" => $name,
     "lastname" => $lastname
 ]);', $output);
+
+        $output = $compileCustomDirective->invoke($compiler, '%user([
+            "name" => $name,
+            "lastname" => $lastname
+        ])');
+
+        $this->assertStringContainsString('<?php echo $__tintin->getCompiler()->_____executeCustomDirectory("user", [
+            "name" => $name,
+            "lastname" => $lastname
+        ]);', $output);
     }
 
     public function testCompileCustomDirectiveDefineAsBrockenClause()
@@ -123,5 +135,6 @@ TEMPLATE;
 
         $this->assertStringContainsString('Franck, access allowed', trim($output));
         $this->assertStringContainsString('Hello, franck', trim($output));
+        $this->assertMatchesTextSnapshot($output);
     }
 }

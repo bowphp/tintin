@@ -84,9 +84,11 @@ class MacroManager
         array $parameters,
         string $content
     ): string {
-        $content = addcslashes($content, "'");
+        $content = trim(addcslashes($content, "'"));
+        // $parts = preg_split("/\n|\r\n/", $content);
+        // $parts = array_map(fn($value) => trim($value), $parts);
         return sprintf(
-            "if (!function_exists('%s')) {\n\tfunction %s(%s)\n\t{\n\t\t%s\n\t\treturn \$tintin->renderstring('%s', get_defined_vars());\n\t}\n}\n\n",
+            "if (!function_exists('%s')) {\n\tfunction %s(%s)\n\t{\n\t\t%s\n\t\treturn \$tintin->renderString('%s', get_defined_vars());\n\t}\n}\n\n",
             $function,
             $function,
             implode(', ', $parameters),
