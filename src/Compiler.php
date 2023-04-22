@@ -182,14 +182,15 @@ class Compiler
             if (strlen($value) > 0) {
                 $value = $this->compileToken($value);
 
-                $this->result .= strlen($value) == 0 || $value == ' ' ? trim($value) : $value . "\n";
+                $this->result .= strlen($value) == 0 || $value == ' ' ? trim($value) . "\n" : $value . "\n";
             }
         }
 
         // Apply the verbatim
         $this->applyVerbatimAccumulatorContent();
+        $result = $this->applyImportTemplate();
 
-        return $this->applyImportTemplate();
+        return $result;
     }
 
     /**

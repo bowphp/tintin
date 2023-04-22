@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Extends</title>
+	<title>Extends</title>
 </head>
 <body>
-    Hello, Papac    Sum of 1 + 2 = 3            <div>User's Franck</div>
-            <div>User's Brice</div>
-            <div>User's Lucien</div>
-        <input type="text" name="name" value="papac"/></body>
+	Hello, Papac    Sum of 1 + 2 = 3    	<div>User's Franck</div>
+	<div>User's Brice</div>
+	<div>User's Lucien</div>
+	<input type="text" name="name" value="papac"/></body>
 </html>
