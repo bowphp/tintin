@@ -99,20 +99,22 @@ TEMPLATE;
 
         $compileCustomDirective = $this->makeReflectionFor('compileCustomDirective');
         $output = $compileCustomDirective->invoke($compiler, $template);
-        $this->assertStringContainsString('<?php echo $__tintin->getCompiler()->_____executeCustomDirectory("user", [
-    "name" => $name,
-    "lastname" => $lastname
-]); ?>', $output);
+        $this->assertEquals($output, "@__tintin_custom__user__directive__@");
+
+        $output = $tintin->renderString($template, ["name" => "bow", "lastname" => "tintin"]);
+        $this->assertEquals("Hello bow, tintin", $output);
 
         $output = $compileCustomDirective->invoke($compiler, '%user([
             "name" => $name,
             "lastname" => $lastname
         ])');
+        $this->assertEquals($output, "@__tintin_custom__user__directive__@");
 
-        $this->assertStringContainsString('<?php echo $__tintin->getCompiler()->_____executeCustomDirectory("user", [
+        $output = $tintin->renderString('%user([
             "name" => $name,
             "lastname" => $lastname
-        ]); ?>', $output);
+        ])', ["name" => "bow", "lastname" => "tintin"]);
+        $this->assertEquals("Hello bow, tintin", $output);
     }
 
     public function testCompileCustomDirectiveDefineAsBrockenClause()
