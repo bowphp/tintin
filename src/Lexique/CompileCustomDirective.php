@@ -12,40 +12,57 @@ trait CompileCustomDirective
      */
     protected function compileCustomDirective(string $expression): string
     {
-        $output = preg_replace_callback($this->getCustomDirectivePartern(), function ($match) {
-            [$value, $name] = $match;
+        $collection = [];
+        preg_match_all($this->getCustomDirectivePartern(), $expression, $matches);
+
+        array_shift($matches);
+        $replaces = [];
+        $values = $matches[0] ?? [];
+        $names = $matches[1] ?? [];
+        $parameters = $matches[2] ?? [];
+
+        foreach ($values as $key => $value) {
+            $name = $names[$key] ?? null;
 
             if (!isset($this->directives[$name])) {
-                return $value;
+                continue;
             }
 
+            $replaces[$name] = $value;
             $directive = $this->directives[$name];
+            $parameter = $parameters[$key] ?? null;
 
             if ($directive['broken']) {
-                return $this->_____executeCustomDirectory(
+                $collection[$name] = $this->_____executeCustomDirectory(
                     $name,
-                    $match[3] ?? []
+                    (is_null($parameter) || $parameter === false || strlen(trim($parameter)) === 0) ? $parameter : []
                 );
+                continue;
             }
 
-            $params = $match[3] ?? null;
-
-            if (is_null($params) || strlen(trim($params)) === 0) {
-                return "<?php echo \$__tintin->getCompiler()->_____executeCustomDirectory(\"$name\"); ?>";
+            if (is_null($parameter) || $parameter === false || strlen(trim($parameter)) === 0) {
+                $collection[$name] = "<?php echo \$__tintin->getCompiler()->_____executeCustomDirectory(\"$name\"); ?>";
+            } else {
+                $collection[$name] = "<?php echo \$__tintin->getCompiler()->_____executeCustomDirectory(\"$name\", $parameter); ?>";
             }
+        }
 
-            return "<?php echo \$__tintin->getCompiler()->_____executeCustomDirectory(\"$name\", $params); ?>";
-        }, $expression);
+        foreach ($replaces as $name => $value) {
+            if (array_key_exists($name, $collection)) {
+                $expression = str_replace($value, $collection[$name], $expression);
+            }
+        }
 
-        return $output == $expression ? '' : $output;
+        return $expression;
     }
 
     /**
      * Get partern
+     *
      * @return string
      */
     private function getCustomDirectivePartern()
     {
-        return "/^%([a-zA-Z_]+)\s*(\((.*?)\))?$/sm";
+        return "/(%([a-zA-Z]+)\s*(?:\((.*?)\))?)/sm";
     }
 }
