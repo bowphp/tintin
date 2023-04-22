@@ -33,7 +33,7 @@ trait CompileCustomDirective
             $parameter = $parameters[$key] ?? null;
 
             if ($directive['broken']) {
-                $collection[$name] = $this->_____executeCustomDirectory(
+                $this->custom_directives_accumulator[$name] = $this->_____executeCustomDirectory(
                     $name,
                     (is_null($parameter) || $parameter === false || strlen(trim($parameter)) === 0) ? $parameter : []
                 );
@@ -41,15 +41,16 @@ trait CompileCustomDirective
             }
 
             if (is_null($parameter) || $parameter === false || strlen(trim($parameter)) === 0) {
-                $collection[$name] = "<?php echo \$__tintin->getCompiler()->_____executeCustomDirectory(\"$name\"); ?>";
+                $this->custom_directives_accumulator[$name] = "<?php echo \$__tintin->getCompiler()->_____executeCustomDirectory(\"$name\"); ?>";
             } else {
-                $collection[$name] = "<?php echo \$__tintin->getCompiler()->_____executeCustomDirectory(\"$name\", $parameter); ?>";
+                $this->custom_directives_accumulator[$name] = "<?php echo \$__tintin->getCompiler()->_____executeCustomDirectory(\"$name\", $parameter); ?>";
             }
         }
 
         foreach ($replaces as $name => $value) {
-            if (array_key_exists($name, $collection)) {
-                $expression = str_replace($value, $collection[$name], $expression);
+            if (array_key_exists($name, $this->custom_directives_accumulator)) {
+                $placeholder = $this->generateCustomDirectivePlaceholder($name);
+                $expression = str_replace($value, $placeholder, $expression);
             }
         }
 

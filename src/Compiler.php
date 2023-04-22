@@ -153,11 +153,25 @@ class Compiler
     protected array $verbatim_accumulator = [];
 
     /**
+     * The not official directive accumulator
+     *
+     * @var array
+     */
+    protected array $custom_directives_accumulator = [];
+
+    /**
      * Define the vertabim placeholder
      *
      * @var string
      */
     protected string $verbatim_placeholder = "@__tintin_verbatim__{index}__@";
+
+    /**
+     * Define the custom directive placeholder
+     *
+     * @var string
+     */
+    protected string $custom_directive_placeholder = "@__tintin_custom__{name}__directive__@";
 
     /**
      * The custom directive collector
@@ -181,13 +195,12 @@ class Compiler
         foreach ($data as $value) {
             if (strlen($value) > 0) {
                 $value = $this->compileToken($value);
-
                 $this->result .= strlen($value) == 0 || $value == ' ' ? trim($value) . "\n" : $value . "\n";
             }
         }
 
         // Apply the verbatim
-        $this->applyVerbatimAccumulatorContent();
+        $this->applyAccumulatorContent();
         $result = $this->applyImportTemplate();
 
         return $result;
@@ -202,6 +215,10 @@ class Compiler
     private function compileToken(string $value): string
     {
         foreach ($this->tokens as $token) {
+            if (in_array($token, ["CustomDirective", "Verbatim"])) {
+                continue;
+            }
+
             $out = $this->{'compile' . $token}($value);
 
             if (in_array($token, ['Comments', 'Import']) && strlen($out) == 0) {
@@ -236,18 +253,24 @@ class Compiler
     }
 
     /**
-     * Apply %verbatim accumulator content
+     * Apply accumulator content
      *
      * @return void
      */
-    private function applyVerbatimAccumulatorContent(): void
+    private function applyAccumulatorContent(): void
     {
         foreach ($this->verbatim_accumulator as $index => $verbatim) {
             $placeholder = $this->generateVerbatimPlaceholder($index + 1);
             $this->result = str_replace($placeholder, $verbatim, $this->result);
         }
 
+        foreach ($this->custom_directives_accumulator as $name => $value) {
+            $placeholder = $this->generateCustomDirectivePlaceholder($name);
+            $this->result = str_replace($placeholder, $value, $this->result);
+        }
+
         $this->verbatim_accumulator = [];
+        $this->custom_directives_accumulator = [];
     }
 
     /**
@@ -259,6 +282,17 @@ class Compiler
     private function generateVerbatimPlaceholder(int $index): string
     {
         return str_replace("{index}", $index, $this->verbatim_placeholder);
+    }
+
+    /**
+     * Generate the custom directive placeholder
+     *
+     * @param integer $index
+     * @return string
+     */
+    private function generateCustomDirectivePlaceholder(string $name): string
+    {
+        return str_replace("{name}", $name, $this->custom_directive_placeholder);
     }
 
     /**
