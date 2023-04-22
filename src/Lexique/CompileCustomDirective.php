@@ -31,10 +31,10 @@ trait CompileCustomDirective
             $params = $match[3] ?? null;
 
             if (is_null($params) || strlen(trim($params)) === 0) {
-                return "<?php echo \$__tintin->getCompiler()->_____executeCustomDirectory(\"$name\");";
+                return "<?php echo \$__tintin->getCompiler()->_____executeCustomDirectory(\"$name\"); ?>";
             }
 
-            return "<?php echo \$__tintin->getCompiler()->_____executeCustomDirectory(\"$name\", $params);";
+            return "<?php echo \$__tintin->getCompiler()->_____executeCustomDirectory(\"$name\", $params); ?>";
         }, $expression);
 
         return $output == $expression ? '' : $output;
