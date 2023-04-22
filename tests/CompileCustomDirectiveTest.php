@@ -103,6 +103,16 @@ TEMPLATE;
     "name" => $name,
     "lastname" => $lastname
 ]);', $output);
+
+        $output = $compileCustomDirective->invoke($compiler, '%user([
+            "name" => $name,
+            "lastname" => $lastname
+        ])');
+
+        $this->assertStringContainsString('<?php echo $__tintin->getCompiler()->_____executeCustomDirectory("user", [
+            "name" => $name,
+            "lastname" => $lastname
+        ]);', $output);
     }
 
     public function testCompileCustomDirectiveDefineAsBrockenClause()
