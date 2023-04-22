@@ -51,7 +51,6 @@ class Compiler
         'LoopStack',
         'ExtendsStack',
         'HelpersStack',
-        'CustomDirective',
         'Json',
         'Class',
         'Import'
@@ -175,12 +174,14 @@ class Compiler
      */
     public function compile(string $data): string
     {
+        $data = $this->compileCustomDirective($data);
         $data = $this->compileVerbatim($data);
         $data = preg_split('/\n|\r\n/', $data);
 
         foreach ($data as $value) {
             if (strlen($value) > 0) {
                 $value = $this->compileToken($value);
+
                 $this->result .= strlen($value) == 0 || $value == ' ' ? trim($value) . "\n" : $value . "\n";
             }
         }
