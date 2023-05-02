@@ -36,8 +36,9 @@ class Filesystem implements LoaderInterface
         $paths = (array) $this->config['path'];
 
         foreach ($paths as $path) {
-            $full_filename = $path  . '/' . $filename . '.' . $this->getExtension();
+            $full_filename = realpath($path)  . '/' . $filename . '.' . ltrim($this->getExtension(), '.');
             $realpath = realpath($full_filename);
+
             if ($realpath !== false && file_exists($realpath)) {
                 return $realpath;
             }
@@ -135,7 +136,7 @@ class Filesystem implements LoaderInterface
 
         $dirname = substr($md5, 0, 2);
 
-        if (! is_dir($this->getCachePath() . '/' . $dirname)) {
+        if (!is_dir($this->getCachePath() . '/' . $dirname)) {
             mkdir($this->getCachePath() . '/' . $dirname);
         }
 
