@@ -150,6 +150,6 @@ class Filesystem implements LoaderInterface
      */
     public function failLoading(string $message)
     {
-        throw new \Tintin\Exception\FileNotFoundException($message);
+        throw new FileNotFoundException($message);
     }
 }

@@ -2,7 +2,9 @@
 
 namespace Tintin\Laravel;
 
-class Tintin extends \Tintin\Tintin
+use Tintin\Tintin as BowTintin;
+
+class Tintin extends BowTintin
 {
     /**
      * Alias of render method
