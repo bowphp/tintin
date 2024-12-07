@@ -1,11 +1,11 @@
 - [Introduction](#introduction)
-- [Installation](#installation)
+  - [Installation](#installation)
   - [Configuration](#configuration)
 - [Utilisation](#utilisation)
   - [Configuration pour Bow](#configuration-pour-bow)
   - [Affichage des données](#affichage-des-données)
     - [Affichage des données non échappées](#affichage-des-données-non-échappées)
-  - [Ajouter un commentaire](#ajouter-un-commentaire)
+    - [Ajouter un commentaire](#ajouter-un-commentaire)
   - [La directive %verbatim](#la-directive-verbatim)
   - [les directives `%if`](#les-directives-if)
   - [Les directives `%loop` / `%for` / `%while`](#les-directives-loop--for--while)
@@ -27,7 +27,7 @@
   - [Ajouter vos directives de la configuration](#ajouter-vos-directives-de-la-configuration)
   - [La directive `%macro`](#la-directive-macro)
 
-## Introduction
+# Introduction
 
 Tintin est un template PHP qui se veut très simple et extensible. Il peut être utilisable dans n'importe quel projet PHP.
 
@@ -39,7 +39,7 @@ Pour installer le package il sera plus mieux utiliser `composer` qui est gestion
 composer require bowphp/tintin
 ```
 
-### Configuration
+## Configuration
 
 Vous pouvez utiliser le package simplement, comme ceci. Mais sauf que cette façon de faire ne permet pas d'exploiter le système d'héritage de façon optimal. Utilisez cette façon de faire, seulement si vous voulez tester le package ou pour les petites applications.
 
@@ -72,7 +72,7 @@ $tintin = new Tintin\Tintin($loader);
 | __extension__ | l'extension des fichiers de template. Par defaut, la valeur est `tintin.php` |
 | __cache__ | Le dossier de cache. C'est là que `tintin` va créé le cache. S'il n'est pas défini, `tintin` mettra en cache les fichiers compilés dans le répertoire temporaire de `php`.  |
 
-## Utilisation
+# Utilisation
 
 ```php
 // Configuration faite qu préalabe
@@ -87,7 +87,7 @@ $tintin->render('dossier.filename', ['name' => 'data']);
 
 > Notez que la source des fichiers est toujour le chemin vers `path`.
 
-### Configuration pour Bow
+## Configuration pour Bow
 
 Pour permet à Bow d'utiliser Tintin comme moteur de template par defaut, il va faloir faire quelque petit configuration.
 
@@ -119,7 +119,7 @@ return [
 
 Et c'est tout, désormais votre moteur de template par defaut est `tintin` :+1:
 
-### Affichage des données
+## Affichage des données
 
 Vous pouvez afficher le contenu de la variable name de la manière suivante:
 
@@ -135,7 +135,7 @@ Hello, {{ strtoupper($name) }}.
 
 > Les instructions Tintin `{{ }}` sont automatiquement envoyées via la fonction PHP `htmlspecialchars` pour empêcher les attaques XSS.
 
-#### Affichage des données non échappées
+### Affichage des données non échappées
 
 Par défaut, les instructions Tintin `{{ }}` sont automatiquement envoyées via la fonction PHP `htmlspecialchars` pour empêcher les attaques XSS. Si vous ne souhaitez pas que vos données soient protégées, vous pouvez utiliser la syntaxe suivante:
 
@@ -151,7 +151,7 @@ Cette clause `{## ##}` permet d'ajouter un commentaire à votre code `tintin`.
 {## This comment will not be present in the rendered HTML ##}
 ```
 
-### La directive %verbatim
+## La directive %verbatim
 
 Si vous affichez des variables JavaScript dans une grande partie de votre modèle, vous pouvez envelopper le code HTML dans la directive `%verbatim` afin de ne pas avoir à préfixer chaque instruction Tintin echo avec un symbole `%` :
 
@@ -163,7 +163,7 @@ Si vous affichez des variables JavaScript dans une grande partie de votre modèl
 %endverbatim
 ```
 
-### les directives `%if`
+## les directives `%if`
 
 Ce sont les clauses qui permettent d'établir des branchements conditionnels comme dans la plupart des langages de programmation.
 
@@ -208,11 +208,11 @@ En plus des directives conditionnelles déjà discutées, les directives `%isset
 
 > Vous pouvez ajouter `%esle` pour effectuer une action contraire
 
-### Les directives `%loop` / `%for` / `%while`
+## Les directives `%loop` / `%for` / `%while`
 
 Souvent vous pouvez être amener à faire des listes ou répétitions sur des éléments. Par exemple, afficher tout les utilisateurs de votre plateforme.
 
-#### L'utilisation de `%loop`
+### L'utilisation de `%loop`
 
 Cette clause faire exactement l'action de `foreach`.
 
@@ -236,7 +236,7 @@ Un exemple rapide.
 
 Vous avez peut-être remarquer le `%stop` il permet de stoper l'éxécution de la boucle. Il y a aussi son conjoint le `%jump`, lui parcontre permet d'arrêter l'éxécution à son niveau et de lancer s'éxécution du prochain tour de la boucle.
 
-#### Les sucres syntaxiques `%jump` et `%stop`
+### Les sucres syntaxiques `%jump` et `%stop`
 
 Souvent le dévéloppeur est amené à faire des conditions d'arrêt de la boucle `%loop` comme ceci:
 
@@ -260,7 +260,7 @@ Avec les sucres syntaxique, on peut réduire le code comme ceci:
 %endloop
 ```
 
-#### L'utilisation de `%for` et `%while`
+### L'utilisation de `%for` et `%while`
 
 Cette clause faire exactement l'action de `for`.
 
@@ -278,7 +278,7 @@ Cette clause faire exactement l'action de `while`.
 %endwhile
 ```
 
-### Classes et styles conditionnels
+## Classes et styles conditionnels
 
 La directive `%class` compile conditionnellement une chaîne de classe CSS. La directive accepte un tableau de classes où la clé du tableau contient la ou les classes que vous souhaitez ajouter, tandis que la valeur est une expression booléenne. Si l'élément de tableau a une clé numérique, il sera toujours inclus dans la liste de classe rendue :
 
@@ -313,7 +313,7 @@ De même, la directive `%style` peut être utilisée pour ajouter conditionnelle
 <span style="background-color: red; font-weight: bold;"></span>
 ```
 
-### Inclure les sous-vues
+## Inclure les sous-vues
 
 Souvent lorsque vous dévéloppez votre code, vous êtes amener à subdiviser les vues de votre application pour être plus flexible et écrire moin de code.
 
@@ -331,13 +331,13 @@ Si vous essayez d'inclure une vue qui n'existe pas, Tintin lancera une erreur. S
 %includeIf("filename", ["name" => "Tintin"])
 ```
 
-Si vous souhaitez `%include` une vue si une expression booléenne donnée est évaluée comme vraie ou fausse, vous pouvez utiliser les directives `%includeWhen` et `%includeUnless `:
+Si vous souhaitez `%include` une vue si une expression booléenne donnée est évaluée comme vraie ou fausse, vous pouvez utiliser les directives `%includeWhen` et `%includeUnless`:
 
 ```t
 %includeWhen($user->isAdmin(), "include-file-name", ["name" => "Tintin"])
 ```
 
-### PHP brut
+## PHP brut
 
 Dans certaines situations, il est utile d'intégrer du code PHP dans vos vues. Vous pouvez utiliser la directive Tintin `%php` ou `%raw` pour exécuter un bloc de PHP simple dans votre template:
 
@@ -351,7 +351,7 @@ Dans certaines situations, il est utile d'intégrer du code PHP dans vos vues. V
 %endraw
 ```
 
-### Flash session
+## Flash session
 
 Dans le cas ou vous voulez afficher un message flash directement vue vous pouvez utiliser `%flash`. Et pour vérifier si une message flash existe `%hasflash` et `%endhasflash` :
 
@@ -363,7 +363,7 @@ Dans le cas ou vous voulez afficher un message flash directement vue vous pouvez
 %endhasflash
 ```
 
-### Injection de services
+## Injection de services
 
 La directive `%service` peut être utilisée pour récupérer un service du conteneur. Le premier argument passé à `%service` est le nom de la variable dans laquelle le service sera placé, tandis que le second argument est le nom de la classe ou de l'interface du service que vous souhaitez résoudre :
 
@@ -377,7 +377,7 @@ La directive `%service` peut être utilisée pour récupérer un service du cont
 </div>
 ```
 
-### Directives d'authentification
+## Directives d'authentification
 
 Les directives `%auth` et `%guest` peuvent être utilisées pour déterminer rapidement si l'utilisateur actuel est authentifié ou est un invité :
 
@@ -403,7 +403,7 @@ Si nécessaire, vous pouvez spécifier la garde d'authentification qui doit êtr
 %endguest
 ```
 
-### Environment Guidelines
+## Environment Guidelines
 
 Vous pouvez vérifier si l'application s'exécute dans l'environnement de production à l'aide de la directive `%production` :
 
@@ -425,7 +425,7 @@ Ou, vous pouvez déterminer si l'application s'exécute dans un environnement sp
 %endenv
 ```
 
-### Champ CSRF
+## Champ CSRF
 
 Chaque fois que vous définissez un formulaire HTML dans votre application, vous devez inclure un champ de jeton CSRF masqué dans le formulaire afin que le middleware de protection CSRF puisse valider la demande. Vous pouvez utiliser la directive `%csrf` Tintin pour générer le champ de jeton :
 
@@ -435,7 +435,7 @@ Chaque fois que vous définissez un formulaire HTML dans votre application, vous
 </form>
 ```
 
-### Champ Méthode
+## Champ Méthode
 
 Étant donné que les formulaires HTML ne peuvent pas effectuer de requêtes `PUT`, `PATCH` ou `DELETE`, vous devrez ajouter un champ _method masqué pour usurper ces verbes HTTP. La directive `%method` Tintin peut créer ce champ pour vous :
 
@@ -445,11 +445,11 @@ Chaque fois que vous définissez un formulaire HTML dans votre application, vous
 </form>
 ```
 
-## Héritage avec %extends, %block et %inject
+# Héritage avec %extends, %block et %inject
 
-Comme tout bon système de template **tintin** support le partage de code entre fichier. Ceci permet de rendre votre code flexible et maintenable.
+Comme tout bon système de template __tintin__ support le partage de code entre fichier. Ceci permet de rendre votre code flexible et maintenable.
 
-Considérérons le code **tintin** suivant:
+Considérérons le code __tintin__ suivant:
 
 ```t
 # le fichier `layout.tintin.php`
@@ -479,7 +479,7 @@ Et aussi, on a un autre fichier qui hérite du code du fichier `layout.tintin.ph
 %endblock
 ```
 
-### Explication
+## Explication
 
 Le fichier `content.tintin.php` va hérité du code de `layout.tintin.php` et si vous rémarquez bien, dans le fichier `layout.tintin.php` on a la clause `%inject` qui a pour paramètre le nom du `%block` de `content.tintin.php` qui est `content`. Ce qui veut dire que le contenu du `%block` `content` sera remplacé par `%inject`. Ce qui donnéra à la fin ceci:
 
@@ -499,7 +499,7 @@ Le fichier `content.tintin.php` va hérité du code de `layout.tintin.php` et si
 </html>
 ```
 
-## Directive personnelisée
+# Directive personnelisée
 
 Tintin peut être étendu avec son systême de directive personnalisé, pour ce faire utilisé la méthode `directive`
 Créons des directives pour gérer un formulaires:
@@ -548,7 +548,7 @@ Sortie après compilation:
 </form>
 ```
 
-### Ajouter vos directives de la configuration
+## Ajouter vos directives de la configuration
 
 Dans le cas ou vous utilisez la configuration Tintin pour Bow Framework.
 Changer le vos configuration dans le `ApplicationController::class` dans le dossier `app/Configurations`.
@@ -584,7 +584,7 @@ return $tintin->render('%super');
 // => Super !
 ```
 
-### La directive `%macro`
+## La directive `%macro`
 
 Souvent, vous serez amené utiliser ou réutiliser un bloc de template pour optimiser l'écriture de votre application. Alors les macros sont là pour cela.
 
