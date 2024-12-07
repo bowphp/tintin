@@ -21,10 +21,10 @@
   - [Environment Guidelines](#environment-guidelines)
   - [Champ CSRF](#champ-csrf)
   - [Champ Méthode](#champ-méthode)
-- [Héritage avec %extends, %block et %inject](#héritage-avec-extends-block-et-inject)
-  - [Explication](#explication)
-- [Directive personnelisée](#directive-personnelisée)
-  - [Ajouter vos directives de la configuration](#ajouter-vos-directives-de-la-configuration)
+  - [Héritage avec %extends, %block et %inject](#héritage-avec-extends-block-et-inject)
+    - [Explication](#explication)
+    - [Directive personnelisée](#directive-personnelisée)
+    - [Ajouter vos directives de la configuration](#ajouter-vos-directives-de-la-configuration)
   - [La directive `%macro`](#la-directive-macro)
 
 # Introduction
@@ -445,7 +445,7 @@ Chaque fois que vous définissez un formulaire HTML dans votre application, vous
 </form>
 ```
 
-# Héritage avec %extends, %block et %inject
+## Héritage avec %extends, %block et %inject
 
 Comme tout bon système de template __tintin__ support le partage de code entre fichier. Ceci permet de rendre votre code flexible et maintenable.
 
@@ -479,7 +479,7 @@ Et aussi, on a un autre fichier qui hérite du code du fichier `layout.tintin.ph
 %endblock
 ```
 
-## Explication
+### Explication
 
 Le fichier `content.tintin.php` va hérité du code de `layout.tintin.php` et si vous rémarquez bien, dans le fichier `layout.tintin.php` on a la clause `%inject` qui a pour paramètre le nom du `%block` de `content.tintin.php` qui est `content`. Ce qui veut dire que le contenu du `%block` `content` sera remplacé par `%inject`. Ce qui donnéra à la fin ceci:
 
@@ -499,7 +499,7 @@ Le fichier `content.tintin.php` va hérité du code de `layout.tintin.php` et si
 </html>
 ```
 
-# Directive personnelisée
+### Directive personnelisée
 
 Tintin peut être étendu avec son systême de directive personnalisé, pour ce faire utilisé la méthode `directive`
 Créons des directives pour gérer un formulaires:
@@ -548,7 +548,7 @@ Sortie après compilation:
 </form>
 ```
 
-## Ajouter vos directives de la configuration
+### Ajouter vos directives de la configuration
 
 Dans le cas ou vous utilisez la configuration Tintin pour Bow Framework.
 Changer le vos configuration dans le `ApplicationController::class` dans le dossier `app/Configurations`.
