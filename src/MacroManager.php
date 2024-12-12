@@ -49,7 +49,6 @@ class MacroManager
          */
         if (!$loader->isExpired($__template)) {
             require $loader->getCacheFileResolvedPath($__template);
-            return PHP_EOL;
         }
 
         /**
@@ -69,6 +68,7 @@ class MacroManager
         $loader->cache($__template, $result);
 
         require $loader->getCacheFileResolvedPath($__template);
+        return "";
     }
 
     /**
