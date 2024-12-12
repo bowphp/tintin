@@ -176,6 +176,7 @@ class Tintin
     public function renderString(string $template, array $data = []): string
     {
         $__template = $template;
+
         return $this->executePlainRendering(
             trim($this->compiler->compile($__template)),
             array_merge($data, ['__tintin' => $this])

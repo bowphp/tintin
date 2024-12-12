@@ -29,7 +29,7 @@ class MacroManager
      * @param string $template
      * @return string
      */
-    public function make(string $template)
+    public function make(string $template): string
     {
         $__template = $template;
         $loader = $this->tintin->getLoader();
@@ -49,7 +49,6 @@ class MacroManager
          */
         if (!$loader->isExpired($__template)) {
             require $loader->getCacheFileResolvedPath($__template);
-            return;
         }
 
         /**
@@ -69,6 +68,7 @@ class MacroManager
         $loader->cache($__template, $result);
 
         require $loader->getCacheFileResolvedPath($__template);
+        return "";
     }
 
     /**

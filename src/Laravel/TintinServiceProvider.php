@@ -3,7 +3,7 @@
 namespace Tintin\Laravel;
 
 use Illuminate\Support\ServiceProvider;
-use Tintin\Loader\Filesystem as TintinFilesystem;
+use Tintin\Filesystem as TintinFilesystem;
 
 class TintinServiceProvider extends ServiceProvider
 {
