@@ -34,11 +34,6 @@ class Compiler
     protected $raw_echo_tags = ['{{{', '}}}'];
 
     /**
-     * @var array
-     */
-    protected $comments = ['{##', '##}'];
-
-    /**
      * The valid token list
      *
      * @var array
@@ -190,6 +185,7 @@ class Compiler
     {
         $data = $this->compileCustomDirective($data);
         $data = $this->compileVerbatim($data);
+        $data = $this->compileComments($data);
         $data = preg_split('/\n|\r\n/', $data);
 
         foreach ($data as $value) {
@@ -221,7 +217,7 @@ class Compiler
 
             $out = $this->{'compile' . $token}($value);
 
-            if (in_array($token, ['Comments', 'Import']) && strlen($out) == 0) {
+            if (in_array($token, ['Import']) && strlen($out) == 0) {
                 return "";
             }
 

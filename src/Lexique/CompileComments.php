@@ -5,14 +5,14 @@ namespace Tintin\Lexique;
 trait CompileComments
 {
     /**
-     * Compile the {% comments %} directive
+     * Compile the {## comments ##} directive
      *
      * @param  string  $value
      * @return string
      */
     protected function compileComments(string $value): string
     {
-        $pattern = sprintf('/%s(.*?)%s/', $this->comments[0], $this->comments[1]);
+        $pattern = '/\{\#\#.*?\#\#\}/s';
 
         return preg_replace($pattern, '', $value);
     }
