@@ -12,7 +12,7 @@ trait CompileIf
      */
     protected function compileIfStack(string $expression): string
     {
-        foreach (['UnLess', 'If', 'ElseIf', 'ElseIfAlias', 'Else', 'EndIf'] as $token) {
+        foreach (['UnLess', 'If', 'ElseIf', 'ElseIfAlias', 'Else', 'EndIf', 'Isset'] as $token) {
             $out = $this->{'compile' . $token}($expression);
 
             if (strlen($out) !== 0) {
