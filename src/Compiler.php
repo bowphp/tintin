@@ -66,6 +66,8 @@ class Compiler
         'endverbatim',
         'env',
         'endenv',
+        'raw',
+        'endraw',
         'production',
         'endproduction',
         'unlang',
@@ -79,11 +81,11 @@ class Compiler
         'isset',
         'endisset',
         'extends',
-        'block',
         'inject',
         'include',
         'includeIf',
         'includeWhen',
+        'block',
         'endblock',
         'while',
         'endwhile',
@@ -186,12 +188,13 @@ class Compiler
         $data = $this->compileCustomDirective($data);
         $data = $this->compileVerbatim($data);
         $data = $this->compileComments($data);
+
         $data = preg_split('/\n|\r\n/', $data);
 
         foreach ($data as $value) {
             if (strlen($value) > 0) {
                 $value = $this->compileToken($value);
-                $this->result .= strlen($value) == 0 || $value == ' ' ? trim($value) . "\n" : $value . "\n";
+                $this->result .= strlen($value) == 0 || $value == ' ' ? $value . " " : $value . "\n";
             }
         }
 
@@ -236,8 +239,7 @@ class Compiler
      */
     private function applyImportTemplate(): string
     {
-        $result = implode("\n", $this->imports_render) . "\n" . $this->result;
-        $result = trim($result);
+        $result = implode("\n", $this->imports_render) . $this->result;
         $result = $result . "\n" . implode("\n", $this->extends_render);
 
         $this->result = '';
