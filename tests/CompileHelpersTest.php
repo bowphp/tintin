@@ -115,7 +115,7 @@ class CompileHelpersTest extends \PHPUnit\Framework\TestCase
     {
         $compileService = $this->makeReflectionFor('compileTrans');
 
-        $render = $compileService->invoke($this->compiler, '%trans("user.service")');
+        $render = $compileService->invoke($this->compiler, '%app_trans("user.service")');
         $this->assertEquals($render, '<?php echo __("user.service"); ?>');
     }
 

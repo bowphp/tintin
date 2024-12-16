@@ -131,7 +131,7 @@ trait CompileHelpers
      * @param string $expression
      * @return string
      */
-    protected function compileTrans(string $expression): string
+    protected function compileapp_trans(string $expression): string
     {
         return $this->compileHelpersStatement($expression, '%trans');
     }
