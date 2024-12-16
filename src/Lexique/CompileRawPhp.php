@@ -12,7 +12,7 @@ trait CompileRawPhp
      */
     protected function compileRawPhp(string $expression): string
     {
-        $expression = trim($expression);
+        // $expression = trim($expression);
 
         foreach (['Raw', 'EndRaw'] as $token) {
             $out = $this->{'compile' . $token}($expression);
@@ -33,7 +33,7 @@ trait CompileRawPhp
      */
     protected function compileRaw(string $expression): string
     {
-        $expression = trim($expression);
+        // $expression = trim($expression);
 
         $output = preg_replace_callback(
             '/\%raw/',
@@ -56,7 +56,7 @@ trait CompileRawPhp
      */
     protected function compileEndRaw(string $expression): string
     {
-        $expression = trim($expression);
+        // $expression = trim($expression);
 
         $output = preg_replace_callback(
             '/\%endraw/',

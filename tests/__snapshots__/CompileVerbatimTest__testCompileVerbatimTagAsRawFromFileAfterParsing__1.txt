@@ -1,4 +1,5 @@
-%guest
+
+    %guest
         A guest session
     %endguest
 
@@ -11,3 +12,5 @@
     %auth
         A auth session
     %endauth
+
+

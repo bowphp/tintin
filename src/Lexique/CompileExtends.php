@@ -31,8 +31,10 @@ trait CompileExtends
      */
     protected function compileBlock($expression): string
     {
+        $pattern = "/\%block\s*\(((?:\n|\s|\t)*(?:.+)(?:\n|\s|\t)*\)?)\)/sm";
+
         $output = preg_replace_callback(
-            "/\n*\%block\s*\((.+?)(?:,(.+?))?\)\n*/m",
+            $pattern,
             function ($match) {
                 array_shift($match);
 
