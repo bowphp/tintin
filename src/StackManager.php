@@ -146,6 +146,9 @@ class StackManager
     public function getStack(string $name, ?string $default = null)
     {
         if (array_key_exists($name, $this->pushes)) {
+            if (is_null($this->pushes[$name])) {
+                $this->pushes[$name] = $default ?? '';
+            }
             return $this->tintin->renderString(
                 $this->pushes[$name],
                 ['__tintin' => $this->tintin]
