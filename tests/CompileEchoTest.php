@@ -27,7 +27,7 @@ class CompilerEchoTest extends \PHPUnit\Framework\TestCase
 
         $render = $compileEcho->invoke($this->compiler, '{{ "hello world" }}');
 
-        $this->assertEquals($render, '<?php echo htmlspecialchars("hello world", ENT_QUOTES); ?>');
+        $this->assertEquals($render, '<?php echo e("hello world"); ?>');
     }
 
     /**
