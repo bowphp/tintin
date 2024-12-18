@@ -45,7 +45,7 @@ trait CompileEchos
                 return $value;
             }
 
-            return '<?php echo htmlspecialchars(' . $match[1] . ', ENT_QUOTES); ?>';
+            return '<?php echo e(' . $match[1] . '); ?>';
         }, $expression);
 
         return $output == $expression ? '' : $output;

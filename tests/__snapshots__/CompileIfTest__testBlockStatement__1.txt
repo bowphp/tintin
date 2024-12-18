@@ -1,8 +1,8 @@
 <?php if ($age > 16): ?>
-	<?php echo htmlspecialchars("You can drive !", ENT_QUOTES); ?>
+	<?php echo e("You can drive !"); ?>
 <?php elseif ($name > 15 ): ?>
-	<?php echo htmlspecialchars("You can drive next year !", ENT_QUOTES); ?>
+	<?php echo e("You can drive next year !"); ?>
 <?php else: ?>
-	<?php echo htmlspecialchars("You can\'t drive", ENT_QUOTES); ?>
+	<?php echo e("You can\'t drive"); ?>
 <?php endif; ?>
 
