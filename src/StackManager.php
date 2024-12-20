@@ -149,6 +149,7 @@ class StackManager
             if (is_null($this->pushes[$name])) {
                 $this->pushes[$name] = $default ?? '';
             }
+
             return $this->tintin->renderString(
                 $this->pushes[$name],
                 ['__tintin' => $this->tintin]
