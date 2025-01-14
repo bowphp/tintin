@@ -12,8 +12,6 @@ trait CompileRawPhp
      */
     protected function compileRawPhp(string $expression): string
     {
-        // $expression = trim($expression);
-
         foreach (['Raw', 'EndRaw'] as $token) {
             $out = $this->{'compile' . $token}($expression);
 
@@ -33,10 +31,8 @@ trait CompileRawPhp
      */
     protected function compileRaw(string $expression): string
     {
-        // $expression = trim($expression);
-
         $output = preg_replace_callback(
-            '/\%raw/',
+            '/\%(raw|php)/',
             function ($match) {
                 array_shift($match);
 
@@ -56,10 +52,8 @@ trait CompileRawPhp
      */
     protected function compileEndRaw(string $expression): string
     {
-        // $expression = trim($expression);
-
         $output = preg_replace_callback(
-            '/\%endraw/',
+            '/\%(endraw|endphp)/',
             function ($match) {
                 array_shift($match);
 

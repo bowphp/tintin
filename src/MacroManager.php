@@ -31,15 +31,14 @@ class MacroManager
      */
     public function make(string $template): string
     {
-        $__template = $template;
         $loader = $this->tintin->getLoader();
 
         if (is_null($loader)) {
-            return $this->tintin->renderString($__template);
+            return $this->tintin->renderString($template);
         }
 
-        if (!$loader->exists($__template)) {
-            $loader->failLoading($__template . ' macro is not found');
+        if (!$loader->exists($template)) {
+            $loader->failLoading($template . ' macro is not found');
         }
 
         $__tintin = $this->tintin;
@@ -47,27 +46,27 @@ class MacroManager
         /**
          * Load template when is not a cached file
          */
-        if (!$loader->isExpired($__template)) {
-            require $loader->getCacheFileResolvedPath($__template);
+        if (!$loader->isExpired($template)) {
+            require $loader->getCacheFileResolvedPath($template);
         }
 
         /**
          * Put the template into cache
          */
-        $content = $loader->getFileContent($__template);
+        $content = $loader->getFileContent($template);
 
         $this->tintin->getCompiler()->compileMacroExtraction($content);
         $containers = $this->tintin->getCompiler()->getMacroContainers();
         $result = '';
 
         foreach ($containers as $name => $container) {
-            $result .= $this->makeTheMocra($name, $container["parameters"], $container["content"]);
+            $result .= $this->makeMacro($name, $container["parameters"], $container["content"]);
         }
 
         $result = "<?php\n\n" . $result;
-        $loader->cache($__template, $result);
+        $loader->cache($template, $result);
 
-        require $loader->getCacheFileResolvedPath($__template);
+        require $loader->getCacheFileResolvedPath($template);
         return "";
     }
 
@@ -79,7 +78,7 @@ class MacroManager
      * @param string $content
      * @return string
      */
-    private function makeTheMocra(
+    private function makeMacro(
         string $function,
         array $parameters,
         string $content

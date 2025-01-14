@@ -12,10 +12,10 @@ trait CompileCustomDirective
      */
     protected function compileCustomDirective(string $expression): string
     {
-        $collection = [];
         preg_match_all($this->getCustomDirectivePartern(), $expression, $matches);
 
         array_shift($matches);
+
         $replaces = [];
         $values = $matches[0] ?? [];
         $names = $matches[1] ?? [];
