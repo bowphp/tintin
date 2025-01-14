@@ -1,59 +1,58 @@
 - [Introduction](#introduction)
-- [Installation](#installation)
+  - [Installation](#installation)
   - [Configuration](#configuration)
 - [Usage](#usage)
   - [Configuration for Bow](#configuration-for-bow)
-  - [Data display](#data-display)
-    - [Display of non-escaped data](#display-of-non-escaped-data)
-  - [Add a comment](#add-a-comment)
-  - [%if / %elseif or %elif / %else](#if--elseif-or-elif--else)
-  - [%unless](#unless)
-  - [%loop / %for / %while](#loop--for--while)
-    - [Using %loop](#using-loop)
-    - [Syntax sugars %jump and %stop](#syntax-sugars-jump-and-stop)
-    - [Using %for](#using-for)
-    - [Using %while](#using-while)
-  - [Include of file](#include-of-file)
-  - [Condition %include of file](#condition-include-of-file)
-    - [Example of inclusion](#example-of-inclusion)
-    - [Example of %includeWhen or %includeIf](#example-of-includewhen-or-includeif)
-- [Inherit with %extends, %block and %inject](#inherit-with-extends-block-and-inject)
-  - [Explication](#explication)
-- [Personalized directive](#personalized-directive)
-  - [Example](#example)
-  - [Use of directives](#use-of-directives)
-  - [Compilation du template](#compilation-du-template)
-  - [Output after compilation](#output-after-compilation)
-  - [Add your configuration guidelines](#add-your-configuration-guidelines)
+  - [Displaying data](#displaying-data)
+    - [Displaying unescaped data](#displaying-unescaped-data)
+    - [Add a comment](#add-a-comment)
+  - [The %verbatim directive](#the-verbatim-directive)
+  - [The `%if` directives](#the-if-directives)
+  - [The `%loop` / `%for` / `%while` directives](#the-loop--for--while-directives)
+    - [Using `%loop`](#using-loop)
+    - [Syntactic sugars `%jump` and `%stop`](#syntactic-sugars-jump-and-stop)
+    - [The use of `%for` and `%while`](#the-use-of-for-and-while)
+  - [Conditional Classes and Styles](#conditional-classes-and-styles)
+  - [Include subviews](#include-subviews)
+  - [Raw PHP](#raw-php)
+  - [Flash session](#flash-session)
+  - [Service injection](#service-injection)
+  - [Authentication Directives](#authentication-directives)
+  - [Environment Guidelines](#environment-guidelines)
+  - [Field CSRF](#field-csrf)
+  - [Method Field](#method-field)
+  - [Inheritance with %extends, %block and %inject](#inheritance-with-extends-block-and-inject)
+    - [Explanation](#explanation)
+    - [Custom directive](#custom-directive)
+    - [Add your configuration directives](#add-your-configuration-directives)
+  - [The `%macro` directive](#the-macro-directive)
 
-## Introduction
+# Introduction
 
-Tintin is a PHP template that wants to be very simple and extensible. It can be used in any PHP project.
+Tintin is a PHP template that is meant to be very simple and extensible. It can be used in any PHP project.
 
 ## Installation
 
-To install the package it will be better to use `composer` who is `php` package manager.
+To install the package it will be better to use `composer` which is a `php` package manager.
 
 ```bash
 composer require bowphp/tintin
 ```
 
-### Configuration
+## Configuration
 
-You can use the package simply, like this. But except that this way of doing does not allow to exploit the inheritance system in an optimal way. Use this way of doing things, only if you want to test the package or for small applications.
+You can use the package simply, like this. But except that this way of doing things does not allow you to exploit the inheritance system optimally. Use this way of doing things, only if you want to test the package or for small applications.
 
 ```php
 require 'vendor/autoload.php';
 
 $tintin = new Tintin\Tintin;
 
-echo $tintin->render('Hello, {{ strtoupper($name) }}', [
-  'name' => 'tintin'
-]);
+echo $tintin->render('Hello, world {{ strtoupper($name) }}', ['name' => 'tintin']);
 // -> Hello, world TINTIN
 ```
 
-To use the package properly, you must rather follow the installation that follows:
+To use the package properly, you should follow the following configuration:
 
 ```php
 require 'vendor/autoload.php';
@@ -64,35 +63,35 @@ $loader = new Tintin\Loader\Filesystem([
   'cache' => '/path/to/the/cache/directory'
 ]);
 
-$tt = new Tintin\Tintin($loader);
+$tintin = new Tintin\Tintin($loader);
 ```
 
-| paramêtre | Description |
+| parameter | Description |
 |---------|-------------|
-| __php__ | The path to the views folder of your applications |
+| __php__ | The path to the views folder of your application |
 | __extension__ | the extension of the template files. By default, the value is `tintin.php` |
-| __cache__ | The cache folder. This is where `tintin` will create the cache. If it is not set, `tintin` will cache the compiled files in the temporary `php` directory. |
+| __cache__ | The cache folder. This is where `tintin` will create the cache. If it is not set, `tintin` will cache the compiled files in the temporary directory of `php`. |
 
-## Usage
+# Usage
 
 ```php
-// Configuration made previously
-$tintins = new Tintin\Tintin($loader);
+// Configuration done beforehand
+$tintin = new Tintin\Tintin($loader);
 
-$tintins->render('filename', ['name' => 'data']);
+$tintin->render('filename', ['name' => 'data']);
 // Or
-$tintins->render('dossier/filename', ['name' => 'data']);
+$tintin->render('folder/filename', ['name' => 'data']);
 // Or
-$tintins->render('dossier.filename', ['name' => 'data']);
+$tintin->render('folder.filename', ['name' => 'data']);
 ```
 
 > Note that the source of the files is always the path to `path`.
 
-### Configuration for Bow
+## Configuration for Bow
 
-To allow Bow to use Tintin as default template engine, he will need to make some small configuration.
+To allow Bow to use Tintin as the default template engine, you will need to do some small configuration.
 
-Add this configuration to the file `app/Kernel.php`:
+Add this configuration in the `app/Kernel.php` file:
 
 ```php
 public function configurations() {
@@ -104,41 +103,41 @@ public function configurations() {
 }
 ```
 
-And again in the configuration file views located in `config/view.php`.
+And again in the views configuration file located in `config/view.php`.
 
-> Bow framework use tintin as default view engine.
+> Bow framework currently uses tintin as the default template
 
 ```php
 return [
-  // Define the engine to use
+// Set the engine to use
   'engine' => 'tintin',
 
-  // Extension de fichier
-  'extension' => 'tintin.php'
+  // File extension
+  'extension' => '.tintin.php'
 ];
 ```
 
-And that's it, now your default template engine is `tintin`: +1:
+And that's it, now your default template engine is `tintin` :+1:
 
-### Data display
+## Displaying data
 
-You can display the contents of the name variable as follows:
+You can display the content of the name variable in the following way:
 
 ```t
 Hello, {{ $name }}.
 ```
 
-Of course, you are not limited to displaying the content of the variables passed to the view. You can also echo the results of any PHP function. In fact, you can insert any PHP code into an echo statement:
+Of course, you are not limited to displaying the contents of variables passed to the view. You can also echo the results of any PHP function. In fact, you can insert any PHP code into an echo Tintin statement:
 
 ```t
 Hello, {{ strtoupper($name) }}.
 ```
 
-> Tintin instructions `{{}}` are automatically sent via the PHP function `htmlspecialchars` to prevent XSS attacks.
+> Tintin `{{ }}` statements are automatically sent through the PHP `htmlspecialchars` function to prevent XSS attacks.
 
-#### Display of non-escaped data
+### Displaying unescaped data
 
-By default, Tintin `{{}}` instructions are automatically sent via the PHP function `htmlspecialchars` to prevent XSS attacks. If you do not want your data to be protected, you can use the following syntax:
+By default, Tintin `{{ }}` statements are automatically sent through the PHP `htmlspecialchars` function to prevent XSS attacks. If you do not want your data to be protected, you can use the following syntax:
 
 ```t
 Hello, {{{ $name }}}.
@@ -146,16 +145,34 @@ Hello, {{{ $name }}}.
 
 ### Add a comment
 
-This `{## comments ##}` clause adds a comment to your `tintin` code.
-
-### %if / %elseif or %elif / %else
-
-These are the clauses which make it possible to establish conditional branches as in most programming languages.
+This clause `{## ##}` allows you to add a comment to your `tintin` code.
 
 ```t
-%if($name == 'tintin')
+{## This comment will not be present in the rendered HTML ##}
+```
+
+## The %verbatim directive
+
+If you display JavaScript variables in a large part of your template, you can wrap the HTML code in the `%verbatim` directive so that you don't have to prefix each Tintin echo statement with a `%` symbol:
+
+```t
+%verbatim
+<div class="container">
+  Hello, {{ name }}.
+</div>
+%endverbatim
+```
+
+## The `%if` directives
+
+These are the clauses that allow you to establish conditional branching as in most programming languages.
+
+You can build if statements using the `%if`, `%elseif`, `%elif`, `%else`, and `%endif` directives. These directives work the same way as their PHP counterparts:
+
+```t
+%if ($name == 'tintin')
   {{ $name }}
-%elseif($name == 'template')
+%elseif ($name == 'template')
   {{ $name }}
 %else
   {{ $name }}
@@ -164,25 +181,40 @@ These are the clauses which make it possible to establish conditional branches a
 
 > You can use `%elif` instead of `%elseif`.
 
-### %unless
-
-Small specificity, the `%unless` meanwhile, it allows to make a reverse condition of `%if`.
-
-To put it simply, here is an example:
+A small specificity, the `%unless` allows to make a condition inverse to the `%if`.
+To make it simple, here is an example:
 
 ```t
-%unless($name == 'tintin')
-# Equals to
-%if(!($name == 'tintin'))
+%unless ($user->isAdmin())
+  // do something else
+$endunless
 ```
 
-### %loop / %for / %while
+In addition to the conditional directives already discussed, the `%isset`, `%empty`, `%notempty` directives can be used as convenient shortcuts for their respective PHP functions:
 
-Often you may have to make lists or repetitions on items. For example, view all users of your platform.
+```t
+%isset($records)
+  // $records is defined and is not null...
+%endisset
 
-#### Using %loop
+%empty($records)
+  // $records is "empty"...
+%endempty
 
-This clause does exactly the `foreach` action.
+%notempty($records)
+  // $records is not "empty"...
+%notendempty
+```
+
+> You can add `%esle` to perform an opposite action
+
+## The `%loop` / `%for` / `%while` directives
+
+Often you may need to make lists or repetitions on elements. For example, display all users of your platform.
+
+### Using `%loop`
+
+This clause does exactly the action of `foreach`.
 
 ```t
 %loop($names as $name)
@@ -190,7 +222,8 @@ This clause does exactly the `foreach` action.
 %endloop
 ```
 
-This clause can also be paired with any other clause such as `%if`. A quick example.
+This clause can also be coupled with any other clause such as `%if`.
+A quick example.
 
 ```t
 %loop($names as $name)
@@ -201,17 +234,17 @@ This clause can also be paired with any other clause such as `%if`. A quick exam
 %endloop
 ```
 
-You may have noticed the `%stop` it allows to stop the execution of the loop. There is also his spouse `%jump`, him parcontre allows to stop the execution at his level and launch execution of the next round of the loop.
+You may have noticed the `%stop` it allows to stop the execution of the loop. There is also its spouse the `%jump`, it on the other hand allows to stop the execution at its level and to launch the execution of the next turn of the loop.
 
-#### Syntax sugars %jump and %stop
+### Syntactic sugars `%jump` and `%stop`
 
-Often the developer is made to make stop conditions of the `%loop` like this:
+Often the developer is led to make conditions to stop the loop `%loop` like this:
 
 ```t
 %loop($names as $name)
   %if($name == 'tintin')
     %stop
-    // Or
+      // Or
     %jump
   %endif
 %endloop
@@ -227,143 +260,253 @@ With syntactic sugars, we can reduce the code like this:
 %endloop
 ```
 
-#### Using %for
+### The use of `%for` and `%while`
 
-This clause does exactly the `for` action.
+This clause does exactly the action of `for`.
 
 ```t
 %for($i = 0; $i < 10; $i++)
- // ..
+ //..
 %endfor
 ```
 
-#### Using %while
-
-This clause does exactly the `while` action.
+This clause does exactly the action of `while`.
 
 ```t
 %while($name != 'tintin')
- // ..
+ //..
 %endwhile
 ```
 
-### Include of file
+## Conditional Classes and Styles
 
-Often when you are developing your code, you have to subdivide the views of your application to be more flexible and write less code.
-
-`%include` allows to include another template file in another.
+The `%class` directive conditionally compiles a CSS class string. The directive accepts an array of classes where the array key contains the class(es) you want to add, while the value is a boolean expression. If the array element has a numeric key, it will always be included in the rendered class list:
 
 ```t
-%include('filename', data)
+%php
+  $isActive = false;
+  $hasError = true;
+%endphp
+
+<span %class([
+  'p-4',
+  'font-bold' => $isActive,
+  'text-gray-500' => ! $isActive,
+  'bg-red' => $hasError,
+])></span>
+
+<span class="p-4 text-gray-500 bg-red"></span>
 ```
 
-### Condition %include of file
-
-Sometime you want to include a file when some condition are validate. No panic, the `%includeIf` or `%includeWhen` is here for you.
-
-#### Example of inclusion
-
-Consider the following `filename.tintin.php` file:
+Similarly, the `%style` directive can be used to conditionally add inline CSS styles to an HTML element:
 
 ```t
-Hello {{ $name }}
+%php
+  $isActive = true;
+%endphp
+
+<span %style([
+'background-color: red',
+'font-weight: bold' => $isActive,
+])></span>
+
+<span style="background-color: red; font-weight: bold;"></span>
 ```
 
-Use:
+## Include subviews
+
+Often when you develop your code, you are led to subdivide the views of your application to be more flexible and write less code.
+
+`%include` allows you to include another template file in another.
 
 ```t
-%include('filename', ['name' => 'Tintin'])
-// => Hello Tintin
+<div id="container">
+  %include('filename', %data)
+</div>
 ```
 
-#### Example of %includeWhen or %includeIf
-
-Sometimes you would like to include content when a condition is well defined. So to do this you can use `%includeIf` or `%includeWhen`
+If you try to include a view that does not exist, Tintin will throw an error. If you want to include a view that may or may not be present, you should use the `%includeIf` directive:
 
 ```t
-%includeWhen(!$user->isAdmin(), "filename", ["name" => "Tintin"])
+%includeIf("filename", ["name" => "Tintin"])
 ```
 
-> Tintin will execute the templae only if the `!$user->isAdmin()` condition is correct
-
-## Inherit with %extends, %block and %inject
-
-Like any good template system **tintin** supports code sharing between files. This makes your code flexible and maintainable.
-
-Consider the following **tintin** code:
+If you want to `%include` a view if a given boolean expression evaluates to true or false, you can use the `%includeWhen` and `%includeUnless` directives:
 
 ```t
-# The `layout.tintin.php` file
+%includeWhen($user->isAdmin(), "include-file-name", ["name" => "Tintin"])
+```
+
+## Raw PHP
+
+In some situations, it is useful to embed PHP code in your views. You can use the Tintin `%php` or `%raw` directive to execute a simple block of PHP in your template:
+
+```t
+%php
+  $counter = 1;
+%endphp
+
+%raw
+  $counter = 1;
+%endraw
+```
+
+## Flash session
+
+In case you want to display a flash message directly on view you can use `%flash`. And to check if a flash message exists `%hasflash` and `%endhasflash` :
+
+```t
+%hasflash("error")
+  <div class="alert alert-danger">
+    %flash("error")
+  </div>
+%endhasflash
+```
+
+## Service injection
+
+The `%service` directive can be used to retrieve a service from the container. The first argument passed to `%service` is the name of the variable in which the service will be placed, while the second argument is the name of the class or interface of the service you want to resolve:
+
+```t
+%service('user_service', 'App\Services\UserService')
+
+<div>
+  %loop($user_service->all() as $user)
+    <p>{{ $user->name }}</p>
+  %endloop
+</div>
+```
+
+## Authentication Directives
+
+The `%auth` and `%guest` directives can be used to quickly determine whether the current user is authenticated or a guest:
+
+```t
+%auth
+  // The user is authenticated...
+%endauth
+
+%guest
+  // The user is not authenticated...
+%endguest
+```
+
+If needed, you can specify the authentication guard that should be checked when using the directives `%auth` and `%guest`:
+
+```t
+%auth('admin')
+  // The user is authenticated...
+%endauth
+
+%guest('admin')
+  // The user is not authenticated...
+%endguest
+```
+
+## Environment Guidelines
+
+You can check if the application is running in the production environment using the `%production` directive:
+
+```t
+%production
+  // Production specific content...
+%endproduction
+```
+
+Or, you can determine if the application is running in a specific environment using the `%env` directive:
+
+```t
+%env('staging')
+  // The application is running in "staging"...
+%endenv
+
+%env(['staging', 'production'])
+  // The application is running in "staging" or "production"...
+%endenv
+```
+
+## Field CSRF
+
+Whenever you define an HTML form in your application, you must include a hidden CSRF token field in the form so that the CSRF protection middleware can validate the request. You can use the Tintin `%csrf` directive to generate the token field:
+
+```t
+<form method="POST" action="/profile">
+  %csrf
+</form>
+```
+
+## Method Field
+
+Since HTML forms cannot perform `PUT`, `PATCH` or `DELETE` requests, you will need to add a hidden _method field to spoof these HTTP verbs. Tintin's `%method` directive can create this field for you:
+
+```t
+<form action="/foo/bar" method="POST">
+  %method('PUT')
+</form>
+```
+
+## Inheritance with %extends, %block and %inject
+
+Like any good template system __tintin__ supports sharing code between files. This makes your code flexible and maintainable.
+
+Consider the following __tintin__ code:
+
+```html+t
+# the `layout.tintin.php` file
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
   <title>Hello, world</title>
-</head>
-<body>
-  <h1>Page header</h1>
-  <div>
-    %inject('content')
-  </div>
-  <p>Page footer</p>
-</body>
+  </head>
+  <body>
+    <h1>Page header</h1>
+    <div>
+      %inject('content')
+    </div>
+    <p>Page footer</p>
+  </body>
 </html>
 ```
 
-And also, we have another file that inherits the code of the file `layout.tintin.php`
+And also, we have another file that inherits the code from the `layout.tintin.php` file
 
 ```t
-// the file is named `content.tintin.php`
+# the file is called `content.tintin.php`
 %extends('layout')
 
 %block('content')
-  <p>This is the page content</p>
+<p>This is the page content</p>
 %endblock
 ```
 
-### Explication
+### Explanation
 
-The `content.tintin.php` file will inherit the code from` layout.tintin.php` and if you mark it well, in the file `layout.tintin.php` we have the clause `%inject` which has as parameter the name of `content.tintin.php` `block` which is `content`. Which means that the content of `%block` `content` will be replaced by `%inject`. Which will give in the end this:
+The `content.tintin.php` file will inherit the code from `layout.tintin.php` and if you notice, in the file `layout.tintin.php` we have the clause `%inject` which has as parameter the name of the `%block` of `content.tintin.php` which is `content`. Which means that the content of the `%block` `content` will be replaced by `%inject`. Which will give at the end this:
 
 ```html
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Hello, world</title>
-</head>
-<body>
-  <h1>Page header</h1>
-  <div>
-    <p>This is the page content</p>
-  </div>
-  <p>Page footer</p>
-</body>
+  <head>
+    <title>Hello, world</title>
+  </head>
+  <body>
+    <h1>Page header</h1>
+    <div>
+      <p>This is the page content</p>
+    </div>
+    <p>Page footer</p>
+  </body>
 </html>
 ```
 
-## Personalized directive
+### Custom directive
 
-Tintin can be expanded with its custom directive system, to do this used the method `directive`
-
-```php
-$tintin->directive('hello', function (string $name) {
-  return 'Hello, '. $name;
-});
-
-echo $tintin->render('%hello("Tintin")');
-// => Hello, Tintin
-```
-
-### Example
-
-Creating a directive to manage a form:
+Tintin can be extended with its custom directive system, to do this use the `directive` method
+Let's create directives to manage a form:
 
 ```php
 $tintin->directive('input', function (string $type, string $name, ?string $value) {
   return '<input type="'.$type.'" name="'.$name.'" value="'.$value.'" />';
-});
-
-$tintin->directive('textarea', function (string $name, ?string $value) {
-  return '<textarea name="'.$name.'">"'.$value.'"</textarea>';
 });
 
 $tintin->directive('button', function (string $type, string $label) {
@@ -379,56 +522,51 @@ $tintin->directive('endform', function () {
 });
 ```
 
-### Use of directives
-
-To use these guidelines, nothing is easier. Write the name of the directive preceded by `%`. Then if this directive takes parameters, launch the directive as you run the functions in your program.
+To use these directives, nothing could be simpler. Write the name of the directive preceded by `%`. Then if this directive takes parameters, launch the directive as you launch the functions in your program.
 
 ```t
-// File form.tintin.php
-%form("/posts", "post", "multipart/form-data")
-  %input("text", "name")
-  %textarea("content")
-  %button('submit', 'Add')
-%endform
+<div class="container">
+  %form("/posts", "post", "multipart/form-data")
+    %input("text", "name")
+    %button('submit', 'Add')
+  %endform
+</div>
 ```
 
-### Compilation du template
-
-The compilation is done as usual, for more information on the [compilation](#use).
+Compilation is done as usual, for more information on [compilation](#usage).
 
 ```php
 echo $tintin->render('form');
 ```
 
-### Output after compilation
+Output after compilation:
 
 ```html
 <form action="/posts" method="post" enctype="multipart/form-data">
-  <input type="text" name="name" value="" />
-  <textarea name="content"></textarea>
-  <button type="submit">Add</button>
+<input type="text" name="name" value="" />
+<button type="submit">Add</button>
 </form>
 ```
 
-### Add your configuration guidelines
+### Add your configuration directives
 
-In case you use the Tintin configuration for Bow Framework.
+In case you are using the Tintin configuration for Bow Framework.
 Change your configuration in the `ApplicationController::class` in the `app/Configurations` folder.
 
 ```php
 namespace App\Configurations;
 
-use Bow\Configuration\Loader;
+use Bow\Configuration\Loader as Config;
 
 class ApplicationConfiguration extends Configuration
 {
   /**
-   * Launch configuration
-   *
-   * @param Loader $config
-   * @return void
-   */
-  public function create(Loader $config): void
+  * Launch configuration
+  *
+  * @param Config $config
+  * @return void
+  */
+  public function create(Config $config): void
   {
     $tintin = app('view')->getEngine();
 
@@ -444,4 +582,52 @@ Now the `%super` directive is available and you can use it.
 ```php
 return $tintin->render('%super');
 // => Super !
+```
+
+## The `%macro` directive
+
+Often, you will be led to use or reuse a template block to optimize the writing of your application. So macros are there for that.
+
+> Macros must be defined in a separate file.
+
+To use the `%macro` you must pass first the macro name and then the macro parameters.
+
+Consider the file `user-macro.tintin.php`.
+
+```t
+%macro('users', array $users)
+%loop($users as $user)
+<div>{{ $user }}</div>
+%endloop
+%endmacro
+```
+
+To use the macro you must import it into another file with `%import`. We will call the file `app.tintin.php` containing the following template:
+
+```t
+%import('user-macro')
+
+%extends('layout')
+
+%block('content')
+<div class="container">
+{{ users($users) }}
+</div>
+%endblock
+```
+
+For the compilation we will pass the following list of users:
+
+```php
+$users = ["franck", "lucien", "brice"];
+
+$tintin->render('app', compact('users'));
+```
+
+After compiling the file
+
+```html
+<div>franck</div>
+<div>lucien</div>
+<div>brice</div>
 ```
