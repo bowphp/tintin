@@ -14,12 +14,10 @@ trait CompileHelpers
      */
     protected function compileHelpersStack(string $expression): string
     {
-        foreach (
-            [
+        foreach ([
             "Auth", "Guest", "Lang", "Env", "Csrf", "Flash", "Production", "Trans",
             "HasFlash", "EndHelpers", "Empty", "NotEmpty", "Method", "Service"
-            ] as $token
-        ) {
+        ] as $token) {
             $out = $this->{"compile" . $token}($expression);
             if (strlen($out) !== 0) {
                 $expression = $out;
