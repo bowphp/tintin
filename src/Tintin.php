@@ -10,7 +10,7 @@ use Tintin\Exception\DirectiveNotAllowException;
 class Tintin
 {
     /**
-     * The tintin parse instance
+     * The compiler instance
      *
      * @var Compiler
      */
@@ -31,7 +31,7 @@ class Tintin
     private StackManager $stackManager;
 
     /**
-     * The stack manager instance
+     * The macro manager instance
      *
      * @var MacroManager
      */
@@ -42,7 +42,7 @@ class Tintin
      *
      * @var array
      */
-    private array $__data = [];
+    private array $sharedData = [];
 
     /**
      * Tintin constructor.
@@ -91,13 +91,14 @@ class Tintin
      * Push shared data
      *
      * @param array $data
+     * @return void
      */
-    public function pushSharedData(array $data)
+    public function pushSharedData(array $data): void
     {
         // The arrangement of values is very important
         // To refresh the old variables which are
         // a name with the new comer
-        $this->__data = array_merge($this->__data, $data);
+        $this->sharedData = array_merge($this->sharedData, $data);
     }
 
     /**
@@ -107,7 +108,7 @@ class Tintin
      */
     public function getSharedData(): array
     {
-        return $this->__data;
+        return $this->sharedData;
     }
 
     /**
@@ -121,6 +122,8 @@ class Tintin
     public function render($template, array $data = []): string
     {
         $__template = $template;
+
+        $this->stackManager->setContext($data);
 
         if (is_null($this->loader)) {
             // Try to compile the plain string
@@ -144,7 +147,7 @@ class Tintin
         // If cache is not still alive we load template
         // and create the new cache for
         if (! $this->loader->isExpired($__template)) {
-            $this->obFlushAndStar();
+            $this->obFlushAndStart();
 
             require $this->loader->getCacheFileResolvedPath($__template);
 
@@ -159,7 +162,7 @@ class Tintin
             $this->compiler->compile($content)
         );
 
-        $this->obFlushAndStar();
+        $this->obFlushAndStart();
 
         require $this->loader->getCacheFileResolvedPath($__template);
 
@@ -175,9 +178,8 @@ class Tintin
      */
     public function renderString(string $template, array $data = []): string
     {
-        $__template = $template;
         return $this->executePlainRendering(
-            trim($this->compiler->compile($__template)),
+            trim($this->compiler->compile($template)),
             array_merge($data, ['__tintin' => $this])
         );
     }
@@ -191,7 +193,7 @@ class Tintin
      */
     private function executePlainRendering(string $content, array $data): string
     {
-        $this->obFlushAndStar();
+        $this->obFlushAndStart();
 
         extract($data);
 
@@ -222,7 +224,7 @@ class Tintin
      *
      * @return void
      */
-    private function obFlushAndStar()
+    private function obFlushAndStart(): void
     {
         ob_start();
     }
@@ -238,7 +240,7 @@ class Tintin
         $tmp_dir = sys_get_temp_dir() . '/__tintin';
 
         if (!is_dir($tmp_dir)) {
-            mkdir($tmp_dir, 0777);
+            @mkdir($tmp_dir, 0755, true);
         }
 
         $file = $tmp_dir . '/' . md5(microtime(true)) . '.php';
