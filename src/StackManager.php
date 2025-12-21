@@ -28,6 +28,13 @@ class StackManager
     private Tintin $tintin;
 
     /**
+     * The context data
+     *
+     * @var array
+     */
+    private array $context = [];
+
+    /**
      * StackManager constructor.
      *
      * @param Tintin $tintin
@@ -152,7 +159,7 @@ class StackManager
 
             return $this->tintin->renderString(
                 $this->pushes[$name],
-                ['__tintin' => $this->tintin]
+                array_merge($this->context, ['__tintin' => $this->tintin])
             );
         }
 
@@ -167,5 +174,16 @@ class StackManager
     public function getStacks()
     {
         return $this->stacks;
+    }
+
+    /**
+     * Set the context data
+     *
+     * @param array $context
+     * @return void
+     */
+    public function setContext(array $context): void
+    {
+        $this->context = $context;
     }
 }

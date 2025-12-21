@@ -122,6 +122,8 @@ class Tintin
     {
         $__template = $template;
 
+        $this->stackManager->setContext($data);
+
         if (is_null($this->loader)) {
             // Try to compile the plain string
             return $this->renderString($__template, $data);
@@ -175,9 +177,8 @@ class Tintin
      */
     public function renderString(string $template, array $data = []): string
     {
-        $__template = $template;
         return $this->executePlainRendering(
-            trim($this->compiler->compile($__template)),
+            trim($this->compiler->compile($template)),
             array_merge($data, ['__tintin' => $this])
         );
     }
