@@ -188,6 +188,7 @@ class Compiler
         $data = $this->compileCustomDirective($data);
         $data = $this->compileVerbatim($data);
         $data = $this->compileComments($data);
+        $data = $this->collapseMultilineDirectives($data);
 
         $data = preg_split('/\n|\r\n/', $data);
 
@@ -232,6 +233,19 @@ class Compiler
         }
 
         return $value;
+    }
+
+    /**
+     * Collapse newlines inside %directive(...) parens so multi-line directive
+     * heads survive the per-line compile pass below.
+     */
+    private function collapseMultilineDirectives(string $data): string
+    {
+        return preg_replace_callback(
+            '/(%[a-zA-Z_]\w*\s*)(\((?:[^()]|(?2))*\))/s',
+            fn ($m) => $m[1] . preg_replace('/\s*\r?\n\s*/', ' ', $m[2]),
+            $data
+        );
     }
 
     /**

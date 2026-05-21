@@ -134,4 +134,22 @@ TEMPLATE;
         $this->assertStringContainsString("include-when", trim($output));
         $this->assertMatchesTextSnapshot($output);
     }
+
+    /**
+     * Multi-line %include arguments must compile the same as the single-line form.
+     */
+    public function testCompileMultilineInclude()
+    {
+        $compiler = new Compiler();
+
+        $template = "%include('filename', [\n  'name' => 'bow',\n])";
+        $output = $compiler->compile($template);
+
+        $this->assertStringContainsString(
+            "<?php echo \$__tintin->getStackManager()->includeFile",
+            $output
+        );
+        $this->assertStringContainsString("'filename'", $output);
+        $this->assertStringContainsString("'name' => 'bow'", $output);
+    }
 }

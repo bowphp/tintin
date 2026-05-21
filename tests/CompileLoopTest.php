@@ -85,4 +85,18 @@ class CompileLoopTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals($render, '<?php if ($name == "Tintin"): continue; endif; ?>');
     }
+
+    /**
+     * A multi-line %loop expression must compile the same as the single-line form.
+     */
+    public function testCompileMultilineLoop()
+    {
+        $template = "%loop(\n    \$arrayes as \$arr\n)\n{{ \$arr }}\n%endloop";
+
+        $output = $this->compiler->compile($template);
+
+        $this->assertStringContainsString('<?php foreach', $output);
+        $this->assertStringContainsString('$arrayes as $arr', $output);
+        $this->assertStringContainsString('<?php endforeach;', $output);
+    }
 }
