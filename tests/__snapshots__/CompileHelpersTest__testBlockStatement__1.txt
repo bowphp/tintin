@@ -1,7 +1,9 @@
 <?php if (auth()->check()): ?>
     Logged session
 <?php endif; ?>
+
 <?php if (!auth()->check()): ?>
     Guest session
 <?php endif; ?>
+
 

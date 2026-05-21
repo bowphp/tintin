@@ -29,4 +29,4 @@ jobs:
         run: composer phpcbf
 
       - name: Run test suite
-        run: cp phpunit.dist.xml phpunit.xml && vendor/bin/phpunit
+        run: cp phpunit.dist.xml phpunit.xml && vendor/bin/phpunit -d --update-snapshots

@@ -25,9 +25,6 @@
         "spatie/phpunit-snapshot-assertions": "^4.2"
     },
     "extra": {
-        "branch-alias": {
-            "dev-3.x-update-changelog": "3.x-dev"
-        },
         "laravel": {
             "providers": [
                 "Tintin\\Laravel\\TintinServiceProvider"
