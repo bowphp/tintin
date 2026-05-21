@@ -75,6 +75,26 @@ class TintinTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * Blank lines and indentation inside a code snippet must be preserved.
+     * Regression: executePlainRendering trim()-ed every line, destroying snippet whitespace.
+     */
+    public function testRenderPreservesBlankLinesInCodeSnippet()
+    {
+        $tintin = new Tintin();
+
+        $template = "<pre><code>\n"
+            . "function foo() {\n"
+            . "\n"
+            . "    return 42;\n"
+            . "}\n"
+            . "</code></pre>";
+
+        $render = $tintin->render($template);
+
+        $this->assertStringContainsString("function foo() {\n\n    return 42;", $render);
+    }
+
+    /**
      * The compute dataset
      *
      * @return array

@@ -197,10 +197,7 @@ class Tintin
 
         extract($data);
 
-        $parts = preg_split("/\n|\r\n/", $content);
-        $parts = array_map(fn ($value) => trim($value), $parts);
-
-        $filename = $this->createTmpFile(implode("\n\t", $parts));
+        $filename = $this->createTmpFile($content);
 
         require $filename;
 

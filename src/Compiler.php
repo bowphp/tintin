@@ -192,10 +192,12 @@ class Compiler
         $data = preg_split('/\n|\r\n/', $data);
 
         foreach ($data as $value) {
-            if (strlen($value) > 0) {
-                $value = $this->compileToken($value);
-                $this->result .= strlen($value) == 0 || $value == ' ' ? $value . " " : $value . "\n";
+            if (strlen($value) === 0) {
+                $this->result .= "\n";
+                continue;
             }
+            $value = $this->compileToken($value);
+            $this->result .= strlen($value) == 0 || $value == ' ' ? $value . " " : $value . "\n";
         }
 
         // Apply the verbatim
