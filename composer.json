@@ -26,7 +26,10 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-3.x-update-changelog": "3.x-dev"
+            "dev-main": "3.x-dev",
+            "dev-3.x-update-changelog": "3.x-dev",
+            "dev-feat/docs": "3.x-dev",
+            "dev-fix/compilation": "3.x-dev"
         },
         "laravel": {
             "providers": [
