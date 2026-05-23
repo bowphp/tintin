@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 3.1.7 - 2026-05-23
+
+### What's Changed
+
+* Fix inline compilation by @papac in https://github.com/bowphp/tintin/pull/87
+* Update package by @papac in https://github.com/bowphp/tintin/pull/89
+
+**Full Changelog**: https://github.com/bowphp/tintin/compare/3.1.6...3.1.7
+
 ## [Unreleased]
 
 ### Fixed
