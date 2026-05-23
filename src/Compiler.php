@@ -116,11 +116,19 @@ class Compiler
     protected $result = '';
 
     /**
-     * The expression pattern
+     * The expression pattern.
+     *
+     * Group 2 uses a recursive subpattern so the inner capture stops at the
+     * matching `)` instead of greedily eating up to the last `)` on the line.
+     * Without this, a single-line directive whose body also contains parens
+     * (e.g. `%if ($x) <span>{{ $x }}</span> %endif`, where the echo pass has
+     * already rewritten `{{ $x }}` into `<?php echo e($x); ?>`) would have its
+     * head extended past the real close-paren, producing broken PHP like
+     * `<?php if ($x) <span>...e($x): ?>; ?></span>`.
      *
      * @var string
      */
-    protected $condition_pattern = '/(%s\s*\((.*)\))\s*/sm';
+    protected $condition_pattern = '/(%s\s*\(((?:[^()]|\((?2)\))*)\))\s*/s';
 
     /**
      * The option expression pattern

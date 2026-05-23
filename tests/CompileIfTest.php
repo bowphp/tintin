@@ -98,6 +98,77 @@ class CompileIfTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($render, '<?php endif; ?>');
     }
 
+    public function testInlineIfWithEchoBody()
+    {
+        $source = '%if ($service->runtime_version) <span>{{ $service->runtime_version }}</span> %endif';
+
+        $render = $this->compiler->compile($source);
+
+        $this->assertStringContainsString('<?php if ($service->runtime_version): ?>', $render);
+        $this->assertStringContainsString('<?php echo e($service->runtime_version); ?>', $render);
+        $this->assertStringContainsString('<?php endif; ?>', $render);
+        $this->assertStringNotContainsString('): ?>; ?>', $render);
+    }
+
+    public function testInlineIfWithNestedParens()
+    {
+        $source = '%if (count($items) > 0) yes %endif';
+
+        $render = $this->compiler->compile($source);
+
+        $this->assertStringContainsString('<?php if (count($items) > 0): ?>', $render);
+    }
+
+    /**
+     * Regression: %unless shares condition_pattern with %if.
+     */
+    public function testInlineUnlessWithEchoBody()
+    {
+        $source = '%unless ($name) <span>{{ $name }}</span> %endunless';
+
+        $render = $this->compiler->compile($source);
+
+        $this->assertStringContainsString('<?php if (! ($name)): ?>', $render);
+        $this->assertStringContainsString('<?php echo e($name); ?>', $render);
+        $this->assertStringContainsString('<?php endif; ?>', $render);
+        $this->assertStringNotContainsString('): ?>; ?>', $render);
+    }
+
+    /**
+     * Regression: %isset shares condition_pattern with %if.
+     */
+    public function testInlineIssetWithEchoBody()
+    {
+        $source = '%isset ($name) <span>{{ $name }}</span> %endisset';
+
+        $render = $this->compiler->compile($source);
+
+        $this->assertStringContainsString('<?php if (isset($name)): ?>', $render);
+        $this->assertStringContainsString('<?php echo e($name); ?>', $render);
+        $this->assertStringContainsString('<?php endif; ?>', $render);
+        $this->assertStringNotContainsString('): ?>; ?>', $render);
+    }
+
+    /**
+     * Regression: %elseif (and the %elif alias) share condition_pattern.
+     * Exercise an if/elseif/else chain with echoes in every branch.
+     */
+    public function testInlineIfElseIfElseWithEchoBodies()
+    {
+        $source = '%if ($a) <span>{{ $a }}</span> %elseif ($b) <span>{{ $b }}</span> %else <span>{{ $c }}</span> %endif';
+
+        $render = $this->compiler->compile($source);
+
+        $this->assertStringContainsString('<?php if ($a): ?>', $render);
+        $this->assertStringContainsString('<?php elseif ($b): ?>', $render);
+        $this->assertStringContainsString('<?php else: ?>', $render);
+        $this->assertStringContainsString('<?php echo e($a); ?>', $render);
+        $this->assertStringContainsString('<?php echo e($b); ?>', $render);
+        $this->assertStringContainsString('<?php echo e($c); ?>', $render);
+        $this->assertStringContainsString('<?php endif; ?>', $render);
+        $this->assertStringNotContainsString('): ?>; ?>', $render);
+    }
+
     public function testBlockStatement()
     {
         $html = file_get_contents(__DIR__ . '/view/sample.tintin.php');
