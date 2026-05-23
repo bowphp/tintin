@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+* Fix greedy `condition_pattern` that produced broken PHP when an `%if`, `%unless`, `%isset`, `%loop`, `%while`, or `%for` directive sat on a single line with a `{{ }}` echo in its body (the head would extend past the real `)` and swallow the echo's closing paren). Replaced `(.*)` with a recursive balanced-paren matcher in `Compiler::$condition_pattern`.
+
 ## 3.1.5 - 2025-12-21
 
 ### What's Changed
@@ -21,7 +27,7 @@ Change the core language
 - We use now the % symbol to identify tintin directives
 - Add the new directive like `%import` or `%macro`
 
-## [Unreleased]
+## Pre-3.0.0 notes
 
 - Change the template lexique from # to %
 - Remove the default configuration
