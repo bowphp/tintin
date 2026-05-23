@@ -87,6 +87,54 @@ class CompileLoopTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * Regression: a single-line %loop whose body contains an echo must not
+     * have its head extended past the real `)` by the greedy condition
+     * pattern (shared with %if).
+     */
+    public function testInlineLoopWithEchoBody()
+    {
+        $source = '%loop ($items as $item) <span>{{ $item }}</span> %endloop';
+
+        $render = $this->compiler->compile($source);
+
+        $this->assertStringContainsString('<?php foreach ($items as $item): ?>', $render);
+        $this->assertStringContainsString('<?php echo e($item); ?>', $render);
+        $this->assertStringContainsString('<?php endforeach; ?>', $render);
+        $this->assertStringNotContainsString('): ?>; ?>', $render);
+    }
+
+    /**
+     * Regression: same greedy-match bug, %while variant.
+     */
+    public function testInlineWhileWithEchoBody()
+    {
+        $source = '%while ($i < count($items)) <span>{{ $i }}</span> %endwhile';
+
+        $render = $this->compiler->compile($source);
+
+        $this->assertStringContainsString('<?php while ($i < count($items)): ?>', $render);
+        $this->assertStringContainsString('<?php echo e($i); ?>', $render);
+        $this->assertStringContainsString('<?php endwhile; ?>', $render);
+        $this->assertStringNotContainsString('): ?>; ?>', $render);
+    }
+
+    /**
+     * Regression: %for has the extra wrinkle of semicolons inside the head.
+     * The balanced-paren matcher must still stop at the head's real `)`.
+     */
+    public function testInlineForWithEchoBody()
+    {
+        $source = '%for ($i = 0; $i < count($items); $i++) <span>{{ $i }}</span> %endfor';
+
+        $render = $this->compiler->compile($source);
+
+        $this->assertStringContainsString('<?php for ($i = 0; $i < count($items); $i++): ?>', $render);
+        $this->assertStringContainsString('<?php echo e($i); ?>', $render);
+        $this->assertStringContainsString('<?php endfor; ?>', $render);
+        $this->assertStringNotContainsString('): ?>; ?>', $render);
+    }
+
+    /**
      * A multi-line %loop expression must compile the same as the single-line form.
      */
     public function testCompileMultilineLoop()
