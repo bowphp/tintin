@@ -149,4 +149,40 @@ class CompileExtendsTest extends \PHPUnit\Framework\TestCase
         $this->assertStringContainsString('{{ 7*7 }}', $output);
         $this->assertStringNotContainsString('49', $output);
     }
+
+    /**
+     * User data must not be able to overwrite the engine's own $__tintin
+     * handle through extract(); otherwise every block/inject page crashes
+     * (DoS) or the handle can be spoofed.
+     */
+    public function testDataCannotOverwriteEngineHandle()
+    {
+        $tintin = new Tintin($this->loader);
+
+        $output = $tintin->render('security', [
+            'name' => 'Alice',
+            '__tintin' => 'pwned',
+        ]);
+
+        $this->assertStringContainsString('Hello Alice', $output);
+    }
+
+    /**
+     * User data must not be able to redirect which template file is required
+     * by overwriting $__template through extract() (view-selection hijack).
+     */
+    public function testDataCannotHijackTemplateSelection()
+    {
+        $tintin = new Tintin($this->loader);
+
+        $output = $tintin->render('security', [
+            'name' => 'Alice',
+            '__template' => 'layout',
+            '__path' => '/etc/passwd',
+        ]);
+
+        // The 'security' view is rendered, not 'layout' or an injected path.
+        $this->assertStringContainsString('Hello Alice', $output);
+        $this->assertStringNotContainsString('root:', $output);
+    }
 }

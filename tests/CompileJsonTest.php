@@ -22,7 +22,7 @@ class CompileJsonTest extends \PHPUnit\Framework\TestCase
 
         $render = $compile_json->invoke($this->compiler, "%json(['name' => 'tintin'])");
 
-        $this->assertEquals($render, "<?php echo json_encode(['name' => 'tintin']); ?>");
+        $this->assertEquals($render, "<?php echo json_encode(['name' => 'tintin'], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>");
     }
 
     public function testCompileJsonWithSpace()
@@ -31,7 +31,7 @@ class CompileJsonTest extends \PHPUnit\Framework\TestCase
 
         $render = $compile_json->invoke($this->compiler, "%json (['name' => 'tintin'])");
 
-        $this->assertEquals($render, "<?php echo json_encode(['name' => 'tintin']); ?>");
+        $this->assertEquals($render, "<?php echo json_encode(['name' => 'tintin'], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP); ?>");
     }
 
     public function testCompileJsonWithEncodingOptions()

@@ -121,50 +121,60 @@ class Tintin
      */
     public function render($template, array $data = []): string
     {
-        $__template = $template;
-
         $this->stackManager->setContext($data);
 
         if (is_null($this->loader)) {
             // Try to compile the plain string
-            return $this->renderString($__template, $data);
+            return $this->renderString($template, $data);
         }
 
         // Check existence of file from cache
-        if (! $this->loader->exists($__template)) {
-            $this->loader->failLoading($__template . ' not found');
+        if (! $this->loader->exists($template)) {
+            $this->loader->failLoading($template . ' not found');
         }
 
         // Merge passing data to the shared data
         $this->pushSharedData($data);
 
-        $__tintin = $this;
-
-        // Extract the shared data
-        extract($this->getSharedData());
-
-        // Check if the file cache is not expire
-        // If cache is not still alive we load template
-        // and create the new cache for
-        if (! $this->loader->isExpired($__template)) {
-            $this->obFlushAndStart();
-
-            require $this->loader->getCacheFileResolvedPath($__template);
-
-            return $this->obGetContent();
+        // Resolve and (re)compile from the trusted $template parameter BEFORE
+        // any user data reaches the local scope. Otherwise a data key named
+        // __template would overwrite it through extract() and redirect which
+        // cache file gets required (view-selection hijack).
+        if ($this->loader->isExpired($template)) {
+            $this->loader->cache(
+                $template,
+                $this->compiler->compile($this->loader->getFileContent($template))
+            );
         }
 
-        // Put the template into cache
-        $content = $this->loader->getFileContent($__template);
-
-        $this->loader->cache(
-            $__template,
-            $this->compiler->compile($content)
+        return $this->requireInScope(
+            $this->loader->getCacheFileResolvedPath($template),
+            $this->getSharedData()
         );
+    }
 
+    /**
+     * Require a compiled template in an isolated scope.
+     *
+     * The engine's own variables ($__path, $__tintin, $__data) are defined
+     * before the user data is extracted, and EXTR_SKIP prevents that data from
+     * overwriting them. A data key such as __path or __tintin is therefore
+     * ignored instead of hijacking the include or the engine handle that the
+     * compiled template relies on.
+     *
+     * @param string $__path
+     * @param array $__data
+     * @return string
+     */
+    private function requireInScope(string $__path, array $__data): string
+    {
         $this->obFlushAndStart();
 
-        require $this->loader->getCacheFileResolvedPath($__template);
+        $__tintin = $this;
+
+        extract($__data, EXTR_SKIP);
+
+        require $__path;
 
         return $this->obGetContent();
     }
@@ -191,17 +201,22 @@ class Tintin
      * @param array $data
      * @return string
      */
-    private function executePlainRendering(string $content, array $data): string
+    private function executePlainRendering(string $__content, array $__data): string
     {
         $this->obFlushAndStart();
 
-        extract($data);
+        $__tintin = $this;
 
-        $filename = $this->createTmpFile($content);
+        // See requireInScope(): user data must never overwrite the reserved
+        // engine variables, in particular $__content (which becomes the file
+        // that is required) and $__file.
+        extract($__data, EXTR_SKIP);
 
-        require $filename;
+        $__file = $this->createTmpFile($__content);
 
-        @unlink($filename);
+        require $__file;
+
+        @unlink($__file);
 
         return $this->obGetContent();
     }
@@ -237,10 +252,18 @@ class Tintin
         $tmp_dir = sys_get_temp_dir() . '/__tintin';
 
         if (!is_dir($tmp_dir)) {
-            @mkdir($tmp_dir, 0755, true);
+            @mkdir($tmp_dir, 0700, true);
         }
 
-        $file = $tmp_dir . '/' . md5(microtime(true)) . '.php';
+        // tempnam() atomically creates a unique, unpredictable file owned by
+        // this process (mode 0600). The previous md5(microtime()) name in a
+        // shared, world-readable directory allowed symlink/TOCTOU attacks and
+        // briefly exposed rendered output (possibly secrets) to local users.
+        $file = tempnam($tmp_dir, 'tintin_');
+
+        if ($file === false) {
+            $file = $tmp_dir . '/' . bin2hex(random_bytes(16)) . '.php';
+        }
 
         file_put_contents($file, $content);
 
