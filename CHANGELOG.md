@@ -7,8 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+* Add the `%empty` loop branch: a bare `%empty` (no parentheses) between `%loop` and `%endloop` renders its content when the iterable is empty, like Blade's `@forelse` / `@empty`. `%empty($x)` with parentheses remains the conditional helper. Nested loops each get their own empty flag, and a `%loop` without `%empty` still compiles to a plain `foreach`.
+
 ### Fixed
 
+* Fix greedy condition in `%stop(...)` and `%jump(...)`: when another `(...)` followed on the same line, the condition extended to the last `)` and produced broken PHP. The breaker directives now use the same balanced-paren matcher as the loop heads.
 * Fix greedy `condition_pattern` that produced broken PHP when an `%if`, `%unless`, `%isset`, `%loop`, `%while`, or `%for` directive sat on a single line with a `{{ }}` echo in its body (the head would extend past the real `)` and swallow the echo's closing paren). Replaced `(.*)` with a recursive balanced-paren matcher in `Compiler::$condition_pattern`.
 
 ## 3.1.5 - 2025-12-21

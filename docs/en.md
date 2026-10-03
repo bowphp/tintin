@@ -10,6 +10,7 @@
   - [The `%if` directives](#the-if-directives)
   - [The `%loop` / `%for` / `%while` directives](#the-loop--for--while-directives)
     - [Using `%loop`](#using-loop)
+    - [The `%empty` branch of a loop](#the-empty-branch-of-a-loop)
     - [Syntactic sugars `%jump` and `%stop`](#syntactic-sugars-jump-and-stop)
     - [The use of `%for` and `%while`](#the-use-of-for-and-while)
   - [Conditional Classes and Styles](#conditional-classes-and-styles)
@@ -259,6 +260,22 @@ With syntactic sugars, we can reduce the code like this:
   %jump($name == 'tintin')
 %endloop
 ```
+
+### The `%empty` branch of a loop
+
+When the list you iterate over may be empty, you often end up wrapping the `%loop` in an `%if`. A bare `%empty` inside the loop lets you declare the content to render when the loop body never ran:
+
+```t
+%loop($users as $user)
+  Hello {{ $user->name }}
+%empty
+  No user yet.
+%endloop
+```
+
+The `%empty` branch is rendered only if `$users` is empty. It works with nested loops, each `%loop` keeps its own `%empty`. This branch is only available with `%loop`.
+
+> Note: `%empty` without parentheses is the loop branch. `%empty($value)` with parentheses stays the conditional helper described above and can still be used inside a loop.
 
 ### The use of `%for` and `%while`
 

@@ -10,6 +10,7 @@
   - [les directives `%if`](#les-directives-if)
   - [Les directives `%loop` / `%for` / `%while`](#les-directives-loop--for--while)
     - [L'utilisation de `%loop`](#lutilisation-de-loop)
+    - [La branche `%empty` d'une boucle](#la-branche-empty-dune-boucle)
     - [Les sucres syntaxiques `%jump` et `%stop`](#les-sucres-syntaxiques-jump-et-stop)
     - [L'utilisation de `%for` et `%while`](#lutilisation-de-for-et-while)
   - [Classes et styles conditionnels](#classes-et-styles-conditionnels)
@@ -259,6 +260,22 @@ Avec les sucres syntaxique, on peut réduire le code comme ceci:
   %jump($name == 'tintin')
 %endloop
 ```
+
+### La branche `%empty` d'une boucle
+
+Lorsque la liste parcourue peut être vide, on finit souvent par entourer le `%loop` d'un `%if`. Un `%empty` seul dans la boucle permet de déclarer le contenu à afficher lorsque le corps de la boucle n'a jamais été exécuté:
+
+```t
+%loop($users as $user)
+  Bonjour {{ $user->name }}
+%empty
+  Aucun utilisateur pour le moment.
+%endloop
+```
+
+La branche `%empty` n'est affichée que si `$users` est vide. Elle fonctionne avec les boucles imbriquées, chaque `%loop` garde son propre `%empty`. Cette branche n'est disponible qu'avec `%loop`.
+
+> Note: `%empty` sans parenthèses est la branche de boucle. `%empty($valeur)` avec parenthèses reste l'aide conditionnelle décrite plus haut et peut toujours être utilisée dans une boucle.
 
 ### L'utilisation de `%for` et `%while`
 

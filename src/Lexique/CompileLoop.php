@@ -5,6 +5,35 @@ namespace Tintin\Lexique;
 trait CompileLoop
 {
     /**
+     * The name of the runtime flag that records whether a %loop body ran.
+     *
+     * @var string
+     */
+    private string $loop_empty_flag = '$__tintin_loop_{depth}';
+
+    /**
+     * For each %loop in the template (document order): its nesting depth and
+     * whether it owns a bare %empty branch, as [depth, has_empty].
+     *
+     * @var array<int, array{0: int, 1: bool}>
+     */
+    private array $loop_empty_heads = [];
+
+    /**
+     * For each bare %empty in the template (document order): the nesting depth of its loop.
+     *
+     * @var int[]
+     */
+    private array $loop_empty_branches = [];
+
+    /**
+     * For each %endloop in the template (document order): does its loop own a bare %empty?
+     *
+     * @var bool[]
+     */
+    private array $loop_empty_ends = [];
+
+    /**
      * Definition of all available stack
      * @return array
      */
@@ -12,6 +41,7 @@ trait CompileLoop
     {
         return [
             'Foreach',
+            'LoopEmpty',
             'EndForeach',
             'Continue',
             'Break',
@@ -39,6 +69,59 @@ trait CompileLoop
         }
 
         return $expression;
+    }
+
+    /**
+     * Pre-scan the template for %loop / %empty / %endloop so that each
+     * directive knows, when it is compiled line by line, whether its loop owns
+     * an %empty branch and at which nesting depth it sits.
+     *
+     * Only a bare `%empty` (no parentheses) is a loop branch; `%empty($x)` is
+     * the conditional helper and is left to the helpers stack.
+     *
+     * @param string $data
+     * @return void
+     */
+    protected function scanLoopEmpty(string $data): void
+    {
+        $this->loop_empty_heads = [];
+        $this->loop_empty_branches = [];
+        $this->loop_empty_ends = [];
+
+        preg_match_all('/%(empty\b(?!\s*\()|endloop|loop\b)/', $data, $matches);
+
+        $stack = [];
+
+        foreach ($matches[1] as $token) {
+            if ($token === 'loop') {
+                $stack[] = count($this->loop_empty_heads);
+                $this->loop_empty_heads[] = [count($stack), false];
+                continue;
+            }
+
+            if (count($stack) === 0) {
+                continue;
+            }
+
+            if ($token === 'empty') {
+                $this->loop_empty_heads[end($stack)][1] = true;
+                $this->loop_empty_branches[] = count($stack);
+                continue;
+            }
+
+            $this->loop_empty_ends[] = $this->loop_empty_heads[array_pop($stack)][1];
+        }
+    }
+
+    /**
+     * Build the empty flag name for the given nesting depth
+     *
+     * @param int $depth
+     * @return string
+     */
+    private function loopEmptyFlag(int $depth): string
+    {
+        return str_replace('{depth}', (string) $depth, $this->loop_empty_flag);
     }
 
     /**
@@ -82,6 +165,9 @@ trait CompileLoop
     /**
      * Compile the loop breaker directive
      *
+     * The optional condition uses a recursive balanced-paren matcher so that
+     * `%stop($x) ... ($y)` on one line stops at the condition's own `)`.
+     *
      * @param string $expression
      * @param string $lexic
      * @param string $o_lexic
@@ -90,7 +176,7 @@ trait CompileLoop
     private function compileBreaker($expression, $lexic, $o_lexic): string
     {
         $output = preg_replace_callback(
-            "/($lexic\s*(\(.+\)\s*)|$lexic)/s",
+            "/($lexic\s*(\((?:[^()]|(?2))*\))\s*|$lexic)/s",
             function ($match) use ($lexic, $o_lexic) {
                 array_shift($match);
 
@@ -114,7 +200,41 @@ trait CompileLoop
      */
     protected function compileForeach(string $expression): string
     {
-        return $this->compileLoop($expression, '%loop', 'foreach');
+        $regex = sprintf($this->condition_pattern, '%loop');
+
+        $output = preg_replace_callback($regex, function ($match) {
+            [$depth, $has_empty] = array_shift($this->loop_empty_heads) ?? [1, false];
+
+            if (!$has_empty) {
+                return "<?php foreach ({$match[2]}): ?>";
+            }
+
+            $flag = $this->loopEmptyFlag($depth);
+
+            return "<?php $flag = true; foreach ({$match[2]}): $flag = false; ?>";
+        }, $expression);
+
+        return $output == $expression ? '' : $output;
+    }
+
+    /**
+     * Compile the bare %empty directive inside a %loop
+     *
+     * Closes the foreach and opens the branch rendered when the loop body never ran.
+     * `%empty(...)` with parentheses is not matched here, it is the conditional helper.
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileLoopEmpty(string $expression): string
+    {
+        $output = preg_replace_callback('/\n*%empty\b(?!\s*\()\n*/', function () {
+            $depth = array_shift($this->loop_empty_branches) ?? 1;
+
+            return "<?php endforeach; if ({$this->loopEmptyFlag($depth)}): ?>";
+        }, $expression);
+
+        return $output == $expression ? '' : $output;
     }
 
     /**
@@ -147,7 +267,13 @@ trait CompileLoop
      */
     protected function compileEndForeach(string $expression): string
     {
-        return $this->compileEndLoop($expression, '%endloop', 'endforeach');
+        $output = preg_replace_callback('/\n*%endloop\n*/', function () {
+            $has_empty = array_shift($this->loop_empty_ends) ?? false;
+
+            return $has_empty ? "<?php endif; ?>" : "<?php endforeach; ?>";
+        }, $expression);
+
+        return $output == $expression ? '' : $output;
     }
 
     /**
