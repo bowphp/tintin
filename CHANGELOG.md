@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 3.1.8 - 2026-10-03
+
+### What's Changed
+
+* Sec: many security issues fix by @papac in https://github.com/bowphp/tintin/pull/90
+
+**Full Changelog**: https://github.com/bowphp/tintin/compare/3.1.7...3.1.8
+
 ## [Unreleased]
 
 ### Fixed
