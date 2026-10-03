@@ -74,4 +74,18 @@ class FilesystemTest extends \PHPUnit\Framework\TestCase
             'tintin'
         );
     }
+
+    /**
+     * Path resolution must stay inside the configured view directory and
+     * never resolve a file outside it via traversal sequences.
+     */
+    public function testGetFileResolvedPathRejectsTraversal()
+    {
+        $this->assertFalse(
+            $this->filesystem->getFileResolvedPath('../../../../../../etc/passwd')
+        );
+        $this->assertFalse(
+            $this->filesystem->exists('../../../../../../etc/passwd')
+        );
+    }
 }

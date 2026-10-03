@@ -20,7 +20,12 @@ trait CompileJson
                 $parts = explode(',', $match[0]);
 
                 if (! isset($parts[1])) {
-                    return  "<?php echo json_encode($parts[0]); ?>";
+                    // Escape HTML-significant characters by default so values
+                    // rendered inside <script> cannot break out of the context
+                    // (XSS). Explicit options passed by the caller are honored.
+                    $flags = 'JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP';
+
+                    return  "<?php echo json_encode($parts[0], $flags); ?>";
                 }
 
                 $options = trim($parts[1]);

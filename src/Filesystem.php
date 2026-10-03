@@ -36,10 +36,24 @@ class Filesystem implements LoaderInterface
         $paths = (array) $this->config['path'];
 
         foreach ($paths as $path) {
-            $full_filename = realpath($path)  . '/' . $filename . '.' . ltrim($this->getExtension(), '.');
+            $base = realpath($path);
+
+            if ($base === false) {
+                continue;
+            }
+
+            $full_filename = $base . '/' . $filename . '.' . ltrim($this->getExtension(), '.');
             $realpath = realpath($full_filename);
 
-            if ($realpath !== false && file_exists($realpath)) {
+            // Containment check: the resolved file must live inside the
+            // configured view directory. This blocks path traversal from
+            // resolving an arbitrary file, independent of the '.'-to-'/'
+            // rewrite above (which a future change could weaken).
+            if (
+                $realpath !== false
+                && str_starts_with($realpath, $base . DIRECTORY_SEPARATOR)
+                && file_exists($realpath)
+            ) {
                 return $realpath;
             }
         }

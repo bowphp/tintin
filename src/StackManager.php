@@ -136,10 +136,15 @@ class StackManager
             $content = $this->pushes[$block];
 
             if (is_null($content)) {
-                $content = $this->tintin->getCompiler()->compile(ob_get_clean());
+                // The block body was compiled and executed together with the
+                // page, so the output buffer already holds its rendered result.
+                // Compiling it a second time would execute any {{ }} that
+                // arrived through data (e() escapes < > & " ' but not braces),
+                // which is remote code execution. Keep the buffer verbatim.
+                $content = ob_get_clean();
             }
 
-            $this->pushes[$block] = trim($content, "\n");
+            $this->pushes[$block] = trim((string) $content, "\n");
         }
     }
 
@@ -152,18 +157,13 @@ class StackManager
      */
     public function getStack(string $name, ?string $default = null)
     {
-        if (array_key_exists($name, $this->pushes)) {
-            if (is_null($this->pushes[$name])) {
-                $this->pushes[$name] = $default ?? '';
-            }
-
-            return $this->tintin->renderString(
-                $this->pushes[$name],
-                array_merge($this->context, ['__tintin' => $this->tintin])
-            );
+        if (!array_key_exists($name, $this->pushes)) {
+            return $default;
         }
 
-        return $default;
+        // Return the already-rendered block output as-is. Re-rendering it
+        // would execute template syntax that came through data. See endStack().
+        return $this->pushes[$name] ?? ($default ?? '');
     }
 
     /**
