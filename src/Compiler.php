@@ -198,6 +198,7 @@ class Compiler
         $data = $this->compileVerbatim($data);
         $data = $this->compileComments($data);
         $data = $this->collapseMultilineDirectives($data);
+        $this->scanLoopEmpty($data);
 
         $data = preg_split('/\n|\r\n/', $data);
 
