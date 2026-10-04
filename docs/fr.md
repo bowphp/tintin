@@ -10,8 +10,8 @@
   - [les directives `%if`](#les-directives-if)
   - [Les directives `%loop` / `%for` / `%while`](#les-directives-loop--for--while)
     - [L'utilisation de `%loop`](#lutilisation-de-loop)
-    - [La branche `%empty` d'une boucle](#la-branche-empty-dune-boucle)
     - [Les sucres syntaxiques `%jump` et `%stop`](#les-sucres-syntaxiques-jump-et-stop)
+    - [La branche `%empty` d'une boucle](#la-branche-empty-dune-boucle)
     - [L'utilisation de `%for` et `%while`](#lutilisation-de-for-et-while)
   - [Classes et styles conditionnels](#classes-et-styles-conditionnels)
   - [Inclure les sous-vues](#inclure-les-sous-vues)
@@ -204,10 +204,10 @@ En plus des directives conditionnelles déjà discutées, les directives `%isset
 
 %notempty($records)
   // $records is not "empty"...
-%notendempty
+%endnotempty
 ```
 
-> Vous pouvez ajouter `%esle` pour effectuer une action contraire
+> Vous pouvez ajouter `%else` pour effectuer une action contraire
 
 ## Les directives `%loop` / `%for` / `%while`
 
@@ -223,7 +223,21 @@ Cette clause faire exactement l'action de `foreach`.
 %endloop
 ```
 
-Cette clause peux être aussi coupler avec tout autre clause telque `%if`.
+Tout ce que le `foreach` de PHP accepte fonctionne dans l'en-tête, comme les paires clé/valeur ou la déstructuration de liste:
+
+```t
+%loop($users as $id => $user)
+  {{ $id }}: {{ $user->name }}
+%endloop
+```
+
+La boucle entière peut aussi tenir sur une seule ligne:
+
+```t
+<ul>%loop($names as $name) <li>{{ $name }}</li> %endloop</ul>
+```
+
+Cette clause peut aussi être couplée avec toute autre clause telle que `%if`.
 Un exemple rapide.
 
 ```t
@@ -261,6 +275,8 @@ Avec les sucres syntaxique, on peut réduire le code comme ceci:
 %endloop
 ```
 
+`%stop` compile vers `break` et `%jump` vers `continue`. Les deux fonctionnent dans `%loop`, `%for` et `%while`, avec ou sans condition, et la condition peut contenir n'importe quelle expression PHP, y compris des parenthèses imbriquées.
+
 ### La branche `%empty` d'une boucle
 
 Lorsque la liste parcourue peut être vide, on finit souvent par entourer le `%loop` d'un `%if`. Un `%empty` seul dans la boucle permet de déclarer le contenu à afficher lorsque le corps de la boucle n'a jamais été exécuté:
@@ -279,21 +295,33 @@ La branche `%empty` n'est affichée que si `$users` est vide. Elle fonctionne av
 
 ### L'utilisation de `%for` et `%while`
 
-Cette clause faire exactement l'action de `for`.
+`%for` fait exactement l'action de `for`.
 
 ```t
 %for($i = 0; $i < 10; $i++)
- // ..
+  {{ $i }}
 %endfor
 ```
 
-Cette clause faire exactement l'action de `while`.
+`%while` fait exactement l'action de `while`.
 
 ```t
 %while($name != 'tintin')
- // ..
+  {{ $name = next($names) }}
 %endwhile
 ```
+
+`%jump` et `%stop` sont disponibles dans les deux, exactement comme dans `%loop`:
+
+```t
+%for($i = 0; $i < 10; $i++)
+  %jump($i % 2 == 0)
+  %stop($i > 7)
+  {{ $i }}
+%endfor
+```
+
+> Note: la branche `%empty` n'est disponible qu'avec `%loop`. `%for` et `%while` n'ont pas d'équivalent.
 
 ## Classes et styles conditionnels
 

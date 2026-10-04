@@ -10,8 +10,8 @@
   - [The `%if` directives](#the-if-directives)
   - [The `%loop` / `%for` / `%while` directives](#the-loop--for--while-directives)
     - [Using `%loop`](#using-loop)
-    - [The `%empty` branch of a loop](#the-empty-branch-of-a-loop)
     - [Syntactic sugars `%jump` and `%stop`](#syntactic-sugars-jump-and-stop)
+    - [The `%empty` branch of a loop](#the-empty-branch-of-a-loop)
     - [The use of `%for` and `%while`](#the-use-of-for-and-while)
   - [Conditional Classes and Styles](#conditional-classes-and-styles)
   - [Include subviews](#include-subviews)
@@ -204,10 +204,10 @@ In addition to the conditional directives already discussed, the `%isset`, `%emp
 
 %notempty($records)
   // $records is not "empty"...
-%notendempty
+%endnotempty
 ```
 
-> You can add `%esle` to perform an opposite action
+> You can add `%else` to perform an opposite action
 
 ## The `%loop` / `%for` / `%while` directives
 
@@ -221,6 +221,20 @@ This clause does exactly the action of `foreach`.
 %loop($names as $name)
   Hello {{ $name }}
 %endloop
+```
+
+Anything PHP's `foreach` accepts works in the head, such as key/value pairs or list destructuring:
+
+```t
+%loop($users as $id => $user)
+  {{ $id }}: {{ $user->name }}
+%endloop
+```
+
+The whole loop can also sit on a single line:
+
+```t
+<ul>%loop($names as $name) <li>{{ $name }}</li> %endloop</ul>
 ```
 
 This clause can also be coupled with any other clause such as `%if`.
@@ -261,6 +275,8 @@ With syntactic sugars, we can reduce the code like this:
 %endloop
 ```
 
+`%stop` compiles to `break` and `%jump` to `continue`. Both work in `%loop`, `%for` and `%while`, with or without a condition, and the condition may contain any PHP expression, including nested parentheses.
+
 ### The `%empty` branch of a loop
 
 When the list you iterate over may be empty, you often end up wrapping the `%loop` in an `%if`. A bare `%empty` inside the loop lets you declare the content to render when the loop body never ran:
@@ -279,21 +295,33 @@ The `%empty` branch is rendered only if `$users` is empty. It works with nested 
 
 ### The use of `%for` and `%while`
 
-This clause does exactly the action of `for`.
+`%for` does exactly the action of `for`.
 
 ```t
 %for($i = 0; $i < 10; $i++)
- //..
+  {{ $i }}
 %endfor
 ```
 
-This clause does exactly the action of `while`.
+`%while` does exactly the action of `while`.
 
 ```t
 %while($name != 'tintin')
- //..
+  {{ $name = next($names) }}
 %endwhile
 ```
+
+`%jump` and `%stop` are available in both, exactly as in `%loop`:
+
+```t
+%for($i = 0; $i < 10; $i++)
+  %jump($i % 2 == 0)
+  %stop($i > 7)
+  {{ $i }}
+%endfor
+```
+
+> Note: the `%empty` branch is only available with `%loop`. `%for` and `%while` have no equivalent.
 
 ## Conditional Classes and Styles
 
