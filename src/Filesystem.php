@@ -114,11 +114,14 @@ class Filesystem implements LoaderInterface
             $this->getFileResolvedPath($filename)
         );
 
-        $cache_fileatime = fileatime(
+        // mtime, not atime: every render reads the cache and moves its atime.
+        // And >= because mtimes are whole seconds: a template saved again in
+        // the same second it was compiled was otherwise never compiled again.
+        $cache_filemtime = filemtime(
             $this->getCacheFileResolvedPath($filename)
         );
 
-        return $fileatime > $cache_fileatime;
+        return $fileatime >= $cache_filemtime;
     }
 
     /**
